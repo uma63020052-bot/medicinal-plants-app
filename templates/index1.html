@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Medicinal Plant Identification</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,600;0,700;1,400&family=Noto+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ayush-green: #1a6b3c;
+            --ayush-dark: #0d3d22;
+            --ayush-light: #e8f5ee;
+            --ayush-gold: #c8960c;
+            --ayush-gold-light: #fdf3d0;
+            --off-white: #f9f7f4;
+            --text: #1a1a1a;
+            --text-muted: #6b7280;
+            --border: #dde5d8;
+            --shadow: 0 2px 16px rgba(26,107,60,0.10);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+        body { font-family:'Noto Sans',sans-serif; background:#e8e8e8; display:flex; justify-content:center; }
+        .phone-shell { width:100%; max-width:420px; min-height:100vh; background:var(--off-white); position:relative; overflow:hidden; box-shadow:0 0 40px rgba(0,0,0,0.15); }
+
+        .screen { display:none; flex-direction:column; min-height:100vh; animation:slideIn 0.3s ease; }
+        .screen.active { display:flex; }
+        @keyframes slideIn { from{opacity:0;transform:translateX(30px)} to{opacity:1;transform:translateX(0)} }
+        @keyframes spin { to{transform:rotate(360deg)} }
+
+        /* ── DASHBOARD ── */
+        #s-dash { background:var(--ayush-dark); }
+        .dash-header {
+            background:linear-gradient(160deg,#0d3d22 0%,#1a6b3c 100%);
+            padding:52px 24px 32px; text-align:center; position:relative; overflow:hidden;
+        }
+        .dash-header::before { content:''; position:absolute; top:-50px;right:-50px; width:180px;height:180px; border-radius:50%; background:rgba(255,255,255,0.03); }
+        .emblem { width:88px;height:88px; background:white; border-radius:50%; margin:0 auto 16px; display:flex;align-items:center;justify-content:center; font-size:2.8em; box-shadow:0 4px 20px rgba(0,0,0,0.3); border:3px solid var(--ayush-gold); }
+        .ministry-badge { display:inline-block; background:rgba(200,150,12,0.2); border:1px solid rgba(200,150,12,0.4); color:#f5d078; font-size:0.68em; font-weight:600; letter-spacing:1px; text-transform:uppercase; padding:4px 14px; border-radius:50px; margin-bottom:10px; }
+        .dash-header h1 { font-family:'Noto Serif',serif; color:white; font-size:1.5em; font-weight:700; line-height:1.3; margin-bottom:6px; }
+        .dash-header p { color:rgba(255,255,255,0.6); font-size:0.82em; }
+        .dash-body { flex:1; background:var(--off-white); border-radius:24px 24px 0 0; margin-top:-16px; padding:28px 20px 36px; }
+        .chips { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:20px; }
+        .chip { display:flex;align-items:center;gap:6px; background:white;border:1px solid var(--border); padding:7px 13px;border-radius:50px;font-size:0.78em;font-weight:500;color:var(--ayush-green); box-shadow:0 1px 4px rgba(0,0,0,0.05); }
+        .dcard { background:white;border-radius:18px;padding:20px;margin-bottom:14px;border:1px solid var(--border);box-shadow:var(--shadow); }
+        .dcard h3 { font-family:'Noto Serif',serif;font-size:0.98em;color:var(--ayush-dark);margin-bottom:7px; }
+        .dcard p { font-size:0.83em;color:var(--text-muted);line-height:1.6; }
+        .pgrid { display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:10px; }
+        .pgrid-item { background:var(--ayush-light);border-radius:8px;padding:6px 4px;text-align:center;font-size:0.7em;font-weight:500;color:var(--ayush-dark);border:1px solid #c5ddc9; }
+        .cta { width:100%;background:linear-gradient(135deg,var(--ayush-green),#2a8a50);color:white;border:none;padding:17px;border-radius:14px;font-family:'Noto Sans',sans-serif;font-size:1em;font-weight:600;cursor:pointer;box-shadow:0 4px 16px rgba(26,107,60,0.35);margin-top:8px;transition:all .2s; }
+        .cta:active { transform:scale(0.98); }
+
+        /* ── SIGN IN ── */
+        #s-signin { background:white; }
+        .signin-hero { background:linear-gradient(160deg,var(--ayush-dark),var(--ayush-green)); padding:60px 28px 60px; text-align:center; clip-path:ellipse(100% 82% at 50% 18%); }
+        .signin-icon { width:72px;height:72px;background:rgba(255,255,255,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:2em;border:2px solid rgba(255,255,255,0.3); }
+        .signin-hero h2 { font-family:'Noto Serif',serif;color:white;font-size:1.5em;margin-bottom:5px; }
+        .signin-hero p { color:rgba(255,255,255,0.65);font-size:0.85em; }
+        .signin-form { padding:28px 24px 24px;flex:1; }
+        .flabel { display:block;font-size:0.75em;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:7px; }
+        .finput { width:100%;border:1.5px solid var(--border);border-radius:12px;padding:14px 16px;font-family:'Noto Sans',sans-serif;font-size:0.95em;color:var(--text);background:var(--off-white);outline:none;transition:border-color .2s;margin-bottom:16px; }
+        .finput:focus { border-color:var(--ayush-green);background:white; }
+        .sbtn { width:100%;background:linear-gradient(135deg,var(--ayush-green),#2a8a50);color:white;border:none;padding:15px;border-radius:12px;font-family:'Noto Sans',sans-serif;font-size:1em;font-weight:600;cursor:pointer;box-shadow:0 4px 14px rgba(26,107,60,0.3); }
+        .divrow { display:flex;align-items:center;gap:12px;margin:18px 0; }
+        .divline { flex:1;height:1px;background:var(--border); }
+        .divtxt { font-size:0.78em;color:var(--text-muted); }
+        .gbtn { width:100%;background:white;border:1.5px solid var(--border);border-radius:12px;padding:13px;font-family:'Noto Sans',sans-serif;font-size:0.92em;font-weight:500;cursor:pointer;color:var(--text);display:flex;align-items:center;justify-content:center;gap:10px; }
+        .slink { text-align:center;margin-top:18px;font-size:0.83em;color:var(--text-muted); }
+        .slink a { color:var(--ayush-green);font-weight:600;cursor:pointer; }
+
+        /* ── CAMERA ── */
+        #s-camera { background:#0a0a0a; }
+        .camtop { display:flex;align-items:center;justify-content:space-between;padding:52px 20px 14px; }
+        .camtop h3 { color:white;font-size:0.95em;font-weight:600; }
+        .circ-btn { width:38px;height:38px;background:rgba(255,255,255,0.12);border:none;border-radius:50%;color:white;font-size:1.1em;cursor:pointer;display:flex;align-items:center;justify-content:center; }
+        .viewfinder { flex:1;position:relative;margin:0 18px;border-radius:20px;overflow:hidden;background:#1a1a1a;min-height:320px;display:flex;align-items:center;justify-content:center; }
+        .vf-img { width:100%;height:100%;object-fit:cover;display:none; }
+        .vf-ph { text-align:center;color:rgba(255,255,255,0.4); }
+        .vf-ph span { font-size:2.8em;display:block;margin-bottom:10px; }
+        .vf-ph p { font-size:0.83em;line-height:1.5; }
+        .corner { position:absolute;width:26px;height:26px; }
+        .c-tl { top:14px;left:14px;border-top:2px solid rgba(255,255,255,0.55);border-left:2px solid rgba(255,255,255,0.55);border-radius:4px 0 0 0; }
+        .c-tr { top:14px;right:14px;border-top:2px solid rgba(255,255,255,0.55);border-right:2px solid rgba(255,255,255,0.55);border-radius:0 4px 0 0; }
+        .c-bl { bottom:14px;left:14px;border-bottom:2px solid rgba(255,255,255,0.55);border-left:2px solid rgba(255,255,255,0.55);border-radius:0 0 0 4px; }
+        .c-br { bottom:14px;right:14px;border-bottom:2px solid rgba(255,255,255,0.55);border-right:2px solid rgba(255,255,255,0.55);border-radius:0 0 4px 0; }
+        .cam-hint { position:absolute;bottom:12px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.55);color:rgba(255,255,255,0.85);font-size:0.72em;padding:5px 14px;border-radius:50px;white-space:nowrap; }
+        .camctrl { padding:18px 22px 36px;display:flex;align-items:center;justify-content:space-between;gap:14px; }
+        .gallery-btn { width:52px;height:52px;background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.2);border-radius:14px;color:white;font-size:1.4em;cursor:pointer;display:flex;align-items:center;justify-content:center; }
+        .shutter { width:72px;height:72px;background:white;border:none;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 5px rgba(255,255,255,0.22);transition:all .15s; }
+        .shutter:active { transform:scale(0.92); }
+        .shutter-in { width:54px;height:54px;background:white;border-radius:50%;border:3px solid #ddd; }
+        .analyse-btn { flex:1;background:var(--ayush-green);border:none;border-radius:14px;color:white;font-family:'Noto Sans',sans-serif;font-size:0.88em;font-weight:600;padding:15px 10px;cursor:pointer; }
+        #camFile { display:none; }
+
+        /* ── LOADING ── */
+        #s-loading { background:#0d3d22 !important; align-items:center; justify-content:center; }
+        #s-loading.active { background:#0d3d22 !important; }
+        .load-inner { text-align:center;padding:36px; }
+        .spin-ring { width:88px;height:88px;border:4px solid rgba(149,213,178,0.2);border-top-color:#52b788;border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 26px; }
+        .load-inner h3 { font-family:'Noto Serif',serif;color:white;font-size:1.25em;margin-bottom:8px; }
+        .load-inner p { color:rgba(255,255,255,0.5);font-size:0.83em;line-height:1.6; }
+        .load-steps { margin-top:26px;text-align:left;background:rgba(255,255,255,0.06);border-radius:14px;padding:16px 18px; }
+        .lstep { display:flex;align-items:center;gap:10px;padding:6px 0;color:rgba(255,255,255,0.35);font-size:0.82em;transition:color .4s; }
+        .lstep.active { color:white; }
+        .lstep.done { color:#52b788; }
+        .ldot { width:7px;height:7px;border-radius:50%;background:currentColor;flex-shrink:0; }
+
+        /* ── RESULTS ── */
+        #s-results { background:var(--off-white); }
+        .res-top { background:linear-gradient(135deg,var(--ayush-dark),var(--ayush-green));padding:48px 20px 18px;display:flex;align-items:center;gap:14px; }
+        .back-btn { width:36px;height:36px;background:rgba(255,255,255,0.15);border:none;border-radius:50%;color:white;font-size:1em;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0; }
+        .res-top h2 { color:white;font-family:'Noto Serif',serif;font-size:1.05em;font-weight:600; }
+        .res-body { padding:0 14px 20px;overflow-y:auto; }
+
+        .plant-hero { background:white;border-radius:20px;overflow:hidden;margin-top:14px;box-shadow:var(--shadow);border:1px solid var(--border); }
+        .plant-imgbox { position:relative;height:195px;overflow:hidden;background:#e0ebe3; }
+        .plant-imgbox img { width:100%;height:100%;object-fit:cover;display:block; }
+        .conf-badge { position:absolute;top:11px;right:11px;background:var(--ayush-green);color:white;padding:5px 12px;border-radius:50px;font-size:0.78em;font-weight:700;box-shadow:0 2px 8px rgba(0,0,0,0.2); }
+        .model-badge2 { position:absolute;top:11px;left:11px;background:rgba(0,0,0,0.5);color:white;padding:4px 11px;border-radius:50px;font-size:0.7em; }
+        .plant-namebox { padding:16px 18px 14px;border-bottom:1px solid var(--border); }
+        .plant-namebox h2 { font-family:'Noto Serif',serif;font-size:1.6em;color:var(--ayush-dark);font-weight:700;margin-bottom:2px; }
+        .sci-name { font-style:italic;font-size:0.83em;color:var(--text-muted);margin-bottom:10px; }
+        .verify-tag { display:inline-flex;align-items:center;gap:5px;background:var(--ayush-gold-light);border:1px solid #e8c84a;color:#7a5a00;padding:5px 13px;border-radius:50px;font-size:0.73em;font-weight:600; }
+
+        .isec { background:white;border-radius:16px;padding:15px 16px;margin-top:11px;border:1px solid var(--border);box-shadow:0 1px 5px rgba(0,0,0,0.04); }
+        .isec-hdr { display:flex;align-items:center;gap:8px;margin-bottom:10px; }
+        .isec-icon { width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:0.88em;flex-shrink:0; }
+        .bg-g { background:rgba(26,107,60,0.1); }
+        .bg-au { background:rgba(200,150,12,0.12); }
+        .bg-r { background:rgba(220,38,38,0.1); }
+        .bg-b { background:rgba(59,130,246,0.1); }
+        .isec-title { font-size:0.7em;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-muted); }
+        .isec p { font-size:0.86em;color:#333;line-height:1.65; }
+        .factbox { background:var(--ayush-gold-light);border-left:3px solid var(--ayush-gold);border-radius:0 8px 8px 0;padding:9px 12px;font-size:0.81em;color:#5a4000;margin-top:10px;line-height:1.5; }
+        .cgrid { display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:8px; }
+        .citem { background:var(--off-white);border-radius:10px;padding:9px 11px; }
+        .clabel { font-size:0.67em;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-muted);margin-bottom:2px; }
+        .cval { font-size:0.82em;font-style:italic;color:var(--ayush-dark);font-weight:500; }
+        .tagrow { display:flex;flex-wrap:wrap;gap:6px;margin-top:4px; }
+        .tag { padding:5px 11px;border-radius:50px;font-size:0.77em;font-weight:500; }
+        .tn { background:var(--off-white);border:1px solid var(--border);color:var(--text); }
+        .tg { background:rgba(26,107,60,0.08);border:1px solid #b8d8c4;color:var(--ayush-dark); }
+        .tr { background:rgba(220,38,38,0.07);border:1px solid #fca5a5;color:#991b1b; }
+
+        .top3sec { background:white;border-radius:16px;padding:15px 16px;margin-top:11px;border:1px solid var(--border); }
+        .t3title { font-size:0.7em;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-muted);margin-bottom:10px; }
+        .t3row { display:flex;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);gap:10px; }
+        .t3row:last-child { border-bottom:none; }
+        .t3rank { width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.73em;font-weight:700;flex-shrink:0; }
+        .r1 { background:var(--ayush-green);color:white; }
+        .r2,.r3 { background:var(--off-white);color:var(--text-muted);border:1px solid var(--border); }
+        .t3name { flex:1;font-size:0.87em;font-weight:500;color:var(--text); }
+        .t3bw { width:80px; }
+        .t3bar { height:5px;background:var(--border);border-radius:50px;overflow:hidden;margin-bottom:2px; }
+        .t3fill { height:100%;background:var(--ayush-green);border-radius:50px; }
+        .t3pct { font-size:0.74em;font-weight:700;color:var(--ayush-green);text-align:right; }
+
+        .iloading { text-align:center;padding:22px; }
+        .mspin { width:24px;height:24px;border:2px solid #c5ddc9;border-top-color:var(--ayush-green);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 9px; }
+        .iloading p { font-size:0.81em;color:var(--text-muted); }
+
+        .bottom-nav { position:sticky;bottom:0;background:white;border-top:1px solid var(--border);padding:11px 16px 22px;display:flex;gap:9px; }
+        .scan-again { flex:1;background:linear-gradient(135deg,var(--ayush-green),#2a8a50);color:white;border:none;padding:13px;border-radius:12px;font-family:'Noto Sans',sans-serif;font-size:0.88em;font-weight:600;cursor:pointer;box-shadow:0 3px 12px rgba(26,107,60,0.25); }
+        .home-btn { width:46px;background:var(--off-white);border:1.5px solid var(--border);border-radius:12px;color:var(--ayush-green);font-size:1.1em;cursor:pointer;display:flex;align-items:center;justify-content:center; }
+    </style>
+</head>
+<body>
+<div class="phone-shell">
+
+    <!-- SCREEN 1: DASHBOARD -->
+    <div id="s-dash" class="screen active">
+        <div class="dash-header">
+            <div class="emblem">🌿</div>
+            <div class="ministry-badge">Ministry of Ayush · Govt. of India</div>
+            <h1>Medicinal Plant<br>Identification System</h1>
+            <p>Smart India Hackathon 2023 · Team: Plant Pharmers</p>
+        </div>
+        <div class="dash-body">
+            <div class="chips">
+                <div class="chip">🤖 Inception-V3</div>
+                <div class="chip">🌱 40 Species</div>
+                <div class="chip">📖 Plant Profiles</div>
+            </div>
+            <div class="dcard">
+                <h3>About this Application</h3>
+                <p>The Detection of Medicinal Plants using Machine Learning — it is ready to analyse your plant. Point your camera at any plant and get instant identification with medicinal uses, benefits and precautions.</p>
+            </div>
+            <div class="dcard">
+                <h3>Identifiable Plants (40 Species)</h3>
+                <div class="pgrid">
+                    <div class="pgrid-item">Tulasi</div>
+                    <div class="pgrid-item">Neem</div>
+                    <div class="pgrid-item">Aloe Vera</div>
+                    <div class="pgrid-item">Brahmi</div>
+                    <div class="pgrid-item">Ashoka</div>
+                    <div class="pgrid-item">Henna</div>
+                    <div class="pgrid-item">Amla</div>
+                    <div class="pgrid-item">+33 more</div>
+                </div>
+            </div>
+            <button class="cta" onclick="g('s-signin')">🚀  GET STARTED</button>
+        </div>
+    </div>
+
+    <!-- SCREEN 2: SIGN IN -->
+    <div id="s-signin" class="screen">
+        <div class="signin-hero">
+            <div class="signin-icon">👤</div>
+            <h2>Sign in to continue!</h2>
+            <p>Access your plant identification history</p>
+        </div>
+        <div class="signin-form">
+            <label class="flabel">Email</label>
+            <input type="email" class="finput" placeholder="you@example.com">
+            <label class="flabel">Password</label>
+            <input type="password" class="finput" placeholder="••••••••">
+            <button class="sbtn" onclick="g('s-camera')">Login</button>
+            <div class="divrow"><div class="divline"></div><span class="divtxt">Social Media Login</span><div class="divline"></div></div>
+            <button class="gbtn" onclick="g('s-camera')">
+                <svg width="17" height="17" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.2l6.7-6.7C35.7 2.5 30.2 0 24 0 14.6 0 6.6 5.5 2.7 13.5l7.8 6C12.4 13.2 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.7c-.5 2.9-2.2 5.4-4.7 7l7.3 5.7c4.3-3.9 6.8-9.7 6.8-16.7z"/><path fill="#FBBC05" d="M10.5 28.5c-.5-1.5-.8-3-.8-4.5s.3-3 .8-4.5l-7.8-6C1 16.5 0 20.1 0 24s1 7.5 2.7 10.5l7.8-6z"/><path fill="#34A853" d="M24 48c6.2 0 11.4-2 15.2-5.5l-7.3-5.7c-2 1.4-4.6 2.2-7.9 2.2-6.3 0-11.6-3.7-13.5-9.5l-7.8 6C6.6 42.5 14.6 48 24 48z"/></svg>
+                Continue with Google
+            </button>
+            <div class="slink">Don't have an account? <a onclick="g('s-camera')">Sign up</a></div>
+        </div>
+    </div>
+
+    <!-- SCREEN 3: CAMERA -->
+    <div id="s-camera" class="screen">
+        <div class="camtop">
+            <button class="circ-btn" onclick="g('s-signin')">←</button>
+            <h3>Scan Plant</h3>
+            <button class="circ-btn">⚡</button>
+        </div>
+        <div class="viewfinder" id="vf">
+            <div class="corner c-tl"></div><div class="corner c-tr"></div>
+            <div class="corner c-bl"></div><div class="corner c-br"></div>
+            <img id="vfImg" class="vf-img" alt="">
+            <div class="vf-ph" id="vfPh"><span>📷</span><p>Point camera at a plant<br>or upload an image</p></div>
+            <div class="cam-hint" id="camHint">Hold steady for best results</div>
+        </div>
+        <div class="camctrl">
+            <button class="gallery-btn" onclick="document.getElementById('camFile').click()">🖼</button>
+            <button class="shutter" onclick="document.getElementById('camFile').click()"><div class="shutter-in"></div></button>
+            <button class="analyse-btn" id="analyseBtn" style="opacity:.4;pointer-events:none" onclick="analyse()">Analyse →</button>
+        </div>
+        <input type="file" id="camFile" accept="image/*" capture="environment" onchange="onFile(event)">
+    </div>
+
+    <!-- SCREEN 4: LOADING -->
+    <div id="s-loading" class="screen">
+        <div class="load-inner">
+            <div class="spin-ring"></div>
+            <h3>Analysing Plant...</h3>
+            <p>Running Inception-V3 model<br>with preprocessing pipeline</p>
+            <div class="load-steps">
+                <div class="lstep active" id="ls1"><div class="ldot"></div>Uploading image</div>
+                <div class="lstep" id="ls2"><div class="ldot"></div>Background removal (GrabCut)</div>
+                <div class="lstep" id="ls3"><div class="ldot"></div>Noise reduction &amp; normalisation</div>
+                <div class="lstep" id="ls4"><div class="ldot"></div>Running Inception-V3</div>
+                <div class="lstep" id="ls5"><div class="ldot"></div>Fetching plant profile</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCREEN 5: RESULTS -->
+    <div id="s-results" class="screen">
+        <div class="res-top">
+            <button class="back-btn" onclick="g('s-camera')">←</button>
+            <h2>Results</h2>
+        </div>
+        <div class="res-body">
+            <div class="plant-hero">
+                <div class="plant-imgbox">
+                    <img id="rImg" src="" alt="Plant">
+                    <div class="model-badge2">⚡ Inception-V3</div>
+                    <div class="conf-badge" id="rConf">--%</div>
+                </div>
+                <div class="plant-namebox">
+                    <h2 id="rName">--</h2>
+                    <div class="sci-name" id="rSci">Loading...</div>
+                    <span class="verify-tag">✓ Results Verification Button</span>
+                </div>
+            </div>
+
+            <div class="top3sec">
+                <div class="t3title">Prediction Confidence</div>
+                <div id="t3c"></div>
+            </div>
+
+            <div id="infoArea">
+                <div class="isec">
+                    <div class="iloading"><div class="mspin"></div><p>Loading plant profile...</p></div>
+                </div>
+            </div>
+        </div>
+        <div class="bottom-nav">
+            <button class="scan-again" onclick="scanAgain()">📷  Scan Another Plant</button>
+            <button class="home-btn" onclick="g('s-dash')">🏠</button>
+        </div>
+    </div>
+
+</div>
+<script>
+    let curFile = null, curDataURL = null;
+
+    function g(id) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        window.scrollTo(0,0);
+    }
+
+    function onFile(e) {
+        const f = e.target.files[0];
+        if (!f) return;
+        curFile = f;
+        const r = new FileReader();
+        r.onload = ev => {
+            curDataURL = ev.target.result;
+            const img = document.getElementById('vfImg');
+            img.src = curDataURL; img.style.display = 'block';
+            document.getElementById('vfPh').style.display = 'none';
+            document.getElementById('camHint').textContent = 'Image ready — tap Analyse';
+            const b = document.getElementById('analyseBtn');
+            b.style.opacity = '1'; b.style.pointerEvents = 'auto';
+        };
+        r.readAsDataURL(f);
+    }
+
+    async function analyse() {
+        if (!curFile) return;
+        g('s-loading');
+        animSteps();
+        const fd = new FormData();
+        fd.append('file', curFile);
+        try {
+            const res = await fetch('/api/predict', {method:'POST', body:fd});
+            const data = await res.json();
+            if (data.success) await showResults(data);
+            else { alert('Error: ' + (data.error||'Unknown')); g('s-camera'); }
+        } catch(err) { alert('Server error: ' + err.message); g('s-camera'); }
+    }
+
+    function animSteps() {
+        const ids = ['ls1','ls2','ls3','ls4','ls5'];
+        let i = 0;
+        const iv = setInterval(() => {
+            if (i>0) { document.getElementById(ids[i-1]).classList.remove('active'); document.getElementById(ids[i-1]).classList.add('done'); }
+            if (i < ids.length) { document.getElementById(ids[i]).classList.add('active'); i++; }
+            else clearInterval(iv);
+        }, 600);
+    }
+
+    async function showResults(data) {
+        const en = data.predictions.ensemble;
+        document.getElementById('rImg').src = curDataURL;
+        document.getElementById('rName').textContent = en.plant;
+        document.getElementById('rConf').textContent = en.percentage;
+        document.getElementById('rSci').textContent = 'Loading...';
+
+        const c = document.getElementById('t3c');
+        c.innerHTML = '';
+        en.top_3.forEach((p,i) => {
+            const pv = parseFloat(p.percentage);
+            c.innerHTML += `<div class="t3row">
+                <div class="t3rank r${i+1}">${i+1}</div>
+                <div class="t3name">${p.plant}</div>
+                <div class="t3bw"><div class="t3bar"><div class="t3fill" style="width:${Math.min(pv,100)}%"></div></div><div class="t3pct">${p.percentage}</div></div>
+            </div>`;
+        });
+
+        g('s-results');
+        await loadInfo(en.plant);
+    }
+
+    async function loadInfo(name) {
+        try {
+            const res = await fetch('/api/plant-info', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({plant_name:name})});
+            const r = await res.json();
+            if (r.success) renderInfo(r.data);
+            else document.getElementById('infoArea').innerHTML = '<div class="isec"><p style="color:#999;text-align:center;padding:16px;font-size:.84em">Could not load plant profile.</p></div>';
+        } catch(e) {
+            document.getElementById('infoArea').innerHTML = '<div class="isec"><p style="color:#999;text-align:center;padding:16px;font-size:.84em">Network error.</p></div>';
+        }
+    }
+
+    function renderInfo(d) {
+        document.getElementById('rSci').textContent = d.scientific_name;
+        document.getElementById('infoArea').innerHTML = `
+        <div class="isec">
+            <div class="isec-hdr"><div class="isec-icon bg-g">🌿</div><div class="isec-title">Description</div></div>
+            <p>${d.description}</p>
+            ${d.interesting_fact ? `<div class="factbox">💡 ${d.interesting_fact}</div>` : ''}
+        </div>
+        <div class="isec">
+            <div class="isec-hdr"><div class="isec-icon bg-b">🔬</div><div class="isec-title">Scientific Classification</div></div>
+            <div class="cgrid">
+                <div class="citem"><div class="clabel">Common Name</div><div class="cval" style="font-style:normal">${d.common_name}</div></div>
+                <div class="citem"><div class="clabel">Scientific Name</div><div class="cval">${d.scientific_name}</div></div>
+                <div class="citem" style="grid-column:1/-1"><div class="clabel">Parts Used</div><div class="cval" style="font-style:normal">${d.parts_used.join(', ')}</div></div>
+            </div>
+        </div>
+        <div class="isec">
+            <div class="isec-hdr"><div class="isec-icon bg-au">💊</div><div class="isec-title">Traditional Medical Usage</div></div>
+            <div class="tagrow">${d.medicinal_uses.map(u=>`<span class="tag tn">${u}</span>`).join('')}</div>
+        </div>
+        <div class="isec">
+            <div class="isec-hdr"><div class="isec-icon bg-g">✅</div><div class="isec-title">Plant Metadata — Benefits</div></div>
+            <div class="tagrow">${d.pros.map(p=>`<span class="tag tg">${p}</span>`).join('')}</div>
+        </div>
+        <div class="isec">
+            <div class="isec-hdr"><div class="isec-icon bg-r">⚠️</div><div class="isec-title">Cautions &amp; Side Effects</div></div>
+            <div class="tagrow">${d.cons.map(c=>`<span class="tag tr">${c}</span>`).join('')}</div>
+        </div>`;
+    }
+
+    function scanAgain() {
+        curFile = null; curDataURL = null;
+        document.getElementById('camFile').value = '';
+        document.getElementById('vfImg').style.display = 'none';
+        document.getElementById('vfPh').style.display = 'block';
+        document.getElementById('camHint').textContent = 'Hold steady for best results';
+        const b = document.getElementById('analyseBtn');
+        b.style.opacity = '.4'; b.style.pointerEvents = 'none';
+        ['ls1','ls2','ls3','ls4','ls5'].forEach(id => {
+            const el = document.getElementById(id);
+            el.classList.remove('active','done');
+        });
+        document.getElementById('ls1').classList.add('active');
+        g('s-camera');
+    }
+</script>
+</body>
+</html>

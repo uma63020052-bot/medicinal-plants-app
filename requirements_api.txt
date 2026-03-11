@@ -1,0 +1,22 @@
+# Flask API Requirements
+# Medicinal Plants Identification System
+# Flask API Requirements
+# Medicinal Plants Identification System
+
+# Web Framework
+Flask==2.3.2
+flask-cors==4.0.0
+
+# Machine Learning
+tensorflow==2.13.0
+numpy==1.24.3
+
+# Image Processing
+opencv-python==4.8.0.74
+Pillow==10.0.0
+
+# File handling
+h5py==3.9.0
+
+# Utilities
+Werkzeug==2.3.6

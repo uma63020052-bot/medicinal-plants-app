@@ -1,0 +1,33 @@
+# Core ML libraries
+tensorflow==2.13.0
+keras==2.13.1
+
+# Computer Vision
+opencv-python==4.8.0.74
+pillow==10.0.0
+
+# Data processing
+numpy==1.24.3
+pandas==2.0.3
+scikit-learn==1.3.0
+
+# Visualization
+matplotlib==3.7.2
+seaborn==0.12.2
+
+# Web Framework
+flask==2.3.2
+flask-cors==4.0.0
+
+# Utilities
+tqdm==4.65.0
+python-dotenv==1.0.0
+
+flask==2.3.3
+werkzeug==2.3.7
+tensorflow==2.13.0
+numpy==1.24.3
+opencv-python-headless==4.8.0.76
+Pillow==10.0.0
+gunicorn==21.2.0
+python-dotenv==1.0.0
