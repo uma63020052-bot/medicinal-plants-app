@@ -27,7 +27,7 @@ def download_models_if_needed(models_dir='models'):
         if not os.path.exists(path):
             print(f"⬇ Downloading {filename} from HuggingFace...")
             try:
-                urllib.request.urlretrieve(f"{base_url}/{filename}", path)
+                urllib.request.urlretrieve(f"{base_url}/{filename}?download=true", path)
                 print(f"✓ Downloaded {filename}")
             except Exception as e:
                 print(f"✗ Failed to download {filename}: {e}")
@@ -75,7 +75,8 @@ class ModelLoader:
                     print(f"✗ Could not load {name}: {str(e2)[:100]}")
 
         if not self.models:
-            raise Exception("No models loaded! Check models directory.")
+            print("⚠ No models loaded - running in fallback mode")
+            return
 
         print(f"✓ {len(self.models)} model(s) loaded: {list(self.models.keys())}")
 
@@ -83,7 +84,8 @@ class ModelLoader:
         """Load class names from JSON"""
         path = os.path.join(self.models_dir, 'class_names.json')
         if not os.path.exists(path):
-            raise Exception(f"class_names.json not found at {path}")
+            print(f"⚠ class_names.json not found at {path}")
+            return
         with open(path, 'r') as f:
             self.class_names = json.load(f)
         print(f"✓ {len(self.class_names)} plant classes loaded")
