@@ -775,10 +775,10 @@ td{{padding:7px 10px;border-bottom:1px solid #eee;color:#374151}}
   <table>
     <tr><th>Plant</th><th>Confidence</th><th>Location</th><th>Time</th></tr>
     {"".join(
-        f'<tr><td>{r["plant"].replace("_"," ")}</td>'
+        f'<tr><td>{r["plant"].replace("_", " ")}</td>'
         f'<td class="conf-{"hi" if r["confidence"]>=60 else "mid" if r["confidence"]>=40 else "lo"}">{r["confidence"]:.1f}%</td>'
-        f'<td>{"<a href=\"https://maps.google.com/?q="+str(r["lat"])+","+str(r["lng"])+"\">📍 View</a>" if r["lat"] else "—"}</td>'
-        f'<td style="white-space:nowrap">{(r["created_at"] or "")[:16]}</td></tr>'
+        + ('<td><a href="https://maps.google.com/?q=' + str(r["lat"]) + ',' + str(r["lng"]) + '">📍 View</a></td>' if r["lat"] else '<td>-</td>')
+        + f'<td style="white-space:nowrap">{(r["created_at"] or "")[:16]}</td></tr>'
         for r in recent
     )}
   </table>
