@@ -1221,10 +1221,10 @@
 
     // Override g() to render history when navigating to it
     var _origG = g;
-    function g(id) {
+    g = function(id) {
         _origG(id);
         if (id === 'sh') renderHistory();
-    }
+    };
 
 </script>
 </body>
