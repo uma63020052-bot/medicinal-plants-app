@@ -823,7 +823,8 @@ def export_csv():
         for r in scans:
             output.write(f'{r["id"]},"{r["plant"]}",{r["confidence"] or ""},')
             output.write(f'{r["lat"] or ""},{r["lng"] or ""},{r["accuracy"] or ""},')
-            output.write(f'"{(r["user_agent"] or "").replace(chr(34),"")}",{r["created_at"]}\n')
+            ua = (r["user_agent"] or "").replace('"', '')
+            output.write(f'"{ua}",{r["created_at"]}\n')
         from flask import Response
         return Response(
             output.getvalue(),
