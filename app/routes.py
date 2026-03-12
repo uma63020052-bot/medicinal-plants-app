@@ -389,7 +389,7 @@ def allowed_file(filename):
 
 @main_bp.route('/')
 def index():
-    return render_template('index.html')   # FIXED: was index_2.html
+    return render_template('index_2.html')   # FIXED: was index_2.html
 
 
 @main_bp.route('/api/info', methods=['GET'])
