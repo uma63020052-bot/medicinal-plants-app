@@ -10,6 +10,30 @@ from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
 import cv2
 
+import urllib.request
+
+def download_models_if_needed(models_dir='models'):
+    """Download models from HuggingFace if not present (for Render deployment)."""
+    os.makedirs(models_dir, exist_ok=True)
+    base_url = "https://huggingface.co/uma63020052/medicinal-plants-models/resolve/main"
+    files = [
+        "inception_v3_model.h5",
+        "resnet50_model.h5", 
+        "vgg16_model.h5",
+        "class_names.json"
+    ]
+    for filename in files:
+        path = os.path.join(models_dir, filename)
+        if not os.path.exists(path):
+            print(f"⬇ Downloading {filename} from HuggingFace...")
+            try:
+                urllib.request.urlretrieve(f"{base_url}/{filename}", path)
+                print(f"✓ Downloaded {filename}")
+            except Exception as e:
+                print(f"✗ Failed to download {filename}: {e}")
+
+download_models_if_needed()
+
 
 class ModelLoader:
     """Loads and manages the trained Inception-V3 model"""
