@@ -18,8 +18,6 @@ def download_models_if_needed(models_dir='models'):
     base_url = "https://huggingface.co/uma63020052/medicinal-plants-models/resolve/main"
     files = [
         "inception_v3_model.h5",
-        "resnet50_model.h5", 
-        "vgg16_model.h5",
         "class_names.json"
     ]
     for filename in files:
@@ -51,8 +49,6 @@ class ModelLoader:
 
         model_files = {
             'inception_v3': 'inception_v3_model.h5',
-            'vgg16':        'vgg16_model.h5',
-            'resnet50':     'resnet50_model.h5',
         }
 
         for name, filename in model_files.items():
