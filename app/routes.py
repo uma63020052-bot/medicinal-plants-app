@@ -264,7 +264,7 @@ PLANT_FALLBACK = {
         "interesting_fact": "Mango is the national fruit of India, Pakistan, and the Philippines — and it has been cultivated in India for over 4,000 years."
     },
     "Mint": {
-        "common_name": "Mint / Peppermint", "scientific_name": "Mentha × piperita",
+        "common_name": "Mint / Peppermint", "scientific_name": "Mentha x piperita",
         "description": "A hybrid mint species produced by crossing watermint and spearmint. One of the world's oldest known herbal medicines with a distinctive cooling sensation.",
         "medicinal_uses": ["Irritable bowel syndrome relief", "Headache treatment (topical)", "Nausea and indigestion relief", "Respiratory decongestant", "Anti-bacterial oral hygiene"],
         "pros": ["Clinically proven for IBS", "Natural decongestant menthol", "Broad spectrum anti-microbial", "Headache relief when applied topically"],
@@ -288,7 +288,7 @@ PLANT_FALLBACK = {
         "pros": ["Broad-spectrum antimicrobial", "Natural pesticide (azadirachtin)", "Anti-diabetic properties", "Promotes oral health"],
         "cons": ["Toxic to children in large doses", "Neem oil can damage kidneys if ingested", "May reduce fertility", "Bitter taste limits use"],
         "parts_used": ["Leaves", "Bark", "Seeds", "Oil", "Twigs"],
-        "interesting_fact": "A single neem tree absorbs CO₂ equivalent to 10 cars — it is also used as a natural pesticide on 5 continents."
+        "interesting_fact": "A single neem tree absorbs CO2 equivalent to 10 cars — it is also used as a natural pesticide on 5 continents."
     },
     "Nithyapushpa": {
         "common_name": "Periwinkle / Vinca", "scientific_name": "Catharanthus roseus",
@@ -389,7 +389,7 @@ def allowed_file(filename):
 
 @main_bp.route('/')
 def index():
-    return render_template('index_2.html')   # FIXED: was index_2.html
+    return render_template('index_2.html')
 
 
 @main_bp.route('/api/info', methods=['GET'])
@@ -420,43 +420,31 @@ def predict():
     if file.filename == '':
         return jsonify({'success': False, 'error': 'No file selected'}), 400
 
-    # ── Accept files with no extension (common with Android camera captures) ──
     if file.filename and not allowed_file(file.filename):
-        # Try to detect from MIME type as fallback
         mime = file.content_type or ''
         if not any(t in mime for t in ['jpeg', 'jpg', 'png']):
-            return jsonify({'success': False, 'error': f'Invalid file type. Allowed: jpg, jpeg, png'}), 400
+            return jsonify({'success': False, 'error': 'Invalid file type. Allowed: jpg, jpeg, png'}), 400
 
     apply_preprocessing = request.form.get('preprocess', 'true').lower() == 'true'
     debug_mode = request.form.get('debug', 'false').lower() == 'true'
 
     filepath = None
     try:
-        # ── Save uploaded file ───────────────────────────────────────────────
         original_name = secure_filename(file.filename) if file.filename else 'upload'
         timestamp = datetime.now().strftime('%Y%m%d_%H%M%S_%f')
 
-        # Ensure .jpg extension if filename has none (Android camera quirk)
         if '.' not in original_name:
             original_name += '.jpg'
 
         unique_filename = f"{timestamp}_{original_name}"
-
         upload_folder = 'uploads'
         os.makedirs(upload_folder, exist_ok=True)
-
         filepath = os.path.join(upload_folder, unique_filename)
         file.save(filepath)
 
         print(f"\n{'='*70}")
         print(f"Processing: {unique_filename}")
         print(f"{'='*70}")
-        print("Step 1: Image uploaded")
-
-        if apply_preprocessing:
-            print("Step 2: Applying preprocessing pipeline...")
-        else:
-            print("Step 2: Simple preprocessing (resize + normalize only)")
 
         loader = get_model_loader()
         predictions = loader.predict(
@@ -465,7 +453,6 @@ def predict():
             debug=debug_mode
         )
 
-        print(f"Step 3: Running Inception-V3 prediction")
         print(f"✓ Prediction: {predictions['ensemble']['plant']} ({predictions['ensemble']['percentage']})")
         print(f"{'='*70}\n")
 
@@ -492,11 +479,9 @@ def predict():
                 os.remove(filepath)
             except Exception:
                 pass
-
         print(f"\n✗ Error in /api/predict: {str(e)}\n")
         import traceback
         traceback.print_exc()
-
         return jsonify({
             'success': False,
             'error': str(e),
@@ -506,9 +491,7 @@ def predict():
 
 @main_bp.route('/api/plant-info', methods=['POST'])
 def plant_info():
-    """
-    Fetch plant info — tries Anthropic API first, falls back to built-in data.
-    """
+    """Fetch plant info — tries Anthropic API first, falls back to built-in data."""
     data = request.get_json()
     if not data or 'plant_name' not in data:
         return jsonify({'success': False, 'error': 'plant_name required'}), 400
@@ -516,7 +499,6 @@ def plant_info():
     plant_name = data['plant_name'].strip()
     api_key = os.environ.get('ANTHROPIC_API_KEY', '').strip()
 
-    # ── Try Anthropic API first ──────────────────────────────────────────────
     if api_key and not api_key.startswith('sk-ant-your'):
         prompt = (
             f'Give detailed medicinal plant information for "{plant_name}" as a JSON object '
@@ -559,18 +541,16 @@ def plant_info():
                 plant_data = json.loads(clean)
                 print(f"✓ Plant info fetched from Anthropic API for: {plant_name}")
                 return jsonify({'success': True, 'data': plant_data, 'source': 'api'})
-
         except urllib.error.HTTPError as e:
-            err_body = e.read().decode('utf-8', errors='ignore')[:120]
-            print(f"Anthropic API HTTP Error {e.code}: {err_body} — using fallback for: {plant_name}")
+            print(f"Anthropic API HTTP Error {e.code} — using fallback for: {plant_name}")
         except urllib.error.URLError as e:
             print(f"Anthropic API URL Error: {e.reason} — using fallback for: {plant_name}")
         except json.JSONDecodeError as e:
             print(f"Anthropic API JSON parse error: {e} — using fallback for: {plant_name}")
         except Exception as e:
-            print(f"Anthropic API unexpected error: {str(e)[:80]} — using fallback for: {plant_name}")
+            print(f"Anthropic API error: {str(e)[:80]} — using fallback for: {plant_name}")
 
-    # ── Fallback: built-in data — exact match ────────────────────────────────
+    # Exact match
     fallback = PLANT_FALLBACK.get(plant_name)
 
     # Case-insensitive match
@@ -580,7 +560,7 @@ def plant_info():
                 fallback = val
                 break
 
-    # Partial match (e.g. "Curry Leaf" vs "Curry_Leaf")
+    # Normalised match (spaces/dashes → underscores)
     if not fallback:
         normalized = plant_name.lower().replace(' ', '_').replace('-', '_')
         for key, val in PLANT_FALLBACK.items():
@@ -592,7 +572,6 @@ def plant_info():
         print(f"✓ Plant info served from fallback for: {plant_name}")
         return jsonify({'success': True, 'data': fallback, 'source': 'fallback'})
 
-    # Generic fallback for unrecognised plants
     generic = {
         "common_name": plant_name,
         "scientific_name": "Species under review",
@@ -600,28 +579,118 @@ def plant_info():
             f"{plant_name} is a medicinal plant used in traditional medicine across South Asia. "
             "It has been used for generations for its therapeutic properties."
         ),
-        "medicinal_uses": [
-            "Traditional folk medicine", "Anti-inflammatory applications",
-            "Digestive health", "Immune support", "Topical wound treatment"
-        ],
-        "pros": [
-            "Used in traditional medicine", "Natural origin",
-            "Minimal processing required", "Widely available in native regions"
-        ],
-        "cons": [
-            "Consult a doctor before use",
-            "Individual reactions may vary",
-            "Avoid during pregnancy without guidance"
-        ],
+        "medicinal_uses": ["Traditional folk medicine", "Anti-inflammatory applications",
+                           "Digestive health", "Immune support", "Topical wound treatment"],
+        "pros": ["Used in traditional medicine", "Natural origin",
+                 "Minimal processing required", "Widely available in native regions"],
+        "cons": ["Consult a doctor before use", "Individual reactions may vary",
+                 "Avoid during pregnancy without guidance"],
         "parts_used": ["Leaves", "Roots", "Bark"],
         "interesting_fact": (
             f"{plant_name} is one of the 40 medicinal plants identified and studied "
             "in this project's dataset."
         )
     }
-
     print(f"✓ Generic fallback served for unrecognised plant: {plant_name}")
     return jsonify({'success': True, 'data': generic, 'source': 'generic'})
+
+
+# ─── Translation endpoint ─────────────────────────────────────────────────────
+@main_bp.route('/api/translate', methods=['POST'])
+def translate_plant_info():
+    """
+    Translate plant info JSON into a target language using Claude Haiku.
+    Called from the frontend when the user switches language on the results screen.
+    """
+    try:
+        data = request.get_json()
+        if not data:
+            return jsonify({'success': False, 'error': 'No data provided'}), 400
+
+        plant_data  = data.get('plant_data', {})
+        target_lang = data.get('target_lang', 'en')
+
+        # English needs no translation
+        if target_lang == 'en':
+            return jsonify({'success': True, 'data': plant_data})
+
+        lang_names = {
+            'te': 'Telugu',
+            'hi': 'Hindi',
+            'ta': 'Tamil',
+            'kn': 'Kannada',
+            'ur': 'Urdu'
+        }
+        lang_name = lang_names.get(target_lang)
+        if not lang_name:
+            return jsonify({'success': False, 'error': f'Unsupported language: {target_lang}'}), 400
+
+        api_key = os.environ.get('ANTHROPIC_API_KEY', '').strip()
+        if not api_key:
+            return jsonify({'success': False, 'error': 'API key not configured'}), 500
+
+        sci_name = plant_data.get('scientific_name', '')
+
+        # Only translate these fields; scientific_name stays in Latin
+        to_translate = {
+            'common_name':      plant_data.get('common_name', ''),
+            'description':      plant_data.get('description', ''),
+            'interesting_fact': plant_data.get('interesting_fact', ''),
+            'parts_used':       plant_data.get('parts_used', []),
+            'medicinal_uses':   plant_data.get('medicinal_uses', []),
+            'pros':             plant_data.get('pros', []),
+            'cons':             plant_data.get('cons', [])
+        }
+
+        prompt = (
+            f"Translate the following plant information JSON into {lang_name}. "
+            f"Return ONLY valid JSON with the exact same keys and structure. "
+            f"Keep the scientific name '{sci_name}' in Latin — do not translate it. "
+            f"Translate all other string values and array items. "
+            f"Do not add backticks, markdown, or any explanation.\n\n"
+            + json.dumps(to_translate, ensure_ascii=False)
+        )
+
+        payload = json.dumps({
+            "model": "claude-haiku-4-5-20251001",
+            "max_tokens": 1500,
+            "system": "You are a translation expert. Return ONLY valid JSON, no markdown, no backticks, no explanation.",
+            "messages": [{"role": "user", "content": prompt}]
+        }).encode('utf-8')
+
+        req = urllib.request.Request(
+            "https://api.anthropic.com/v1/messages",
+            data=payload,
+            headers={
+                "Content-Type": "application/json",
+                "x-api-key": api_key,
+                "anthropic-version": "2023-06-01"
+            },
+            method="POST"
+        )
+
+        with urllib.request.urlopen(req, timeout=30) as resp:
+            result = json.loads(resp.read().decode('utf-8'))
+            raw = ''.join(b.get('text', '') for b in result.get('content', []))
+            clean = raw.replace('```json', '').replace('```', '').strip()
+            translated = json.loads(clean)
+
+        # Merge: keep scientific_name from original, use translated rest
+        merged = {**plant_data, **translated, 'scientific_name': sci_name}
+
+        print(f"✓ Translated to {lang_name}: {plant_data.get('common_name', '?')}")
+        return jsonify({'success': True, 'data': merged})
+
+    except urllib.error.HTTPError as e:
+        err_body = e.read().decode('utf-8', errors='ignore')[:200]
+        print(f"✗ Translation API HTTP Error {e.code}: {err_body}")
+        return jsonify({'success': False, 'error': f'API error {e.code}'}), 500
+    except json.JSONDecodeError as e:
+        print(f"✗ Translation JSON parse error: {e}")
+        return jsonify({'success': False, 'error': 'Failed to parse translation response'}), 500
+    except Exception as e:
+        print(f"✗ Translation error: {str(e)}")
+        return jsonify({'success': False, 'error': str(e)}), 500
 
 
 @main_bp.route('/api/classes', methods=['GET'])
@@ -651,12 +720,11 @@ def health_check():
         return jsonify({'success': False, 'status': 'unhealthy', 'error': str(e)}), 500
 
 
-
-
 # ─── GPS / Scan logging ──────────────────────────────────────────────────────
 import sqlite3, pathlib
 
 DB_PATH = pathlib.Path(__file__).parent.parent / 'data' / 'scans.db'
+
 
 def get_db():
     DB_PATH.parent.mkdir(parents=True, exist_ok=True)
@@ -664,12 +732,12 @@ def get_db():
     conn.row_factory = sqlite3.Row
     conn.execute("""
         CREATE TABLE IF NOT EXISTS scans (
-            id        INTEGER PRIMARY KEY AUTOINCREMENT,
-            plant     TEXT,
+            id         INTEGER PRIMARY KEY AUTOINCREMENT,
+            plant      TEXT,
             confidence REAL,
-            lat       REAL,
-            lng       REAL,
-            accuracy  REAL,
+            lat        REAL,
+            lng        REAL,
+            accuracy   REAL,
             user_agent TEXT,
             created_at TEXT DEFAULT (datetime('now'))
         )
@@ -682,7 +750,7 @@ def get_db():
 def log_scan():
     """Called from frontend after every prediction + optional GPS."""
     try:
-        d = request.get_json(force=True) or {}
+        d          = request.get_json(force=True) or {}
         plant      = d.get('plant', 'Unknown')
         confidence = float(d.get('confidence', 0))
         lat        = d.get('lat')
@@ -708,27 +776,21 @@ def log_scan():
 def admin_dashboard():
     """Simple admin map — view all user scans with GPS."""
     try:
-        conn = get_db()
-        scans = conn.execute(
-            "SELECT * FROM scans ORDER BY created_at DESC LIMIT 500"
-        ).fetchall()
+        conn  = get_db()
+        scans = conn.execute("SELECT * FROM scans ORDER BY created_at DESC LIMIT 500").fetchall()
         conn.close()
         rows = [dict(s) for s in scans]
 
-        # Build map markers JS
         markers_js = "var markers = " + json.dumps([
             {"plant": r["plant"], "confidence": r["confidence"],
-             "lat": r["lat"], "lng": r["lng"],
-             "time": r["created_at"]}
+             "lat": r["lat"], "lng": r["lng"], "time": r["created_at"]}
             for r in rows if r["lat"] and r["lng"]
         ]) + ";"
 
         total       = len(rows)
         with_gps    = sum(1 for r in rows if r["lat"])
         species_set = len(set(r["plant"] for r in rows))
-
-        # Recent 20 for table
-        recent = rows[:20]
+        recent      = rows[:20]
 
         html = f"""<!DOCTYPE html>
 <html><head>
@@ -775,9 +837,9 @@ td{{padding:7px 10px;border-bottom:1px solid #eee;color:#374151}}
   <table>
     <tr><th>Plant</th><th>Confidence</th><th>Location</th><th>Time</th></tr>
     {"".join(
-        f'<tr><td>{r["plant"].replace("_", " ")}</td>'
+        f'<tr><td>{r["plant"].replace("_"," ")}</td>'
         f'<td class="conf-{"hi" if r["confidence"]>=60 else "mid" if r["confidence"]>=40 else "lo"}">{r["confidence"]:.1f}%</td>'
-        + ('<td><a href="https://maps.google.com/?q=' + str(r["lat"]) + ',' + str(r["lng"]) + '">📍 View</a></td>' if r["lat"] else '<td>-</td>')
+        + ('<td><a href="https://maps.google.com/?q='+str(r["lat"])+','+str(r["lng"])+'">📍 View</a></td>' if r["lat"] else '<td>-</td>')
         + f'<td style="white-space:nowrap">{(r["created_at"] or "")[:16]}</td></tr>'
         for r in recent
     )}
@@ -786,17 +848,12 @@ td{{padding:7px 10px;border-bottom:1px solid #eee;color:#374151}}
 <script>
 {markers_js}
 var map = L.map('map').setView([20.5937, 78.9629], 5);
-L.tileLayer('https://{{s}}.tile.openstreetmap.org/{{z}}/{{x}}/{{y}}.png',{{
-    attribution:'© OpenStreetMap'
-}}).addTo(map);
+L.tileLayer('https://{{s}}.tile.openstreetmap.org/{{z}}/{{x}}/{{y}}.png',{{attribution:'© OpenStreetMap'}}).addTo(map);
 markers.forEach(function(m){{
-    var conf = m.confidence;
-    var color = conf>=60?'#16a34a':conf>=40?'#d97706':'#dc2626';
-    var circle = L.circleMarker([m.lat,m.lng],{{
-        radius:8, fillColor:color, color:'#fff',
-        weight:2, opacity:1, fillOpacity:0.85
-    }}).addTo(map);
-    circle.bindPopup('<b>'+m.plant.replace(/_/g,' ')+'</b><br>'+conf.toFixed(1)+'% confidence<br>'+m.time);
+    var color = m.confidence>=60?'#16a34a':m.confidence>=40?'#d97706':'#dc2626';
+    L.circleMarker([m.lat,m.lng],{{radius:8,fillColor:color,color:'#fff',weight:2,opacity:1,fillOpacity:0.85}})
+     .addTo(map)
+     .bindPopup('<b>'+m.plant.replace(/_/g,' ')+'</b><br>'+m.confidence.toFixed(1)+'% confidence<br>'+m.time);
 }});
 if(markers.length>0){{
     var lats=markers.map(function(m){{return m.lat;}});
@@ -815,16 +872,18 @@ def export_csv():
     """Download all scan data as CSV."""
     try:
         import io
-        conn = get_db()
+        conn  = get_db()
         scans = conn.execute("SELECT * FROM scans ORDER BY created_at DESC").fetchall()
         conn.close()
         output = io.StringIO()
         output.write("id,plant,confidence,lat,lng,accuracy,user_agent,created_at\n")
         for r in scans:
-            output.write(f'{r["id"]},"{r["plant"]}",{r["confidence"] or ""},')
-            output.write(f'{r["lat"] or ""},{r["lng"] or ""},{r["accuracy"] or ""},')
             ua = (r["user_agent"] or "").replace('"', '')
-            output.write(f'"{ua}",{r["created_at"]}\n')
+            output.write(
+                f'{r["id"]},"{r["plant"]}",{r["confidence"] or ""},'
+                f'{r["lat"] or ""},{r["lng"] or ""},{r["accuracy"] or ""},'
+                f'"{ua}",{r["created_at"]}\n'
+            )
         from flask import Response
         return Response(
             output.getvalue(),
@@ -833,6 +892,7 @@ def export_csv():
         )
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
 
 @main_bp.errorhandler(404)
 def not_found(error):

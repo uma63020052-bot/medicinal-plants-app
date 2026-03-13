@@ -29,14 +29,13 @@
         @keyframes fadeSlide { from{opacity:0;transform:translateX(18px)} to{opacity:1;transform:translateX(0)} }
         @keyframes spin { to{transform:rotate(360deg)} }
 
-        /* Per-screen backgrounds applied directly */
         #sd  { background:var(--dark); }
         #si  { background:#ffffff; }
         #sc  { background:#080808; }
         #sl  { background:var(--dark); align-items:center; justify-content:center; }
         #sr  { background:var(--cream); }
 
-        /* ── DASHBOARD ── */
+        /* DASHBOARD */
         .dh { background:linear-gradient(160deg,#0a2e19 0%,#1a6b3c 100%); padding:54px 24px 34px; text-align:center; position:relative; overflow:hidden; }
         .dh::before { content:''; position:absolute; top:-40px;right:-40px; width:160px;height:160px; border-radius:50%; background:rgba(255,255,255,0.03); pointer-events:none; }
         .emb { width:86px;height:86px; background:#fff; border-radius:50%; margin:0 auto 14px; display:flex;align-items:center;justify-content:center; font-size:2.7em; box-shadow:0 4px 20px rgba(0,0,0,0.3); border:3px solid var(--gold); }
@@ -54,24 +53,34 @@
         .cta { width:100%;background:linear-gradient(135deg,var(--green),#2a8a50);color:#fff;border:none;padding:16px;border-radius:13px;font-family:'Noto Sans',sans-serif;font-size:1em;font-weight:600;cursor:pointer;box-shadow:0 4px 16px rgba(26,107,60,0.35);margin-top:8px; }
         .cta:active { opacity:.88; }
 
-        /* ── SIGN IN ── */
-        .sh { background:linear-gradient(160deg,var(--dark),var(--green)); padding:58px 28px 58px; text-align:center; clip-path:ellipse(100% 82% at 50% 18%); }
-        .si-icon { width:70px;height:70px;background:rgba(255,255,255,0.14);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 13px;font-size:1.9em;border:2px solid rgba(255,255,255,0.28); }
-        .sh h2 { font-family:'Noto Serif',serif;color:#fff;font-size:1.45em;margin-bottom:5px; }
-        .sh p { color:rgba(255,255,255,0.62);font-size:0.83em; }
-        .sf { padding:26px 22px 22px;flex:1; }
-        .fl { display:block;font-size:0.74em;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px; }
-        .fi { width:100%;border:1.5px solid var(--border);border-radius:11px;padding:13px 15px;font-family:'Noto Sans',sans-serif;font-size:0.94em;color:var(--text);background:var(--cream);outline:none;margin-bottom:15px; }
-        .fi:focus { border-color:var(--green);background:#fff; }
-        .sbtn { width:100%;background:linear-gradient(135deg,var(--green),#2a8a50);color:#fff;border:none;padding:14px;border-radius:11px;font-family:'Noto Sans',sans-serif;font-size:1em;font-weight:600;cursor:pointer;box-shadow:0 4px 14px rgba(26,107,60,0.28); }
-        .dr { display:flex;align-items:center;gap:11px;margin:16px 0; }
-        .dl { flex:1;height:1px;background:var(--border); }
-        .dt { font-size:0.77em;color:var(--muted); }
-        .gb { width:100%;background:#fff;border:1.5px solid var(--border);border-radius:11px;padding:12px;font-family:'Noto Sans',sans-serif;font-size:0.91em;font-weight:500;cursor:pointer;color:var(--text);display:flex;align-items:center;justify-content:center;gap:9px; }
-        .sl2 { text-align:center;margin-top:16px;font-size:0.82em;color:var(--muted); }
-        .sl2 a { color:var(--green);font-weight:600;cursor:pointer; }
+        /* SIGN IN */
+        .si-hero { background:linear-gradient(160deg,var(--dark),var(--green)); padding:56px 28px 48px; text-align:center; }
+        .si-hero-icon { width:72px;height:72px;background:rgba(255,255,255,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:2em;border:2px solid rgba(255,255,255,0.3); }
+        .si-hero h2 { font-family:'Noto Serif',serif;color:#fff;font-size:1.5em;margin-bottom:6px; }
+        .si-hero p { color:rgba(255,255,255,0.65);font-size:0.84em; }
+        .si-body { flex:1; padding:26px 22px 30px; background:#fff; }
+        .si-err { display:none;padding:10px 14px;border-radius:10px;font-size:0.84em;margin-bottom:16px; }
+        .si-err.err { background:#fef2f2;border:1px solid #fecaca;color:#991b1b; }
+        .si-err.ok  { background:#f0fdf4;border:1px solid #bbf7d0;color:#166534; }
+        .si-google { width:100%;padding:13px;border:1.5px solid var(--border);border-radius:12px;background:#fff;font-family:'Noto Sans',sans-serif;font-size:0.93em;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:18px;color:var(--text); }
+        .si-google:active { background:var(--cream); }
+        .si-or { display:flex;align-items:center;gap:11px;margin-bottom:18px; }
+        .si-or-line { flex:1;height:1px;background:var(--border); }
+        .si-or span { font-size:0.77em;color:var(--muted); }
+        .si-lbl { display:block;font-size:0.73em;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px; }
+        .si-inp { width:100%;border:1.5px solid var(--border);border-radius:11px;padding:13px 15px;font-family:'Noto Sans',sans-serif;font-size:0.94em;color:var(--text);background:var(--cream);outline:none;margin-bottom:14px; }
+        .si-inp:focus { border-color:var(--green);background:#fff; }
+        .si-forgot { text-align:right;margin-bottom:18px; }
+        .si-forgot a { font-size:0.81em;color:var(--green);cursor:pointer;font-weight:600; }
+        .si-login { width:100%;background:linear-gradient(135deg,var(--green),#2a8a50);color:#fff;border:none;padding:14px;border-radius:11px;font-family:'Noto Sans',sans-serif;font-size:1em;font-weight:600;cursor:pointer;margin-bottom:10px;box-shadow:0 4px 14px rgba(26,107,60,0.28); }
+        .si-login:disabled { opacity:0.6; }
+        .si-signup { width:100%;background:transparent;color:var(--green);border:2px solid var(--green);padding:13px;border-radius:11px;font-family:'Noto Sans',sans-serif;font-size:1em;font-weight:600;cursor:pointer; }
+        .si-signup:disabled { opacity:0.6; }
+        .si-note { text-align:center;font-size:0.76em;color:var(--muted);margin-top:18px; }
+        .si-skip { text-align:center;margin-top:12px; }
+        .si-skip a { font-size:0.8em;color:var(--muted);cursor:pointer;text-decoration:underline; }
 
-        /* ── CAMERA ── */
+        /* CAMERA */
         .ct { display:flex;align-items:center;justify-content:space-between;padding:50px 18px 13px; }
         .ct h3 { color:#fff;font-size:0.94em;font-weight:600; }
         .cb { width:38px;height:38px;background:rgba(255,255,255,0.11);border:none;border-radius:50%;color:#fff;font-size:1.05em;cursor:pointer;display:flex;align-items:center;justify-content:center; }
@@ -93,7 +102,7 @@
         .shut-in { width:52px;height:52px;background:#fff;border-radius:50%;border:3px solid #d0d0d0; }
         .ana-btn { flex:1;background:var(--green);border:none;border-radius:13px;color:#fff;font-family:'Noto Sans',sans-serif;font-size:0.87em;font-weight:600;padding:14px 10px;cursor:pointer; }
 
-        /* ── LOADING ── */
+        /* LOADING */
         .li { text-align:center;padding:32px 28px; }
         .sring { width:84px;height:84px;border:4px solid rgba(149,213,178,0.18);border-top-color:#52b788;border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 24px; }
         .li h3 { font-family:'Noto Serif',serif;color:#fff;font-size:1.2em;margin-bottom:7px; }
@@ -104,7 +113,7 @@
         .ls.ok { color:#52b788; }
         .ld { width:7px;height:7px;border-radius:50%;background:currentColor;flex-shrink:0; }
 
-        /* ── RESULTS ── */
+        /* RESULTS */
         .rtop { background:linear-gradient(135deg,var(--dark),var(--green));padding:46px 18px 16px;display:flex;align-items:center;gap:13px; }
         .bk { width:35px;height:35px;background:rgba(255,255,255,0.14);border:none;border-radius:50%;color:#fff;font-size:0.95em;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0; }
         .rtop h2 { color:#fff;font-family:'Noto Serif',serif;font-size:1.03em;font-weight:600; }
@@ -118,17 +127,6 @@
         .pnb h2 { font-family:'Noto Serif',serif;font-size:1.55em;color:var(--dark);font-weight:700;margin-bottom:2px; }
         .sci { font-style:italic;font-size:0.82em;color:var(--muted);margin-bottom:9px; }
         .vtag { display:inline-flex;align-items:center;gap:5px;background:var(--gold-bg);border:1px solid #e8c84a;color:#7a5a00;padding:4px 12px;border-radius:50px;font-size:0.72em;font-weight:600; }
-        .t3s { background:#fff;border-radius:14px;padding:13px 15px;margin-top:10px;border:1px solid var(--border); }
-        .t3t { font-size:0.69em;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--muted);margin-bottom:9px; }
-        .t3r { display:flex;align-items:center;padding:7px 0;border-bottom:1px solid var(--border);gap:9px; }
-        .t3r:last-child { border-bottom:none; }
-        .t3rk { width:23px;height:23px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.72em;font-weight:700;flex-shrink:0; }
-        .rk1{background:var(--green);color:#fff} .rk2,.rk3{background:var(--cream);color:var(--muted);border:1px solid var(--border)}
-        .t3n { flex:1;font-size:0.86em;font-weight:500;color:var(--text); }
-        .t3bw { width:78px; }
-        .t3b { height:5px;background:var(--border);border-radius:50px;overflow:hidden;margin-bottom:2px; }
-        .t3f { height:100%;background:var(--green);border-radius:50px; }
-        .t3p { font-size:0.73em;font-weight:700;color:var(--green);text-align:right; }
         .is { background:#fff;border-radius:14px;padding:13px 15px;margin-top:10px;border:1px solid var(--border);box-shadow:0 1px 5px rgba(0,0,0,0.04); }
         .ih { display:flex;align-items:center;gap:8px;margin-bottom:9px; }
         .ii { width:29px;height:29px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:0.86em;flex-shrink:0; }
@@ -152,13 +150,13 @@
         .sca { flex:1;background:linear-gradient(135deg,var(--green),#2a8a50);color:#fff;border:none;padding:13px;border-radius:11px;font-family:'Noto Sans',sans-serif;font-size:0.87em;font-weight:600;cursor:pointer; }
         .hm { width:44px;background:var(--cream);border:1.5px solid var(--border);border-radius:11px;color:var(--green);font-size:1.05em;cursor:pointer;display:flex;align-items:center;justify-content:center; }
 
-        /* ── LOW CONFIDENCE WARNING ── */
+        /* LOW CONFIDENCE WARNING */
         .conf-warn { background:#fffbeb;border:1.5px solid #f59e0b;border-radius:13px;padding:13px 15px;margin-top:10px;display:none; }
         .conf-warn-hdr { display:flex;align-items:center;gap:8px;margin-bottom:6px; }
         .conf-warn-title { font-size:0.78em;font-weight:700;color:#92400e; }
         .conf-warn p { font-size:0.81em;color:#78350f;line-height:1.5; }
 
-        /* ── TOP-3 PICKER ── */
+        /* TOP-3 PICKER */
         .picker-box { background:#fff;border-radius:14px;padding:14px 15px;margin-top:10px;border:1.5px solid #c8e6d4; }
         .picker-title { font-size:0.72em;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--green);margin-bottom:10px; }
         .picker-row { display:flex;align-items:center;padding:10px 12px;border-radius:10px;margin-bottom:6px;cursor:pointer;border:1.5px solid var(--border);background:var(--cream);transition:all .18s;gap:10px; }
@@ -177,11 +175,12 @@
         .picker-confirm { width:100%;background:linear-gradient(135deg,var(--green),#2a8a50);color:#fff;border:none;padding:11px;border-radius:10px;font-family:'Noto Sans',sans-serif;font-size:0.88em;font-weight:600;cursor:pointer;margin-top:10px;display:none; }
         .picker-confirm.show { display:block; }
 
-        /* ── LANGUAGE SWITCHER ── */
+        /* LANGUAGE BAR */
         .lang-bar { display:flex; gap:6px; flex-wrap:wrap; padding:10px 18px 0; background:var(--dark); justify-content:center; }
         .lang-btn { background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); color:rgba(255,255,255,0.7); padding:4px 11px; border-radius:50px; font-size:0.72em; font-weight:600; cursor:pointer; transition:all .18s; }
         .lang-btn.active { background:var(--gold); border-color:var(--gold); color:#1a1a1a; }
-        /* ── GPS LOCATION CARD ── */
+
+        /* GPS CARD */
         .gps-card { background:#fff; border-radius:14px; padding:13px 15px; margin-top:10px; border:1px solid var(--border); display:flex; align-items:center; gap:12px; }
         .gps-icon { width:36px; height:36px; background:rgba(26,107,60,0.1); border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:1.1em; flex-shrink:0; }
         .gps-info { flex:1; }
@@ -189,7 +188,7 @@
         .gps-value { font-size:0.83em; color:var(--dark); font-weight:500; }
         .gps-btn { background:var(--green); color:#fff; border:none; padding:7px 13px; border-radius:8px; font-size:0.76em; font-weight:600; cursor:pointer; white-space:nowrap; }
 
-        /* ── LOCATION HISTORY SCREEN ── */
+        /* LOCATION HISTORY SCREEN */
         #sh  { background:var(--cream); }
         .lh-top { background:linear-gradient(135deg,var(--dark),var(--green)); padding:46px 18px 16px; display:flex; align-items:center; gap:13px; }
         .lh-top h2 { color:#fff; font-family:'Noto Serif',serif; font-size:1.03em; font-weight:600; flex:1; }
@@ -219,14 +218,13 @@
         .lh-empty span { font-size:2.5em; display:block; margin-bottom:10px; }
         .lh-empty p { font-size:0.85em; line-height:1.6; }
         .lh-export { width:100%; background:var(--cream); border:1.5px solid var(--border); color:var(--green); padding:11px; border-radius:11px; font-family:inherit; font-size:0.85em; font-weight:600; cursor:pointer; margin-top:4px; }
-        /* RTL for Urdu */
         [dir="rtl"] { text-align:right; }
     </style>
 </head>
 <body>
 <div class="shell">
 
-    <!-- LANGUAGE BAR (persistent top) -->
+    <!-- LANGUAGE BAR -->
     <div class="lang-bar" id="langBar">
         <button class="lang-btn active" onclick="setLang(event,'en')">EN</button>
         <button class="lang-btn" onclick="setLang(event,'te')">తె</button>
@@ -270,23 +268,34 @@
 
     <!-- S2: SIGN IN -->
     <div id="si" class="scr">
-        <div class="sh">
-            <div class="si-icon">👤</div>
-            <h2>Sign in to continue!</h2>
-            <p>Access your plant identification history</p>
+        <div class="si-hero">
+            <div class="si-hero-icon">🌿</div>
+            <h2>Welcome Back</h2>
+            <p>Sign in to track your plant scans</p>
         </div>
-        <div class="sf">
-            <label class="fl">Email</label>
-            <input type="email" class="fi" placeholder="you@example.com">
-            <label class="fl">Password</label>
-            <input type="password" class="fi" placeholder="••••••••">
-            <button class="sbtn" onclick="g('sc')">Login</button>
-            <div class="dr"><div class="dl"></div><span class="dt">Social Media Login</span><div class="dl"></div></div>
-            <button class="gb" onclick="g('sc')">
-                <svg width="17" height="17" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.2l6.7-6.7C35.7 2.5 30.2 0 24 0 14.6 0 6.6 5.5 2.7 13.5l7.8 6C12.4 13.2 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.7c-.5 2.9-2.2 5.4-4.7 7l7.3 5.7c4.3-3.9 6.8-9.7 6.8-16.7z"/><path fill="#FBBC05" d="M10.5 28.5c-.5-1.5-.8-3-.8-4.5s.3-3 .8-4.5l-7.8-6C1 16.5 0 20.1 0 24s1 7.5 2.7 10.5l7.8-6z"/><path fill="#34A853" d="M24 48c6.2 0 11.4-2 15.2-5.5l-7.3-5.7c-2 1.4-4.6 2.2-7.9 2.2-6.3 0-11.6-3.7-13.5-9.5l-7.8 6C6.6 42.5 14.6 48 24 48z"/></svg>
+        <div class="si-body">
+            <div class="si-err" id="authError"></div>
+
+            <button class="si-google" id="googleBtn">
+                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="20" alt="G">
                 Continue with Google
             </button>
-            <div class="sl2">Don't have an account? <a onclick="g('sc')">Sign up</a></div>
+
+            <div class="si-or"><div class="si-or-line"></div><span>or</span><div class="si-or-line"></div></div>
+
+            <label class="si-lbl">Email</label>
+            <input type="email" id="authEmail" class="si-inp" placeholder="you@example.com">
+
+            <label class="si-lbl">Password</label>
+            <input type="password" id="authPassword" class="si-inp" placeholder="••••••••">
+
+            <div class="si-forgot"><a id="forgotLink">Forgot password?</a></div>
+
+            <button class="si-login" id="loginBtn">Sign In</button>
+            <button class="si-signup" id="signupBtn">Create Account</button>
+
+            <div class="si-skip"><a onclick="g('sc')">Skip for now →</a></div>
+            <p class="si-note">🔒 Your data is private and secure</p>
         </div>
     </div>
 
@@ -312,11 +321,8 @@
             <button class="shut" id="shutBtn"><div class="shut-in"></div></button>
             <button class="ana-btn" id="anaBtn" style="opacity:.38;pointer-events:none" onclick="analyse()">Analyse →</button>
         </div>
-        <!-- IMPORTANT: Two separate file inputs -->
         <input type="file" id="fCamera" accept="image/*" capture="environment" style="display:none">
         <input type="file" id="fGallery" accept="image/*" style="display:none">
-
-        <!-- Photo tips -->
         <div style="margin:0 16px 20px;background:rgba(255,255,255,0.07);border-radius:12px;padding:12px 14px;">
             <div style="font-size:0.7em;font-weight:700;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;">📸 Tips for best results</div>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
@@ -366,28 +372,21 @@
                 </div>
             </div>
 
-            <!-- Low confidence warning -->
             <div class="conf-warn" id="confWarn">
-                <div class="conf-warn-hdr"><span class="conf-warn-icon">⚠️</span><span class="conf-warn-title">Low Confidence Detection</span></div>
+                <div class="conf-warn-hdr"><span>⚠️</span><span class="conf-warn-title">Low Confidence Detection</span></div>
                 <p>The model is not very confident. For best results, place a <strong>single leaf flat on white paper</strong> in good lighting.</p>
                 <div style="display:flex;gap:8px;margin-top:10px;">
-                    <button onclick="scanAgain()" style="flex:1;background:#f59e0b;color:white;border:none;padding:10px;border-radius:9px;font-family:inherit;font-size:0.84em;font-weight:600;cursor:pointer;">
-                        📷 Retake Photo
-                    </button>
-                    <button onclick="scrollToPicker()" style="flex:1;background:white;color:#92400e;border:1.5px solid #f59e0b;padding:10px;border-radius:9px;font-family:inherit;font-size:0.84em;font-weight:600;cursor:pointer;">
-                        🌿 Pick Manually
-                    </button>
+                    <button onclick="scanAgain()" style="flex:1;background:#f59e0b;color:white;border:none;padding:10px;border-radius:9px;font-family:inherit;font-size:0.84em;font-weight:600;cursor:pointer;">📷 Retake Photo</button>
+                    <button onclick="scrollToPicker()" style="flex:1;background:white;color:#92400e;border:1.5px solid #f59e0b;padding:10px;border-radius:9px;font-family:inherit;font-size:0.84em;font-weight:600;cursor:pointer;">🌿 Pick Manually</button>
                 </div>
             </div>
 
-            <!-- Top-3 picker -->
             <div class="picker-box" id="pickerBox">
                 <div class="picker-title">🌿 Is this the correct plant?</div>
                 <div id="pickerRows"></div>
                 <button class="picker-confirm" id="pickerConfirm" onclick="confirmPick()">✓ Confirm Selection</button>
             </div>
 
-            <!-- GPS Location Card -->
             <div class="gps-card" id="gpsCard">
                 <div class="gps-icon">📍</div>
                 <div class="gps-info">
@@ -398,9 +397,7 @@
             </div>
 
             <div id="infoArea">
-                <div class="is">
-                    <div class="iload"><div class="ms"></div><p>Loading plant profile...</p></div>
-                </div>
+                <div class="is"><div class="iload"><div class="ms"></div><p>Loading plant profile...</p></div></div>
             </div>
         </div>
         <div class="bnav">
@@ -438,9 +435,76 @@
 </div><!-- /shell -->
 <script>
 
-    /* ═══════════════════════════════════════════════════════════════
+    /* ═══════════════════════════════════════════════════════
+       SUPABASE AUTH
+    ═══════════════════════════════════════════════════════ */
+    var SUPA_URL = 'https://stsovaoegejtdfawflsf.supabase.co';
+    var SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN0c292YW9lZ2VqdGRmYXdmbHNmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzNzU0NjUsImV4cCI6MjA4ODk1MTQ2NX0._59hhZDDbBTpnKR_a0y_NJOhqhLjhcso5OOI7GxmoRQ';
+    var supaSession = null;
+
+    function supaFetch(path, method, body) {
+        var token = (supaSession && supaSession.access_token) ? supaSession.access_token : SUPA_KEY;
+        return fetch(SUPA_URL + path, {
+            method: method || 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'apikey': SUPA_KEY,
+                'Authorization': 'Bearer ' + token
+            },
+            body: body ? JSON.stringify(body) : undefined
+        }).then(function(r) { return r.json(); });
+    }
+
+    function showAuthMsg(msg, isOk) {
+        var el = document.getElementById('authError');
+        el.textContent = msg;
+        el.className = 'si-err ' + (isOk ? 'ok' : 'err');
+        el.style.display = 'block';
+    }
+
+    function onLoginSuccess(session) {
+        supaSession = session;
+        try { localStorage.setItem('supa_session', JSON.stringify(session)); } catch(e) {}
+        g('sc');
+    }
+
+    // On load: restore saved session and handle OAuth callback
+    (function() {
+        // Restore existing session
+        try {
+            var saved = localStorage.getItem('supa_session');
+            if (saved) {
+                var s = JSON.parse(saved);
+                if (s && s.expires_at && (s.expires_at * 1000) > Date.now()) {
+                    supaSession = s;
+                }
+            }
+        } catch(e) {}
+
+        // Handle OAuth redirect (access_token in URL hash)
+        if (window.location.hash && window.location.hash.indexOf('access_token') !== -1) {
+            var params = {};
+            window.location.hash.substring(1).split('&').forEach(function(p) {
+                var kv = p.split('=');
+                params[decodeURIComponent(kv[0])] = decodeURIComponent(kv[1] || '');
+            });
+            if (params.access_token) {
+                supaSession = {
+                    access_token: params.access_token,
+                    refresh_token: params.refresh_token || '',
+                    expires_at: Math.floor(Date.now() / 1000) + parseInt(params.expires_in || '3600')
+                };
+                try { localStorage.setItem('supa_session', JSON.stringify(supaSession)); } catch(e) {}
+                history.replaceState(null, '', window.location.pathname);
+                // Navigate to camera after DOM is ready
+                document.addEventListener('DOMContentLoaded', function() { g('sc'); });
+            }
+        }
+    })();
+
+    /* ═══════════════════════════════════════════════════════
        LANGUAGE SYSTEM — 6 languages
-    ═══════════════════════════════════════════════════════════════ */
+    ═══════════════════════════════════════════════════════ */
     var LANG = {
         en: {
             dir: 'ltr', font: 'Noto Sans',
@@ -451,10 +515,9 @@
             aboutTxt: 'The Detection of Medicinal Plants using Machine Learning — it is ready to analyse your plant.',
             speciesTitle: 'Identifiable Plants (40 Species)',
             getStarted: '🚀  GET STARTED',
-            signIn: 'Sign in to continue!',
-            signInSub: 'Access your plant identification history',
+            signIn: 'Welcome Back', signInSub: 'Sign in to track your plant scans',
             emailLbl: 'Email', passLbl: 'Password',
-            loginBtn: 'Login', googleBtn: 'Continue with Google',
+            loginBtn: 'Sign In', googleBtn: 'Continue with Google',
             noAccount: "Don't have an account?", signUp: 'Sign up',
             scanTitle: 'Scan Plant',
             scanHint: 'Tap shutter to open camera or 🖼 to pick from gallery',
@@ -490,8 +553,7 @@
             aboutTxt: 'మెషీన్ లెర్నింగ్ ఉపయోగించి ఔషధ మొక్కలను గుర్తించడం — మీ మొక్కను విశ్లేషించడానికి సిద్ధంగా ఉంది.',
             speciesTitle: 'గుర్తించగలిగే మొక్కలు (40 జాతులు)',
             getStarted: '🚀  ప్రారంభించండి',
-            signIn: 'కొనసాగించడానికి లాగిన్ అవ్వండి!',
-            signInSub: 'మీ గుర్తింపు చరిత్రను యాక్సెస్ చేయండి',
+            signIn: 'స్వాగతం', signInSub: 'మీ స్కాన్ చరిత్రను ట్రాక్ చేయడానికి సైన్ ఇన్ చేయండి',
             emailLbl: 'ఇమెయిల్', passLbl: 'పాస్‌వర్డ్',
             loginBtn: 'లాగిన్', googleBtn: 'Google తో కొనసాగించండి',
             noAccount: 'ఖాతా లేదా?', signUp: 'నమోదు చేసుకోండి',
@@ -529,8 +591,7 @@
             aboutTxt: 'मशीन लर्निंग का उपयोग करके औषधीय पौधों की पहचान — आपके पौधे का विश्लेषण करने के लिए तैयार।',
             speciesTitle: 'पहचाने जाने योग्य पौधे (40 प्रजातियाँ)',
             getStarted: '🚀  शुरू करें',
-            signIn: 'जारी रखने के लिए साइन इन करें!',
-            signInSub: 'अपनी पहचान इतिहास तक पहुँचें',
+            signIn: 'वापस स्वागत है', signInSub: 'अपने स्कैन ट्रैक करने के लिए साइन इन करें',
             emailLbl: 'ईमेल', passLbl: 'पासवर्ड',
             loginBtn: 'लॉगिन', googleBtn: 'Google से जारी रखें',
             noAccount: 'खाता नहीं है?', signUp: 'साइन अप करें',
@@ -568,8 +629,7 @@
             aboutTxt: 'மெஷின் லேர்னிங் பயன்படுத்தி மருத்துவ தாவரங்களை அடையாளம் காணுதல் — உங்கள் தாவரத்தை பகுப்பாய்வு செய்ய தயாராக உள்ளது.',
             speciesTitle: 'அடையாளம் காணக்கூடிய தாவரங்கள் (40 இனங்கள்)',
             getStarted: '🚀  தொடங்கு',
-            signIn: 'தொடர உள்நுழையவும்!',
-            signInSub: 'உங்கள் அடையாள வரலாற்றை அணுகவும்',
+            signIn: 'மீண்டும் வரவேற்கிறோம்', signInSub: 'உங்கள் ஸ்கேன்களை கண்காணிக்க உள்நுழையவும்',
             emailLbl: 'மின்னஞ்சல்', passLbl: 'கடவுச்சொல்',
             loginBtn: 'உள்நுழை', googleBtn: 'Google மூலம் தொடரவும்',
             noAccount: 'கணக்கு இல்லையா?', signUp: 'பதிவு செய்யுங்கள்',
@@ -607,8 +667,7 @@
             aboutTxt: 'ಮೆಷಿನ್ ಲರ್ನಿಂಗ್ ಬಳಸಿ ಔಷಧೀಯ ಸಸ್ಯಗಳನ್ನು ಗುರುತಿಸುವುದು — ನಿಮ್ಮ ಸಸ್ಯವನ್ನು ವಿಶ್ಲೇಷಿಸಲು ಸಿದ್ಧ.',
             speciesTitle: 'ಗುರುತಿಸಬಹುದಾದ ಸಸ್ಯಗಳು (40 ಪ್ರಜಾತಿಗಳು)',
             getStarted: '🚀  ಪ್ರಾರಂಭಿಸಿ',
-            signIn: 'ಮುಂದುವರಿಯಲು ಸೈನ್ ಇನ್ ಮಾಡಿ!',
-            signInSub: 'ನಿಮ್ಮ ಗುರುತಿಸುವಿಕೆ ಇತಿಹಾಸವನ್ನು ಪ್ರವೇಶಿಸಿ',
+            signIn: 'ಮತ್ತೆ ಸ್ವಾಗತ', signInSub: 'ನಿಮ್ಮ ಸ್ಕ್ಯಾನ್‌ಗಳನ್ನು ಟ್ರ್ಯಾಕ್ ಮಾಡಲು ಸೈನ್ ಇನ್ ಮಾಡಿ',
             emailLbl: 'ಇಮೇಲ್', passLbl: 'ಪಾಸ್‌ವರ್ಡ್',
             loginBtn: 'ಲಾಗಿನ್', googleBtn: 'Google ಮೂಲಕ ಮುಂದುವರಿಯಿರಿ',
             noAccount: 'ಖಾತೆ ಇಲ್ಲವೇ?', signUp: 'ನೋಂದಾಯಿಸಿ',
@@ -646,8 +705,7 @@
             aboutTxt: 'مشین لرننگ کا استعمال کرتے ہوئے دواؤں والے پودوں کی شناخت — آپ کے پودے کا تجزیہ کرنے کے لیے تیار۔',
             speciesTitle: 'قابل شناخت پودے (40 اقسام)',
             getStarted: '🚀  شروع کریں',
-            signIn: 'جاری رکھنے کے لیے سائن ان کریں!',
-            signInSub: 'اپنی شناخت کی تاریخ تک رسائی حاصل کریں',
+            signIn: 'واپس خوش آمدید', signInSub: 'اپنے اسکین ٹریک کرنے کے لیے سائن ان کریں',
             emailLbl: 'ای میل', passLbl: 'پاس ورڈ',
             loginBtn: 'لاگ ان', googleBtn: 'Google سے جاری رکھیں',
             noAccount: 'اکاؤنٹ نہیں ہے؟', signUp: 'سائن اپ کریں',
@@ -683,18 +741,11 @@
     function setLang(evt, code) {
         curLang = code;
         var L = LANG[code];
-
-        // Update lang bar active state
-        document.querySelectorAll('.lang-btn').forEach(function(b) {
-            b.classList.remove('active');
-        });
-        if(evt && evt.target) evt.target.classList.add('active');
-
-        // Set document direction and font
+        document.querySelectorAll('.lang-btn').forEach(function(b) { b.classList.remove('active'); });
+        if (evt && evt.target) evt.target.classList.add('active');
         document.body.style.direction = L.dir;
         document.body.style.fontFamily = "'" + L.font + "', 'Noto Sans', sans-serif";
 
-        // ── Dashboard ──
         var el;
         el = document.querySelector('.dh h1'); if(el) el.textContent = L.appName;
         el = document.querySelector('.dh p'); if(el) el.textContent = L.tagline;
@@ -706,24 +757,13 @@
         var dcardsP = document.querySelectorAll('.dc p');
         if(dcardsP[0]) dcardsP[0].textContent = L.aboutTxt;
 
-        // ── Sign In ──
-        el = document.querySelector('.sh h2'); if(el) el.textContent = L.signIn;
-        el = document.querySelector('.sh p'); if(el) el.textContent = L.signInSub;
-        var labels = document.querySelectorAll('.fl');
-        if(labels[0]) labels[0].textContent = L.emailLbl;
-        if(labels[1]) labels[1].textContent = L.passLbl;
-        el = document.querySelector('.sbtn'); if(el) el.textContent = L.loginBtn;
-        el = document.querySelector('.gb'); if(el) el.innerHTML = el.innerHTML.replace(/Continue.*$/, L.googleBtn);
-        var slnk = document.querySelector('.sl2');
-        if(slnk) slnk.innerHTML = L.noAccount + ' <a onclick="g(&apos;sc&apos;)" style="color:var(--green);font-weight:600;cursor:pointer;">' + L.signUp + '</a>';
+        el = document.querySelector('.si-hero h2'); if(el) el.textContent = L.signIn;
+        el = document.querySelector('.si-hero p'); if(el) el.textContent = L.signInSub;
 
-        // ── Camera ──
         el = document.querySelector('.ct h3'); if(el) el.textContent = L.scanTitle;
         el = document.querySelector('.vf-ph p'); if(el) el.textContent = L.scanHint;
         el = document.getElementById('anaBtn'); if(el && el.style.pointerEvents !== 'auto') el.textContent = L.analyseBtn;
-        el = document.getElementById('chint'); if(el) el.textContent = L.tipsTitle.replace('📸 ','');
 
-        // ── Loading ──
         el = document.querySelector('.li h3'); if(el) el.textContent = L.analysing;
         var steps = ['ls1','ls2','ls3','ls4','ls5'];
         var stepKeys = ['step1','step2','step3','step4','step5'];
@@ -732,36 +772,29 @@
             if(s) { var ld = s.querySelector('.ld'); if(ld && ld.nextSibling) ld.nextSibling.textContent = ' ' + L[stepKeys[i]]; }
         });
 
-        // ── Results ──
         el = document.querySelector('.rtop h2'); if(el) el.textContent = L.resultsTitle;
         el = document.querySelector('.conf-warn-title'); if(el) el.textContent = L.lowConf;
         el = document.querySelector('.conf-warn p'); if(el) el.innerHTML = L.lowConfMsg;
-        var warnBtns = document.querySelectorAll('.conf-warn button');
-        if(warnBtns[0]) warnBtns[0].textContent = L.retakeBtn;
-        if(warnBtns[1]) warnBtns[1].textContent = L.pickBtn;
         el = document.querySelector('.picker-title'); if(el) el.textContent = L.isCorrect;
         el = document.getElementById('pickerConfirm'); if(el) el.textContent = L.confirmSel;
         el = document.querySelector('.sca'); if(el) el.textContent = L.scanAgain;
         el = document.querySelector('.vtag'); if(el) el.textContent = L.verifyBtn;
 
-        // GPS
         el = document.getElementById('gpsLabel'); if(el) el.textContent = L.gpsLabel;
         el = document.getElementById('gpsBtn'); if(el) el.textContent = L.gpsBtn;
         var gpsVal = document.getElementById('gpsValue');
-        if(gpsVal && (gpsVal.textContent === 'Not captured yet' || Object.values(LANG).some(function(l){ return l.gpsNotYet === gpsVal.textContent; }))) {
+        if(gpsVal && Object.values(LANG).some(function(l){ return l.gpsNotYet === gpsVal.textContent; })) {
             gpsVal.textContent = L.gpsNotYet;
         }
-
-        // Update picker confidence text if visible
         document.querySelectorAll('.picker-name-pct').forEach(function(el) {
             var pct = el.textContent.replace(/[^0-9.%]/g,'');
             el.textContent = pct + ' ' + L.confidence;
         });
     }
 
-    /* ═══════════════════════════════════════════════════════════════
+    /* ═══════════════════════════════════════════════════════
        GPS SYSTEM
-    ═══════════════════════════════════════════════════════════════ */
+    ═══════════════════════════════════════════════════════ */
     var capturedCoords = null;
 
     function captureGPS() {
@@ -770,14 +803,10 @@
         var val = document.getElementById('gpsValue');
         btn.textContent = L.gpsGetting;
         btn.disabled = true;
-
         if (!navigator.geolocation) {
             val.textContent = 'GPS not supported on this device';
-            btn.textContent = L.gpsBtn;
-            btn.disabled = false;
-            return;
+            btn.textContent = L.gpsBtn; btn.disabled = false; return;
         }
-
         navigator.geolocation.getCurrentPosition(
             function(pos) {
                 var lat = pos.coords.latitude.toFixed(5);
@@ -788,72 +817,114 @@
                     '<br><span style="font-size:0.78em;color:var(--muted);">±' + acc + 'm accuracy · <a href="https://maps.google.com/?q=' + lat + ',' + lng + '" target="_blank" style="color:var(--green);font-weight:600;">View on Maps</a></span>';
                 btn.textContent = '✓ Saved';
                 btn.style.background = '#16a34a';
-                // Update local history entry with coords
                 updateLastScanGPS(lat, lng, acc);
-                // Update server DB with GPS coords
                 fetch('/api/log-scan', {
                     method: 'POST',
                     headers: {'Content-Type':'application/json'},
-                    body: JSON.stringify({
-                        plant: selectedPlant || 'Unknown',
-                        confidence: capturedCoords ? 0 : 0,
-                        lat: parseFloat(lat), lng: parseFloat(lng), accuracy: acc,
-                        update_last: true
-                    })
+                    body: JSON.stringify({plant: selectedPlant || 'Unknown', confidence: 0, lat: parseFloat(lat), lng: parseFloat(lng), accuracy: acc, update_last: true})
                 }).catch(function(){});
             },
             function(err) {
                 val.textContent = err.code === 1 ? 'Location permission denied' : 'Could not get location';
-                btn.textContent = L.gpsBtn;
-                btn.disabled = false;
+                btn.textContent = L.gpsBtn; btn.disabled = false;
             },
             { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
         );
     }
 
-    /* Auto-reset GPS card when scanning new plant */
+    /* ═══════════════════════════════════════════════════════
+       NAVIGATION
+    ═══════════════════════════════════════════════════════ */
+    var lastScanId = null;
+    var curFile = null, curDataURL = null;
+    var currentTop3 = [], selectedPlant = null;
+    var scanHistory = [];
+    try { scanHistory = JSON.parse(localStorage.getItem('plantScanHistory') || '[]'); } catch(e) {}
 
-    let curFile = null, curDataURL = null;
-
-    /* ── Navigation ─────────────────────────────── */
     function g(id) {
-        document.querySelectorAll('.scr').forEach(s => s.classList.remove('on'));
-        document.getElementById(id).classList.add('on');
+        document.querySelectorAll('.scr').forEach(function(s) { s.classList.remove('on'); });
+        var el = document.getElementById(id);
+        if (el) el.classList.add('on');
         window.scrollTo(0, 0);
+        if (id === 'sh') renderHistory();
     }
 
-    /* ── Wire up file inputs with addEventListener ─
-       Using addEventListener instead of onchange avoids
-       Android browser quirks where onchange fires twice
-       or not at all after retaking a photo             */
+    /* ═══════════════════════════════════════════════════════
+       DOM READY — wire buttons and auth
+    ═══════════════════════════════════════════════════════ */
     window.addEventListener('DOMContentLoaded', function() {
+
+        // File inputs
         var fCam = document.getElementById('fCamera');
         var fGal = document.getElementById('fGallery');
-        var shutBtn = document.getElementById('shutBtn');
-        var galBtn  = document.getElementById('galBtn');
-        var galBtn2 = document.getElementById('galBtn2');
+        document.getElementById('shutBtn').addEventListener('click', function() { fCam.click(); });
+        document.getElementById('galBtn').addEventListener('click',  function() { fGal.click(); });
+        document.getElementById('galBtn2').addEventListener('click', function() { fGal.click(); });
+        fCam.addEventListener('change', function(e) { handleFile(e.target.files[0]); fCam.value = ''; });
+        fGal.addEventListener('change', function(e) { handleFile(e.target.files[0]); fGal.value = ''; });
 
-        // Shutter → camera
-        shutBtn.addEventListener('click', function() { fCam.click(); });
-
-        // Gallery buttons → gallery picker
-        galBtn.addEventListener('click',  function() { fGal.click(); });
-        galBtn2.addEventListener('click', function() { fGal.click(); });
-
-        // Handle camera file
-        fCam.addEventListener('change', function(e) {
-            handleFile(e.target.files[0]);
-            // Reset value so same file can be re-selected
-            fCam.value = '';
+        // Google OAuth
+        document.getElementById('googleBtn').addEventListener('click', function() {
+            var redirectTo = encodeURIComponent(window.location.href.split('#')[0]);
+            window.location.href = SUPA_URL + '/auth/v1/authorize?provider=google&redirect_to=' + redirectTo;
         });
 
-        // Handle gallery file
-        fGal.addEventListener('change', function(e) {
-            handleFile(e.target.files[0]);
-            fGal.value = '';
+        // Sign In
+        document.getElementById('loginBtn').addEventListener('click', function() {
+            var email    = document.getElementById('authEmail').value.trim();
+            var password = document.getElementById('authPassword').value;
+            if (!email || !password) { showAuthMsg('Please enter your email and password.'); return; }
+            var btn = document.getElementById('loginBtn');
+            btn.textContent = 'Signing in...'; btn.disabled = true;
+            supaFetch('/auth/v1/token?grant_type=password', 'POST', { email: email, password: password })
+            .then(function(data) {
+                btn.textContent = 'Sign In'; btn.disabled = false;
+                if (data.access_token) {
+                    onLoginSuccess(data);
+                } else {
+                    showAuthMsg(data.error_description || data.msg || 'Login failed. Check your credentials.');
+                }
+            }).catch(function() {
+                btn.textContent = 'Sign In'; btn.disabled = false;
+                showAuthMsg('Network error. Please try again.');
+            });
+        });
+
+        // Create Account
+        document.getElementById('signupBtn').addEventListener('click', function() {
+            var email    = document.getElementById('authEmail').value.trim();
+            var password = document.getElementById('authPassword').value;
+            if (!email || !password) { showAuthMsg('Please enter your email and password.'); return; }
+            if (password.length < 6) { showAuthMsg('Password must be at least 6 characters.'); return; }
+            var btn = document.getElementById('signupBtn');
+            btn.textContent = 'Creating account...'; btn.disabled = true;
+            supaFetch('/auth/v1/signup', 'POST', { email: email, password: password })
+            .then(function(data) {
+                btn.textContent = 'Create Account'; btn.disabled = false;
+                if (data.id || (data.user && data.user.id)) {
+                    showAuthMsg('✅ Account created! Check your email to confirm, then sign in.', true);
+                } else {
+                    showAuthMsg(data.error_description || data.msg || 'Signup failed. Try a different email.');
+                }
+            }).catch(function() {
+                btn.textContent = 'Create Account'; btn.disabled = false;
+                showAuthMsg('Network error. Please try again.');
+            });
+        });
+
+        // Forgot password
+        document.getElementById('forgotLink').addEventListener('click', function() {
+            var email = document.getElementById('authEmail').value.trim();
+            if (!email) { showAuthMsg('Enter your email address first.'); return; }
+            supaFetch('/auth/v1/recover', 'POST', { email: email })
+            .then(function() { showAuthMsg('✅ Password reset email sent! Check your inbox.', true); })
+            .catch(function() { showAuthMsg('Could not send reset email. Try again.'); });
         });
     });
 
+    /* ═══════════════════════════════════════════════════════
+       CAMERA & ANALYSIS
+    ═══════════════════════════════════════════════════════ */
     function handleFile(f) {
         if (!f) return;
         curFile = f;
@@ -861,93 +932,60 @@
         reader.onload = function(ev) {
             curDataURL = ev.target.result;
             var img = document.getElementById('vfImg');
-            img.src = curDataURL;
-            img.style.display = 'block';
+            img.src = curDataURL; img.style.display = 'block';
             document.getElementById('vfPh').style.display = 'none';
             document.getElementById('chint').textContent = 'Image ready — tap Analyse ✓';
             var b = document.getElementById('anaBtn');
-            b.style.opacity = '1';
-            b.style.pointerEvents = 'auto';
+            b.style.opacity = '1'; b.style.pointerEvents = 'auto';
         };
         reader.readAsDataURL(f);
     }
 
-    /* ── Analyse ─────────────────────────────────── */
     async function analyse() {
         if (!curFile) return;
-        g('sl');
-        animSteps();
+        g('sl'); animSteps();
         var fd = new FormData();
         fd.append('file', curFile);
         try {
-            var res  = await fetch('/api/predict', { method:'POST', body:fd });
+            var res  = await fetch('/api/predict', { method: 'POST', body: fd });
             var data = await res.json();
-            if (data.success) {
-                await showResults(data);
-            } else {
-                alert('Prediction failed: ' + (data.error || 'Unknown error'));
-                g('sc');
-            }
-        } catch(err) {
-            alert('Server error: ' + err.message);
-            g('sc');
-        }
+            if (data.success) { await showResults(data); }
+            else { alert('Prediction failed: ' + (data.error || 'Unknown error')); g('sc'); }
+        } catch(err) { alert('Server error: ' + err.message); g('sc'); }
     }
 
     function animSteps() {
-        var ids = ['ls1','ls2','ls3','ls4','ls5'];
-        var i = 0;
+        var ids = ['ls1','ls2','ls3','ls4','ls5'], i = 0;
         var iv = setInterval(function() {
-            if (i > 0) {
-                document.getElementById(ids[i-1]).classList.remove('on');
-                document.getElementById(ids[i-1]).classList.add('ok');
-            }
-            if (i < ids.length) {
-                document.getElementById(ids[i]).classList.add('on');
-                i++;
-            } else {
-                clearInterval(iv);
-            }
+            if (i > 0) { document.getElementById(ids[i-1]).classList.remove('on'); document.getElementById(ids[i-1]).classList.add('ok'); }
+            if (i < ids.length) { document.getElementById(ids[i]).classList.add('on'); i++; }
+            else { clearInterval(iv); }
         }, 600);
     }
 
-    /* ── Show results ────────────────────────────── */
-    var currentTop3 = [];
-    var selectedPlant = null;
-
     async function showResults(data) {
-        var en = data.predictions.ensemble;
+        var en  = data.predictions.ensemble;
         var pct = parseFloat(en.percentage);
-
-        document.getElementById('rImg').src = curDataURL;
+        document.getElementById('rImg').src  = curDataURL;
         document.getElementById('rName').textContent = en.plant;
         document.getElementById('rConf').textContent = en.percentage;
-        document.getElementById('rSci').textContent = 'Loading...';
-
+        document.getElementById('rSci').textContent  = 'Loading...';
         currentTop3 = en.top_3 || [];
         selectedPlant = en.plant;
-
-        // Save to local history
         lastScanId = addScanToHistory(en.plant, parseFloat(en.percentage));
-
-        // Log to server DB (fire and forget)
         fetch('/api/log-scan', {
-            method: 'POST',
-            headers: {'Content-Type':'application/json'},
+            method: 'POST', headers: {'Content-Type':'application/json'},
             body: JSON.stringify({plant: en.plant, confidence: parseFloat(en.percentage)})
         }).catch(function(){});
-
-        // Confidence badge colour
         var badge = document.getElementById('rConf');
         badge.style.background = pct >= 60 ? 'var(--green)' : pct >= 40 ? '#d97706' : '#dc2626';
-
-        // Low confidence warning
-        var warn = document.getElementById('confWarn');
-        warn.style.display = pct < 55 ? 'block' : 'none';
-
-        // Build top-3 picker
+        document.getElementById('confWarn').style.display = pct < 55 ? 'block' : 'none';
         buildPicker(en.top_3, en.plant);
-
+        // Reset GPS card
+        document.getElementById('gpsValue').textContent = LANG[curLang].gpsNotYet;
+        var gpsBtn = document.getElementById('gpsBtn');
+        gpsBtn.textContent = LANG[curLang].gpsBtn; gpsBtn.disabled = false; gpsBtn.style.background = 'var(--green)';
+        capturedCoords = null;
         g('sr');
         await loadInfo(en.plant);
     }
@@ -957,9 +995,8 @@
         rows.innerHTML = '';
         top3.forEach(function(p, i) {
             var pv = Math.min(parseFloat(p.percentage), 100);
-            var isSel = (p.plant === activePlant);
             var row = document.createElement('div');
-            row.className = 'picker-row' + (isSel ? ' sel' : '');
+            row.className = 'picker-row' + (p.plant === activePlant ? ' sel' : '');
             row.setAttribute('data-plant', p.plant);
             row.innerHTML =
                 '<div class="picker-rank">' + (i+1) + '</div>' +
@@ -967,16 +1004,13 @@
                     '<div class="picker-name-main">' + p.plant.replace(/_/g,' ') + '</div>' +
                     '<div class="picker-bar"><div class="picker-bar-fill" style="width:' + pv + '%"></div></div>' +
                     '<div class="picker-name-pct">' + p.percentage + ' confidence</div>' +
-                '</div>' +
-                '<div class="picker-check">✅</div>';
+                '</div><div class="picker-check">✅</div>';
             row.addEventListener('click', function() {
                 document.querySelectorAll('.picker-row').forEach(function(r){ r.classList.remove('sel'); });
                 row.classList.add('sel');
                 selectedPlant = p.plant;
                 var confirm = document.getElementById('pickerConfirm');
-                // Show confirm only if different from top prediction
                 confirm.className = (p.plant !== top3[0].plant) ? 'picker-confirm show' : 'picker-confirm';
-                // Live update the plant name header
                 document.getElementById('rName').textContent = p.plant.replace(/_/g,' ');
             });
             rows.appendChild(row);
@@ -997,170 +1031,102 @@
         if (pb) pb.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
-    /* ── Load plant info ─────────────────────────── */
     async function loadInfo(name) {
         try {
             var res = await fetch('/api/plant-info', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ plant_name: name })
+                method: 'POST', headers: {'Content-Type':'application/json'},
+                body: JSON.stringify({plant_name: name})
             });
             var r = await res.json();
-            if (r.success) {
-                renderInfo(r.data);
-            } else {
-                document.getElementById('infoArea').innerHTML =
-                    '<div class="is"><p style="color:#999;text-align:center;padding:16px;font-size:.83em">Could not load plant profile.</p></div>';
-            }
+            if (r.success) { renderInfo(r.data); }
+            else { document.getElementById('infoArea').innerHTML = '<div class="is"><p style="color:#999;text-align:center;padding:16px;font-size:.83em">Could not load plant profile.</p></div>'; }
         } catch(e) {
-            document.getElementById('infoArea').innerHTML =
-                '<div class="is"><p style="color:#999;text-align:center;padding:16px;font-size:.83em">Network error loading profile.</p></div>';
+            document.getElementById('infoArea').innerHTML = '<div class="is"><p style="color:#999;text-align:center;padding:16px;font-size:.83em">Network error loading profile.</p></div>';
         }
     }
 
     function renderInfo(d) {
         document.getElementById('rSci').textContent = d.scientific_name;
         document.getElementById('infoArea').innerHTML =
-            '<div class="is">' +
-                '<div class="ih"><div class="ii bg-g">🌿</div><div class="it">Description</div></div>' +
-                '<p>' + d.description + '</p>' +
-                (d.interesting_fact ? '<div class="fb">💡 ' + d.interesting_fact + '</div>' : '') +
-            '</div>' +
-            '<div class="is">' +
-                '<div class="ih"><div class="ii bg-b">🔬</div><div class="it">Scientific Classification</div></div>' +
-                '<div class="cg">' +
-                    '<div class="ci"><div class="cl">Common Name</div><div class="cv">' + d.common_name + '</div></div>' +
-                    '<div class="ci"><div class="cl">Scientific Name</div><div class="cv" style="font-style:italic">' + d.scientific_name + '</div></div>' +
-                    '<div class="ci" style="grid-column:1/-1"><div class="cl">Parts Used</div><div class="cv">' + d.parts_used.join(', ') + '</div></div>' +
-                '</div>' +
-            '</div>' +
-            '<div class="is">' +
-                '<div class="ih"><div class="ii bg-au">💊</div><div class="it">Traditional Medical Usage</div></div>' +
-                '<div class="tr2">' + d.medicinal_uses.map(function(u){ return '<span class="tg tn">'+u+'</span>'; }).join('') + '</div>' +
-            '</div>' +
-            '<div class="is">' +
-                '<div class="ih"><div class="ii bg-g">✅</div><div class="it">Plant Metadata — Benefits</div></div>' +
-                '<div class="tr2">' + d.pros.map(function(p){ return '<span class="tg tg2">'+p+'</span>'; }).join('') + '</div>' +
-            '</div>' +
-            '<div class="is">' +
-                '<div class="ih"><div class="ii bg-r">⚠️</div><div class="it">Cautions &amp; Side Effects</div></div>' +
-                '<div class="tr2">' + d.cons.map(function(c){ return '<span class="tg tr3">'+c+'</span>'; }).join('') + '</div>' +
-            '</div>';
+            '<div class="is"><div class="ih"><div class="ii bg-g">🌿</div><div class="it">Description</div></div><p>' + d.description + '</p>' + (d.interesting_fact ? '<div class="fb">💡 ' + d.interesting_fact + '</div>' : '') + '</div>' +
+            '<div class="is"><div class="ih"><div class="ii bg-b">🔬</div><div class="it">Scientific Classification</div></div><div class="cg"><div class="ci"><div class="cl">Common Name</div><div class="cv">' + d.common_name + '</div></div><div class="ci"><div class="cl">Scientific Name</div><div class="cv" style="font-style:italic">' + d.scientific_name + '</div></div><div class="ci" style="grid-column:1/-1"><div class="cl">Parts Used</div><div class="cv">' + d.parts_used.join(', ') + '</div></div></div></div>' +
+            '<div class="is"><div class="ih"><div class="ii bg-au">💊</div><div class="it">Traditional Medical Usage</div></div><div class="tr2">' + d.medicinal_uses.map(function(u){ return '<span class="tg tn">'+u+'</span>'; }).join('') + '</div></div>' +
+            '<div class="is"><div class="ih"><div class="ii bg-g">✅</div><div class="it">Plant Metadata — Benefits</div></div><div class="tr2">' + d.pros.map(function(p){ return '<span class="tg tg2">'+p+'</span>'; }).join('') + '</div></div>' +
+            '<div class="is"><div class="ih"><div class="ii bg-r">⚠️</div><div class="it">Cautions &amp; Side Effects</div></div><div class="tr2">' + d.cons.map(function(c){ return '<span class="tg tr3">'+c+'</span>'; }).join('') + '</div></div>';
     }
 
-    /* ── Scan again ──────────────────────────────── */
     function scanAgain() {
-        curFile = null;
-        curDataURL = null;
+        curFile = null; curDataURL = null;
         document.getElementById('vfImg').style.display = 'none';
         document.getElementById('vfPh').style.display = 'block';
         document.getElementById('chint').textContent = 'Hold steady for best results';
         var b = document.getElementById('anaBtn');
-        b.style.opacity = '.38';
-        b.style.pointerEvents = 'none';
+        b.style.opacity = '.38'; b.style.pointerEvents = 'none';
         ['ls1','ls2','ls3','ls4','ls5'].forEach(function(id) {
-            var el = document.getElementById(id);
-            el.classList.remove('on','ok');
+            var el = document.getElementById(id); el.classList.remove('on','ok');
         });
         document.getElementById('ls1').classList.add('on');
-        document.getElementById('infoArea').innerHTML =
-            '<div class="is"><div class="iload"><div class="ms"></div><p>Loading plant profile...</p></div></div>';
+        document.getElementById('infoArea').innerHTML = '<div class="is"><div class="iload"><div class="ms"></div><p>Loading plant profile...</p></div></div>';
         g('sc');
     }
 
-    /* ═══════════════════════════════════════════════════════════════
+    /* ═══════════════════════════════════════════════════════
        LOCATION HISTORY
-    ═══════════════════════════════════════════════════════════════ */
-    var scanHistory = JSON.parse(localStorage.getItem('plantScanHistory') || '[]');
-
-    function saveHistory() {
-        try { localStorage.setItem('plantScanHistory', JSON.stringify(scanHistory)); } catch(e) {}
-    }
+    ═══════════════════════════════════════════════════════ */
+    function saveHistory() { try { localStorage.setItem('plantScanHistory', JSON.stringify(scanHistory)); } catch(e) {} }
 
     function addScanToHistory(plantName, confidence) {
-        var entry = {
-            id: Date.now(),
-            plant: plantName,
-            confidence: confidence,
-            time: new Date().toISOString(),
-            lat: null, lng: null, acc: null
-        };
+        var entry = { id: Date.now(), plant: plantName, confidence: confidence, time: new Date().toISOString(), lat: null, lng: null, acc: null };
         scanHistory.unshift(entry);
         if (scanHistory.length > 100) scanHistory.pop();
         saveHistory();
         return entry.id;
     }
 
-    var lastScanId = null;
-
     function updateLastScanGPS(lat, lng, acc) {
         if (!lastScanId) return;
         var entry = scanHistory.find(function(e) { return e.id === lastScanId; });
-        if (entry) {
-            entry.lat = parseFloat(lat);
-            entry.lng = parseFloat(lng);
-            entry.acc = acc;
-            saveHistory();
-        }
+        if (entry) { entry.lat = parseFloat(lat); entry.lng = parseFloat(lng); entry.acc = acc; saveHistory(); }
     }
 
     function renderHistory() {
-        var list    = document.getElementById('lhList');
-        var mapDiv  = document.getElementById('lhMap');
+        var list     = document.getElementById('lhList');
+        var mapDiv   = document.getElementById('lhMap');
         var mapEmpty = document.getElementById('lhMapEmpty');
-
-        // Stats
-        var withGPS = scanHistory.filter(function(e){ return e.lat; });
-        var species = new Set(scanHistory.map(function(e){ return e.plant; })).size;
+        var withGPS  = scanHistory.filter(function(e){ return e.lat; });
+        var species  = new Set(scanHistory.map(function(e){ return e.plant; })).size;
         document.getElementById('lhTotal').textContent   = scanHistory.length;
         document.getElementById('lhGPS').textContent     = withGPS.length;
         document.getElementById('lhSpecies').textContent = species;
 
-        // Map — show OpenStreetMap iframe centred on most recent GPS point
         if (withGPS.length > 0) {
             var latest = withGPS[0];
-            var markers = withGPS.slice(0,10).map(function(e){
-                return e.lat + ',' + e.lng;
-            }).join('|');
-            // Use OpenStreetMap embed (no API key needed)
             var mapUrl = 'https://www.openstreetmap.org/export/embed.html?bbox=' +
                 (latest.lng-0.01) + '%2C' + (latest.lat-0.01) + '%2C' +
                 (latest.lng+0.01) + '%2C' + (latest.lat+0.01) +
                 '&layer=mapnik&marker=' + latest.lat + '%2C' + latest.lng;
             if (mapEmpty) mapEmpty.style.display = 'none';
-            // Only create iframe if not already there
             if (!mapDiv.querySelector('iframe')) {
                 var iframe = document.createElement('iframe');
                 iframe.src = mapUrl;
                 iframe.style.cssText = 'width:100%;height:100%;border:none;display:block;';
                 mapDiv.appendChild(iframe);
-            } else {
-                mapDiv.querySelector('iframe').src = mapUrl;
-            }
-            // "Open all in Maps" link
+            } else { mapDiv.querySelector('iframe').src = mapUrl; }
             var allMapsUrl = 'https://maps.google.com/?q=' + latest.lat + ',' + latest.lng;
             if (!document.getElementById('lhMapsLink')) {
                 var link = document.createElement('a');
-                link.id = 'lhMapsLink';
-                link.href = allMapsUrl;
-                link.target = '_blank';
+                link.id = 'lhMapsLink'; link.href = allMapsUrl; link.target = '_blank';
                 link.className = 'lh-map-btn';
                 link.style.cssText = 'display:block;text-align:center;padding:7px;background:#fff;border-radius:0 0 16px 16px;border-top:1px solid var(--border);';
                 link.textContent = '🗺 Open latest location in Google Maps';
                 mapDiv.after(link);
-            } else {
-                document.getElementById('lhMapsLink').href = allMapsUrl;
-            }
-        } else {
-            if (mapEmpty) mapEmpty.style.display = 'flex';
-        }
+            } else { document.getElementById('lhMapsLink').href = allMapsUrl; }
+        } else { if (mapEmpty) mapEmpty.style.display = 'flex'; }
 
-        // List
         if (scanHistory.length === 0) {
             list.innerHTML = '<div class="lh-empty"><span>🌿</span><p>No scans yet.<br>Scan a plant and capture GPS<br>to see history here.</p></div>';
             return;
         }
-
         list.innerHTML = '';
         scanHistory.forEach(function(entry) {
             var conf = parseFloat(entry.confidence) || 0;
@@ -1186,16 +1152,11 @@
 
     function clearHistory() {
         if (!confirm('Clear all scan history?')) return;
-        scanHistory = [];
-        saveHistory();
-        // Remove map iframe and link
+        scanHistory = []; saveHistory();
         var mapDiv = document.getElementById('lhMap');
-        var iframe = mapDiv.querySelector('iframe');
-        if (iframe) iframe.remove();
-        var mapLink = document.getElementById('lhMapsLink');
-        if (mapLink) mapLink.remove();
-        var mapEmpty = document.getElementById('lhMapEmpty');
-        if (mapEmpty) mapEmpty.style.display = 'flex';
+        var iframe = mapDiv.querySelector('iframe'); if (iframe) iframe.remove();
+        var mapLink = document.getElementById('lhMapsLink'); if (mapLink) mapLink.remove();
+        var mapEmpty = document.getElementById('lhMapEmpty'); if (mapEmpty) mapEmpty.style.display = 'flex';
         renderHistory();
     }
 
@@ -1203,28 +1164,798 @@
         if (scanHistory.length === 0) { alert('No scan history to export.'); return; }
         var csv = 'Plant,Confidence,Latitude,Longitude,Accuracy(m),DateTime\n';
         scanHistory.forEach(function(e) {
-            csv += [
-                '"' + (e.plant||'').replace(/_/g,' ') + '"',
-                (parseFloat(e.confidence)||0).toFixed(2),
-                e.lat || '',
-                e.lng || '',
-                e.acc || '',
-                '"' + new Date(e.time).toLocaleString() + '"'
-            ].join(',') + '\n';
+            csv += ['"' + (e.plant||'').replace(/_/g,' ') + '"', (parseFloat(e.confidence)||0).toFixed(2), e.lat||'', e.lng||'', e.acc||'', '"' + new Date(e.time).toLocaleString() + '"'].join(',') + '\n';
         });
         var blob = new Blob([csv], {type:'text/csv'});
         var a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = 'plant_scan_history.csv';
-        a.click();
+        a.href = URL.createObjectURL(blob); a.download = 'plant_scan_history.csv'; a.click();
     }
 
-    // Override g() to render history when navigating to it
-    var _origG = g;
-    g = function(id) {
-        _origG(id);
-        if (id === 'sh') renderHistory();
+</script>
+<script>
+
+    /* ═══════════════════════════════════════════════════════
+       SUPABASE AUTH
+    ═══════════════════════════════════════════════════════ */
+    var SUPA_URL = 'https://stsovaoegejtdfawflsf.supabase.co';
+    var SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN0c292YW9lZ2VqdGRmYXdmbHNmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzNzU0NjUsImV4cCI6MjA4ODk1MTQ2NX0._59hhZDDbBTpnKR_a0y_NJOhqhLjhcso5OOI7GxmoRQ';
+    var supaSession = null;
+
+    function supaFetch(path, method, body) {
+        var token = (supaSession && supaSession.access_token) ? supaSession.access_token : SUPA_KEY;
+        return fetch(SUPA_URL + path, {
+            method: method || 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'apikey': SUPA_KEY,
+                'Authorization': 'Bearer ' + token
+            },
+            body: body ? JSON.stringify(body) : undefined
+        }).then(function(r) { return r.json(); });
+    }
+
+    function showAuthMsg(msg, isOk) {
+        var el = document.getElementById('authError');
+        el.textContent = msg;
+        el.className = 'si-err ' + (isOk ? 'ok' : 'err');
+        el.style.display = 'block';
+    }
+
+    function onLoginSuccess(session) {
+        supaSession = session;
+        try { localStorage.setItem('supa_session', JSON.stringify(session)); } catch(e) {}
+        g('sc');
+    }
+
+    // On load: restore saved session and handle OAuth callback
+    (function() {
+        try {
+            var saved = localStorage.getItem('supa_session');
+            if (saved) {
+                var s = JSON.parse(saved);
+                if (s && s.expires_at && (s.expires_at * 1000) > Date.now()) {
+                    supaSession = s;
+                }
+            }
+        } catch(e) {}
+
+        if (window.location.hash && window.location.hash.indexOf('access_token') !== -1) {
+            var params = {};
+            window.location.hash.substring(1).split('&').forEach(function(p) {
+                var kv = p.split('=');
+                params[decodeURIComponent(kv[0])] = decodeURIComponent(kv[1] || '');
+            });
+            if (params.access_token) {
+                supaSession = {
+                    access_token: params.access_token,
+                    refresh_token: params.refresh_token || '',
+                    expires_at: Math.floor(Date.now() / 1000) + parseInt(params.expires_in || '3600')
+                };
+                try { localStorage.setItem('supa_session', JSON.stringify(supaSession)); } catch(e) {}
+                history.replaceState(null, '', window.location.pathname);
+                document.addEventListener('DOMContentLoaded', function() { g('sc'); });
+            }
+        }
+    })();
+
+    /* ═══════════════════════════════════════════════════════
+       LANGUAGE SYSTEM — 6 languages
+    ═══════════════════════════════════════════════════════ */
+    var LANG = {
+        en: {
+            dir: 'ltr', font: 'Noto Sans',
+            appName: 'Medicinal Plant Identification System',
+            tagline: 'Smart India Hackathon 2023 · Team: Plant Pharmers',
+            ministry: 'Ministry of Ayush · Govt. of India',
+            about: 'About this Application',
+            aboutTxt: 'The Detection of Medicinal Plants using Machine Learning — it is ready to analyse your plant.',
+            speciesTitle: 'Identifiable Plants (40 Species)',
+            getStarted: '🚀  GET STARTED',
+            signIn: 'Welcome Back', signInSub: 'Sign in to track your plant scans',
+            emailLbl: 'Email', passLbl: 'Password',
+            loginBtn: 'Sign In', googleBtn: 'Continue with Google',
+            noAccount: "Don't have an account?", signUp: 'Sign up',
+            scanTitle: 'Scan Plant',
+            scanHint: 'Tap shutter to open camera or 🖼 to pick from gallery',
+            analyseBtn: 'Analyse →', readyHint: 'Image ready — tap Analyse ✓',
+            tipsTitle: '📸 Tips for best results',
+            tip1: '✅ Single leaf', tip2: '✅ White background',
+            tip3: '✅ Good lighting', tip4: '✅ Close-up, in focus',
+            tip5: '❌ Whole plant', tip6: '❌ Outdoor background',
+            analysing: 'Analysing Plant...',
+            step1:'Uploading image', step2:'Background removal (GrabCut)',
+            step3:'Noise reduction & normalisation', step4:'Running Inception-V3', step5:'Fetching plant profile',
+            resultsTitle: 'Results',
+            lowConf: 'Low Confidence Detection',
+            lowConfMsg: 'The model is not very confident. For best results, place a <strong>single leaf flat on white paper</strong> in good lighting.',
+            retakeBtn: '📷 Retake Photo', pickBtn: '🌿 Pick Manually',
+            isCorrect: '🌿 Is this the correct plant?',
+            confidence: 'confidence', confirmSel: '✓ Confirm Selection',
+            desc:'Description', sciClass:'Scientific Classification',
+            tradMed:'Traditional Medical Usage', benefits:'Plant Metadata — Benefits',
+            cautions:'Cautions & Side Effects',
+            scanAgain: '📷  Scan Another Plant',
+            gpsLabel: 'Location', gpsNotYet: 'Not captured yet',
+            gpsBtn: 'Get GPS', gpsGetting: 'Getting...',
+            verifyBtn: '✓ Results Verification',
+            commonName: 'Common Name', sciName: 'Scientific Name', partsUsed: 'Parts Used'
+        },
+        te: {
+            dir: 'ltr', font: 'Noto Sans Telugu',
+            appName: 'ఔషధ మొక్కల గుర్తింపు వ్యవస్థ',
+            tagline: 'స్మార్ట్ ఇండియా హ్యాకథాన్ 2023 · జట్టు: Plant Pharmers',
+            ministry: 'ఆయుష్ మంత్రిత్వ శాఖ · భారత ప్రభుత్వం',
+            about: 'ఈ యాప్ గురించి',
+            aboutTxt: 'మెషీన్ లెర్నింగ్ ఉపయోగించి ఔషధ మొక్కలను గుర్తించడం — మీ మొక్కను విశ్లేషించడానికి సిద్ధంగా ఉంది.',
+            speciesTitle: 'గుర్తించగలిగే మొక్కలు (40 జాతులు)',
+            getStarted: '🚀  ప్రారంభించండి',
+            signIn: 'స్వాగతం', signInSub: 'మీ స్కాన్ చరిత్రను ట్రాక్ చేయడానికి సైన్ ఇన్ చేయండి',
+            emailLbl: 'ఇమెయిల్', passLbl: 'పాస్‌వర్డ్',
+            loginBtn: 'లాగిన్', googleBtn: 'Google తో కొనసాగించండి',
+            noAccount: 'ఖాతా లేదా?', signUp: 'నమోదు చేసుకోండి',
+            scanTitle: 'మొక్కను స్కాన్ చేయండి',
+            scanHint: 'కెమెరా తెరవడానికి షట్టర్ నొక్కండి లేదా 🖼 గ్యాలరీ నుండి ఎంచుకోండి',
+            analyseBtn: 'విశ్లేషించు →', readyHint: 'చిత్రం సిద్ధంగా ఉంది — విశ్లేషించు నొక్కండి ✓',
+            tipsTitle: '📸 ఉత్తమ ఫలితాల కోసం చిట్కాలు',
+            tip1: '✅ ఒకే ఆకు', tip2: '✅ తెల్లని నేపథ్యం',
+            tip3: '✅ మంచి వెలుతురు', tip4: '✅ దగ్గరగా, స్పష్టంగా',
+            tip5: '❌ మొత్తం మొక్క', tip6: '❌ బయటి నేపథ్యం',
+            analysing: 'మొక్కను విశ్లేషిస్తున్నారు...',
+            step1:'చిత్రం అప్‌లోడ్', step2:'నేపథ్యం తొలగింపు',
+            step3:'శబ్దం తగ్గింపు', step4:'Inception-V3 నడుపుతున్నారు', step5:'మొక్క వివరాలు తీసుకుంటున్నారు',
+            resultsTitle: 'ఫలితాలు',
+            lowConf: 'తక్కువ నమ్మకం',
+            lowConfMsg: 'మోడల్ నమ్మకంగా లేదు. ఉత్తమ ఫలితాల కోసం, <strong>తెల్లని కాగితంపై ఒకే ఆకు</strong> ఉంచి ఫోటో తీయండి.',
+            retakeBtn: '📷 మళ్లీ ఫోటో తీయండి', pickBtn: '🌿 మాన్యువల్‌గా ఎంచుకోండి',
+            isCorrect: '🌿 ఇది సరైన మొక్కనా?',
+            confidence: 'నమ్మకం', confirmSel: '✓ ఎంపికను నిర్ధారించండి',
+            desc:'వివరణ', sciClass:'శాస్త్రీయ వర్గీకరణ',
+            tradMed:'సాంప్రదాయ వైద్య వినియోగం', benefits:'ప్రయోజనాలు',
+            cautions:'జాగ్రత్తలు మరియు దుష్ప్రభావాలు',
+            scanAgain: '📷  మరొక మొక్కను స్కాన్ చేయండి',
+            gpsLabel: 'స్థానం', gpsNotYet: 'ఇంకా తీసుకోలేదు',
+            gpsBtn: 'GPS తీసుకోండి', gpsGetting: 'తీసుకుంటున్నారు...',
+            verifyBtn: '✓ ఫలితాల ధృవీకరణ',
+            commonName: 'సాధారణ పేరు', sciName: 'శాస్త్రీయ పేరు', partsUsed: 'ఉపయోగించే భాగాలు'
+        },
+        hi: {
+            dir: 'ltr', font: 'Noto Sans Devanagari',
+            appName: 'औषधीय पौधा पहचान प्रणाली',
+            tagline: 'स्मार्ट इंडिया हैकथॉन 2023 · टीम: Plant Pharmers',
+            ministry: 'आयुष मंत्रालय · भारत सरकार',
+            about: 'इस ऐप के बारे में',
+            aboutTxt: 'मशीन लर्निंग का उपयोग करके औषधीय पौधों की पहचान — आपके पौधे का विश्लेषण करने के लिए तैयार।',
+            speciesTitle: 'पहचाने जाने योग्य पौधे (40 प्रजातियाँ)',
+            getStarted: '🚀  शुरू करें',
+            signIn: 'वापस स्वागत है', signInSub: 'अपने स्कैन ट्रैक करने के लिए साइन इन करें',
+            emailLbl: 'ईमेल', passLbl: 'पासवर्ड',
+            loginBtn: 'लॉगिन', googleBtn: 'Google से जारी रखें',
+            noAccount: 'खाता नहीं है?', signUp: 'साइन अप करें',
+            scanTitle: 'पौधा स्कैन करें',
+            scanHint: 'कैमरा खोलने के लिए शटर दबाएँ या 🖼 गैलरी से चुनें',
+            analyseBtn: 'विश्लेषण करें →', readyHint: 'छवि तैयार है — विश्लेषण करें दबाएँ ✓',
+            tipsTitle: '📸 सर्वोत्तम परिणामों के लिए सुझाव',
+            tip1: '✅ एकल पत्ता', tip2: '✅ सफ़ेद पृष्ठभूमि',
+            tip3: '✅ अच्छी रोशनी', tip4: '✅ क्लोज़-अप, फ़ोकस में',
+            tip5: '❌ पूरा पौधा', tip6: '❌ बाहरी पृष्ठभूमि',
+            analysing: 'पौधे का विश्लेषण हो रहा है...',
+            step1:'छवि अपलोड हो रही है', step2:'पृष्ठभूमि हटाना',
+            step3:'शोर कम करना', step4:'Inception-V3 चल रहा है', step5:'पौधे की जानकारी लाई जा रही है',
+            resultsTitle: 'परिणाम',
+            lowConf: 'कम विश्वास',
+            lowConfMsg: 'मॉडल बहुत आश्वस्त नहीं है। सर्वोत्तम परिणामों के लिए <strong>सफ़ेद कागज़ पर एक पत्ता</strong> रखें।',
+            retakeBtn: '📷 फिर से फ़ोटो लें', pickBtn: '🌿 मैन्युअल चुनें',
+            isCorrect: '🌿 क्या यह सही पौधा है?',
+            confidence: 'विश्वास', confirmSel: '✓ चयन की पुष्टि करें',
+            desc:'विवरण', sciClass:'वैज्ञानिक वर्गीकरण',
+            tradMed:'पारंपरिक चिकित्सा उपयोग', benefits:'लाभ',
+            cautions:'सावधानियाँ और दुष्प्रभाव',
+            scanAgain: '📷  दूसरा पौधा स्कैन करें',
+            gpsLabel: 'स्थान', gpsNotYet: 'अभी तक नहीं लिया',
+            gpsBtn: 'GPS लें', gpsGetting: 'ले रहे हैं...',
+            verifyBtn: '✓ परिणाम सत्यापन',
+            commonName: 'सामान्य नाम', sciName: 'वैज्ञानिक नाम', partsUsed: 'उपयोग किए गए भाग'
+        },
+        ta: {
+            dir: 'ltr', font: 'Noto Sans Tamil',
+            appName: 'மருத்துவ தாவர அடையாள அமைப்பு',
+            tagline: 'ஸ்மார்ட் இந்தியா ஹேக்கத்தான் 2023 · குழு: Plant Pharmers',
+            ministry: 'ஆயுஷ் அமைச்சகம் · இந்திய அரசு',
+            about: 'இந்த பயன்பாட்டைப் பற்றி',
+            aboutTxt: 'மெஷின் லேர்னிங் பயன்படுத்தி மருத்துவ தாவரங்களை அடையாளம் காணுதல் — உங்கள் தாவரத்தை பகுப்பாய்வு செய்ய தயாராக உள்ளது.',
+            speciesTitle: 'அடையாளம் காணக்கூடிய தாவரங்கள் (40 இனங்கள்)',
+            getStarted: '🚀  தொடங்கு',
+            signIn: 'மீண்டும் வரவேற்கிறோம்', signInSub: 'உங்கள் ஸ்கேன்களை கண்காணிக்க உள்நுழையவும்',
+            emailLbl: 'மின்னஞ்சல்', passLbl: 'கடவுச்சொல்',
+            loginBtn: 'உள்நுழை', googleBtn: 'Google மூலம் தொடரவும்',
+            noAccount: 'கணக்கு இல்லையா?', signUp: 'பதிவு செய்யுங்கள்',
+            scanTitle: 'தாவரத்தை ஸ்கேன் செய்யுங்கள்',
+            scanHint: 'கேமரா திறக்க ஷட்டரை தட்டவும் அல்லது 🖼 கேலரியிலிருந்து தேர்ந்தெடுக்கவும்',
+            analyseBtn: 'பகுப்பாய்வு →', readyHint: 'படம் தயாராக உள்ளது — பகுப்பாய்வை தட்டவும் ✓',
+            tipsTitle: '📸 சிறந்த முடிவுகளுக்கான குறிப்புகள்',
+            tip1: '✅ ஒற்றை இலை', tip2: '✅ வெள்ளை பின்னணி',
+            tip3: '✅ நல்ல வெளிச்சம்', tip4: '✅ நெருக்கமாக, கவனத்தில்',
+            tip5: '❌ முழு தாவரம்', tip6: '❌ வெளிப்புற பின்னணி',
+            analysing: 'தாவரத்தை பகுப்பாய்வு செய்கிறோம்...',
+            step1:'படம் பதிவேற்றம்', step2:'பின்னணி நீக்கம்',
+            step3:'சத்தம் குறைப்பு', step4:'Inception-V3 இயங்குகிறது', step5:'தாவர தகவல் பெறுகிறோம்',
+            resultsTitle: 'முடிவுகள்',
+            lowConf: 'குறைந்த நம்பிக்கை',
+            lowConfMsg: 'மாதிரி நம்பிக்கையாக இல்லை. சிறந்த முடிவுகளுக்கு <strong>வெள்ளை காகிதத்தில் ஒரு இலையை</strong> வைக்கவும்.',
+            retakeBtn: '📷 மீண்டும் புகைப்படம் எடு', pickBtn: '🌿 கைமுறையாக தேர்ந்தெடு',
+            isCorrect: '🌿 இது சரியான தாவரமா?',
+            confidence: 'நம்பிக்கை', confirmSel: '✓ தேர்வை உறுதிப்படுத்தவும்',
+            desc:'விளக்கம்', sciClass:'அறிவியல் வகைப்பாடு',
+            tradMed:'பாரம்பரிய மருத்துவ பயன்பாடு', benefits:'நன்மைகள்',
+            cautions:'எச்சரிக்கைகள் மற்றும் பக்க விளைவுகள்',
+            scanAgain: '📷  மற்றொரு தாவரத்தை ஸ்கேன் செய்யவும்',
+            gpsLabel: 'இடம்', gpsNotYet: 'இன்னும் பெறவில்லை',
+            gpsBtn: 'GPS பெறு', gpsGetting: 'பெறுகிறோம்...',
+            verifyBtn: '✓ முடிவுகள் சரிபார்ப்பு',
+            commonName: 'பொது பெயர்', sciName: 'அறிவியல் பெயர்', partsUsed: 'பயன்படுத்தப்படும் பாகங்கள்'
+        },
+        kn: {
+            dir: 'ltr', font: 'Noto Sans Kannada',
+            appName: 'ಔಷಧೀಯ ಸಸ್ಯ ಗುರುತಿಸುವಿಕೆ ವ್ಯವಸ್ಥೆ',
+            tagline: 'ಸ್ಮಾರ್ಟ್ ಇಂಡಿಯಾ ಹ್ಯಾಕಥಾನ್ 2023 · ತಂಡ: Plant Pharmers',
+            ministry: 'ಆಯುಷ್ ಸಚಿವಾಲಯ · ಭಾರತ ಸರ್ಕಾರ',
+            about: 'ಈ ಅಪ್ಲಿಕೇಶನ್ ಬಗ್ಗೆ',
+            aboutTxt: 'ಮೆಷಿನ್ ಲರ್ನಿಂಗ್ ಬಳಸಿ ಔಷಧೀಯ ಸಸ್ಯಗಳನ್ನು ಗುರುತಿಸುವುದು — ನಿಮ್ಮ ಸಸ್ಯವನ್ನು ವಿಶ್ಲೇಷಿಸಲು ಸಿದ್ಧ.',
+            speciesTitle: 'ಗುರುತಿಸಬಹುದಾದ ಸಸ್ಯಗಳು (40 ಪ್ರಜಾತಿಗಳು)',
+            getStarted: '🚀  ಪ್ರಾರಂಭಿಸಿ',
+            signIn: 'ಮತ್ತೆ ಸ್ವಾಗತ', signInSub: 'ನಿಮ್ಮ ಸ್ಕ್ಯಾನ್‌ಗಳನ್ನು ಟ್ರ್ಯಾಕ್ ಮಾಡಲು ಸೈನ್ ಇನ್ ಮಾಡಿ',
+            emailLbl: 'ಇಮೇಲ್', passLbl: 'ಪಾಸ್‌ವರ್ಡ್',
+            loginBtn: 'ಲಾಗಿನ್', googleBtn: 'Google ಮೂಲಕ ಮುಂದುವರಿಯಿರಿ',
+            noAccount: 'ಖಾತೆ ಇಲ್ಲವೇ?', signUp: 'ನೋಂದಾಯಿಸಿ',
+            scanTitle: 'ಸಸ್ಯವನ್ನು ಸ್ಕ್ಯಾನ್ ಮಾಡಿ',
+            scanHint: 'ಕ್ಯಾಮೆರಾ ತೆರೆಯಲು ಶಟರ್ ಒತ್ತಿ ಅಥವಾ 🖼 ಗ್ಯಾಲರಿಯಿಂದ ಆಯ್ಕೆ ಮಾಡಿ',
+            analyseBtn: 'ವಿಶ್ಲೇಷಿಸಿ →', readyHint: 'ಚಿತ್ರ ಸಿದ್ಧವಾಗಿದೆ — ವಿಶ್ಲೇಷಿಸಿ ಒತ್ತಿ ✓',
+            tipsTitle: '📸 ಉತ್ತಮ ಫಲಿತಾಂಶಗಳಿಗೆ ಸಲಹೆಗಳು',
+            tip1: '✅ ಒಂದು ಎಲೆ', tip2: '✅ ಬಿಳಿ ಹಿನ್ನೆಲೆ',
+            tip3: '✅ ಉತ್ತಮ ಬೆಳಕು', tip4: '✅ ಕ್ಲೋಸ್-ಅಪ್, ಫೋಕಸ್‌ನಲ್ಲಿ',
+            tip5: '❌ ಇಡೀ ಸಸ್ಯ', tip6: '❌ ಹೊರಾಂಗಣ ಹಿನ್ನೆಲೆ',
+            analysing: 'ಸಸ್ಯವನ್ನು ವಿಶ್ಲೇಷಿಸಲಾಗುತ್ತಿದೆ...',
+            step1:'ಚಿತ್ರ ಅಪ್‌ಲೋಡ್', step2:'ಹಿನ್ನೆಲೆ ತೆಗೆದುಹಾಕುವಿಕೆ',
+            step3:'ಶಬ್ದ ಕಡಿತ', step4:'Inception-V3 ರನ್ ಆಗುತ್ತಿದೆ', step5:'ಸಸ್ಯ ಮಾಹಿತಿ ತರಲಾಗುತ್ತಿದೆ',
+            resultsTitle: 'ಫಲಿತಾಂಶಗಳು',
+            lowConf: 'ಕಡಿಮೆ ವಿಶ್ವಾಸ',
+            lowConfMsg: 'ಮಾದರಿ ಬಹಳ ಖಚಿತವಾಗಿಲ್ಲ. ಉತ್ತಮ ಫಲಿತಾಂಶಗಳಿಗಾಗಿ <strong>ಬಿಳಿ ಕಾಗದದ ಮೇಲೆ ಒಂದು ಎಲೆ</strong> ಇಡಿ.',
+            retakeBtn: '📷 ಮತ್ತೆ ಫೋಟೋ ತೆಗೆಯಿರಿ', pickBtn: '🌿 ಹಸ್ತಚಾಲಿತವಾಗಿ ಆಯ್ಕೆ ಮಾಡಿ',
+            isCorrect: '🌿 ಇದು ಸರಿಯಾದ ಸಸ್ಯವೇ?',
+            confidence: 'ವಿಶ್ವಾಸ', confirmSel: '✓ ಆಯ್ಕೆ ದೃಢೀಕರಿಸಿ',
+            desc:'ವಿವರಣೆ', sciClass:'ವೈಜ್ಞಾನಿಕ ವರ್ಗೀಕರಣ',
+            tradMed:'ಸಾಂಪ್ರದಾಯಿಕ ವೈದ್ಯಕೀಯ ಬಳಕೆ', benefits:'ಪ್ರಯೋಜನಗಳು',
+            cautions:'ಎಚ್ಚರಿಕೆಗಳು ಮತ್ತು ಅಡ್ಡ ಪರಿಣಾಮಗಳು',
+            scanAgain: '📷  ಮತ್ತೊಂದು ಸಸ್ಯ ಸ್ಕ್ಯಾನ್ ಮಾಡಿ',
+            gpsLabel: 'ಸ್ಥಳ', gpsNotYet: 'ಇನ್ನೂ ತೆಗೆದುಕೊಂಡಿಲ್ಲ',
+            gpsBtn: 'GPS ತೆಗೆಯಿರಿ', gpsGetting: 'ತೆಗೆದುಕೊಳ್ಳಲಾಗುತ್ತಿದೆ...',
+            verifyBtn: '✓ ಫಲಿತಾಂಶ ಪರಿಶೀಲನೆ',
+            commonName: 'ಸಾಮಾನ್ಯ ಹೆಸರು', sciName: 'ವೈಜ್ಞಾನಿಕ ಹೆಸರು', partsUsed: 'ಬಳಸಿದ ಭಾಗಗಳು'
+        },
+        ur: {
+            dir: 'rtl', font: 'Noto Nastaliq Urdu',
+            appName: 'دواؤں والے پودوں کی شناخت کا نظام',
+            tagline: 'سمارٹ انڈیا ہیکاتھون 2023 · ٹیم: Plant Pharmers',
+            ministry: 'وزارت آیوش · حکومت ہند',
+            about: 'اس ایپ کے بارے میں',
+            aboutTxt: 'مشین لرننگ کا استعمال کرتے ہوئے دواؤں والے پودوں کی شناخت — آپ کے پودے کا تجزیہ کرنے کے لیے تیار۔',
+            speciesTitle: 'قابل شناخت پودے (40 اقسام)',
+            getStarted: '🚀  شروع کریں',
+            signIn: 'واپس خوش آمدید', signInSub: 'اپنے اسکین ٹریک کرنے کے لیے سائن ان کریں',
+            emailLbl: 'ای میل', passLbl: 'پاس ورڈ',
+            loginBtn: 'لاگ ان', googleBtn: 'Google سے جاری رکھیں',
+            noAccount: 'اکاؤنٹ نہیں ہے؟', signUp: 'سائن اپ کریں',
+            scanTitle: 'پودا اسکین کریں',
+            scanHint: 'کیمرہ کھولنے کے لیے شٹر دبائیں یا 🖼 گیلری سے منتخب کریں',
+            analyseBtn: 'تجزیہ کریں ←', readyHint: 'تصویر تیار ہے — تجزیہ کریں دبائیں ✓',
+            tipsTitle: '📸 بہترین نتائج کے لیے تجاویز',
+            tip1: '✅ ایک پتہ', tip2: '✅ سفید پس منظر',
+            tip3: '✅ اچھی روشنی', tip4: '✅ قریب سے، فوکس میں',
+            tip5: '❌ پورا پودا', tip6: '❌ بیرونی پس منظر',
+            analysing: 'پودے کا تجزیہ ہو رہا ہے...',
+            step1:'تصویر اپ لوڈ', step2:'پس منظر ہٹانا',
+            step3:'شور کم کرنا', step4:'Inception-V3 چل رہا ہے', step5:'پودے کی معلومات لائی جا رہی ہیں',
+            resultsTitle: 'نتائج',
+            lowConf: 'کم اعتماد',
+            lowConfMsg: 'ماڈل زیادہ پراعتماد نہیں ہے۔ بہترین نتائج کے لیے <strong>سفید کاغذ پر ایک پتہ</strong> رکھیں۔',
+            retakeBtn: '📷 دوبارہ فوٹو لیں', pickBtn: '🌿 دستی منتخب کریں',
+            isCorrect: '🌿 کیا یہ صحیح پودا ہے؟',
+            confidence: 'اعتماد', confirmSel: '✓ انتخاب کی تصدیق کریں',
+            desc:'تفصیل', sciClass:'سائنسی درجہ بندی',
+            tradMed:'روایتی طبی استعمال', benefits:'فوائد',
+            cautions:'احتیاطیں اور ضمنی اثرات',
+            scanAgain: '📷  دوسرا پودا اسکین کریں',
+            gpsLabel: 'مقام', gpsNotYet: 'ابھی تک نہیں لیا',
+            gpsBtn: 'GPS لیں', gpsGetting: 'لے رہے ہیں...',
+            verifyBtn: '✓ نتائج کی تصدیق',
+            commonName: 'عام نام', sciName: 'سائنسی نام', partsUsed: 'استعمال شدہ حصے'
+        }
     };
+
+    var curLang = 'en';
+
+    function setLang(evt, code) {
+        curLang = code;
+        var L = LANG[code];
+        document.querySelectorAll('.lang-btn').forEach(function(b) { b.classList.remove('active'); });
+        if (evt && evt.target) evt.target.classList.add('active');
+        document.body.style.direction = L.dir;
+        document.body.style.fontFamily = "'" + L.font + "', 'Noto Sans', sans-serif";
+
+        var el;
+        el = document.querySelector('.dh h1'); if(el) el.textContent = L.appName;
+        el = document.querySelector('.dh p'); if(el) el.textContent = L.tagline;
+        el = document.querySelector('.mbadge'); if(el) el.textContent = L.ministry;
+        el = document.getElementById('ctaBtn'); if(el) el.textContent = L.getStarted;
+        var dcards = document.querySelectorAll('.dc h3');
+        if(dcards[0]) dcards[0].textContent = L.about;
+        if(dcards[1]) dcards[1].textContent = L.speciesTitle;
+        var dcardsP = document.querySelectorAll('.dc p');
+        if(dcardsP[0]) dcardsP[0].textContent = L.aboutTxt;
+
+        el = document.querySelector('.si-hero h2'); if(el) el.textContent = L.signIn;
+        el = document.querySelector('.si-hero p'); if(el) el.textContent = L.signInSub;
+
+        el = document.querySelector('.ct h3'); if(el) el.textContent = L.scanTitle;
+        el = document.querySelector('.vf-ph p'); if(el) el.textContent = L.scanHint;
+        el = document.getElementById('anaBtn'); if(el && el.style.pointerEvents !== 'auto') el.textContent = L.analyseBtn;
+
+        el = document.querySelector('.li h3'); if(el) el.textContent = L.analysing;
+        var steps = ['ls1','ls2','ls3','ls4','ls5'];
+        var stepKeys = ['step1','step2','step3','step4','step5'];
+        steps.forEach(function(id, i) {
+            var s = document.getElementById(id);
+            if(s) { var ld = s.querySelector('.ld'); if(ld && ld.nextSibling) ld.nextSibling.textContent = ' ' + L[stepKeys[i]]; }
+        });
+
+        el = document.querySelector('.rtop h2'); if(el) el.textContent = L.resultsTitle;
+        el = document.querySelector('.conf-warn-title'); if(el) el.textContent = L.lowConf;
+        el = document.querySelector('.conf-warn p'); if(el) el.innerHTML = L.lowConfMsg;
+        el = document.querySelector('.picker-title'); if(el) el.textContent = L.isCorrect;
+        el = document.getElementById('pickerConfirm'); if(el) el.textContent = L.confirmSel;
+        el = document.querySelector('.sca'); if(el) el.textContent = L.scanAgain;
+        el = document.querySelector('.vtag'); if(el) el.textContent = L.verifyBtn;
+
+        el = document.getElementById('gpsLabel'); if(el) el.textContent = L.gpsLabel;
+        el = document.getElementById('gpsBtn'); if(el) el.textContent = L.gpsBtn;
+        var gpsVal = document.getElementById('gpsValue');
+        if(gpsVal && Object.values(LANG).some(function(l){ return l.gpsNotYet === gpsVal.textContent; })) {
+            gpsVal.textContent = L.gpsNotYet;
+        }
+        document.querySelectorAll('.picker-name-pct').forEach(function(el) {
+            var pct = el.textContent.replace(/[^0-9.%]/g,'');
+            el.textContent = pct + ' ' + L.confidence;
+        });
+
+        // ── Re-display plant info in new language if results are showing ──
+        if (currentPlantData) { displayInLanguage(code); }
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       GPS SYSTEM
+    ═══════════════════════════════════════════════════════ */
+    var capturedCoords = null;
+
+    function captureGPS() {
+        var L = LANG[curLang];
+        var btn = document.getElementById('gpsBtn');
+        var val = document.getElementById('gpsValue');
+        btn.textContent = L.gpsGetting;
+        btn.disabled = true;
+        if (!navigator.geolocation) {
+            val.textContent = 'GPS not supported on this device';
+            btn.textContent = L.gpsBtn; btn.disabled = false; return;
+        }
+        navigator.geolocation.getCurrentPosition(
+            function(pos) {
+                var lat = pos.coords.latitude.toFixed(5);
+                var lng = pos.coords.longitude.toFixed(5);
+                var acc = Math.round(pos.coords.accuracy);
+                capturedCoords = { lat: lat, lng: lng, acc: acc };
+                val.innerHTML = lat + ', ' + lng +
+                    '<br><span style="font-size:0.78em;color:var(--muted);">±' + acc + 'm accuracy · <a href="https://maps.google.com/?q=' + lat + ',' + lng + '" target="_blank" style="color:var(--green);font-weight:600;">View on Maps</a></span>';
+                btn.textContent = '✓ Saved';
+                btn.style.background = '#16a34a';
+                updateLastScanGPS(lat, lng, acc);
+                fetch('/api/log-scan', {
+                    method: 'POST',
+                    headers: {'Content-Type':'application/json'},
+                    body: JSON.stringify({plant: selectedPlant || 'Unknown', confidence: 0, lat: parseFloat(lat), lng: parseFloat(lng), accuracy: acc, update_last: true})
+                }).catch(function(){});
+            },
+            function(err) {
+                val.textContent = err.code === 1 ? 'Location permission denied' : 'Could not get location';
+                btn.textContent = L.gpsBtn; btn.disabled = false;
+            },
+            { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+        );
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       NAVIGATION
+    ═══════════════════════════════════════════════════════ */
+    var lastScanId = null;
+    var curFile = null, curDataURL = null;
+    var currentTop3 = [], selectedPlant = null;
+    var scanHistory = [];
+    try { scanHistory = JSON.parse(localStorage.getItem('plantScanHistory') || '[]'); } catch(e) {}
+
+    function g(id) {
+        document.querySelectorAll('.scr').forEach(function(s) { s.classList.remove('on'); });
+        var el = document.getElementById(id);
+        if (el) el.classList.add('on');
+        window.scrollTo(0, 0);
+        if (id === 'sh') renderHistory();
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       DOM READY — wire buttons and auth
+    ═══════════════════════════════════════════════════════ */
+    window.addEventListener('DOMContentLoaded', function() {
+
+        var fCam = document.getElementById('fCamera');
+        var fGal = document.getElementById('fGallery');
+        document.getElementById('shutBtn').addEventListener('click', function() { fCam.click(); });
+        document.getElementById('galBtn').addEventListener('click',  function() { fGal.click(); });
+        document.getElementById('galBtn2').addEventListener('click', function() { fGal.click(); });
+        fCam.addEventListener('change', function(e) { handleFile(e.target.files[0]); fCam.value = ''; });
+        fGal.addEventListener('change', function(e) { handleFile(e.target.files[0]); fGal.value = ''; });
+
+        document.getElementById('googleBtn').addEventListener('click', function() {
+            var redirectTo = encodeURIComponent(window.location.href.split('#')[0]);
+            window.location.href = SUPA_URL + '/auth/v1/authorize?provider=google&redirect_to=' + redirectTo;
+        });
+
+        document.getElementById('loginBtn').addEventListener('click', function() {
+            var email    = document.getElementById('authEmail').value.trim();
+            var password = document.getElementById('authPassword').value;
+            if (!email || !password) { showAuthMsg('Please enter your email and password.'); return; }
+            var btn = document.getElementById('loginBtn');
+            btn.textContent = 'Signing in...'; btn.disabled = true;
+            supaFetch('/auth/v1/token?grant_type=password', 'POST', { email: email, password: password })
+            .then(function(data) {
+                btn.textContent = 'Sign In'; btn.disabled = false;
+                if (data.access_token) { onLoginSuccess(data); }
+                else { showAuthMsg(data.error_description || data.msg || 'Login failed. Check your credentials.'); }
+            }).catch(function() {
+                btn.textContent = 'Sign In'; btn.disabled = false;
+                showAuthMsg('Network error. Please try again.');
+            });
+        });
+
+        document.getElementById('signupBtn').addEventListener('click', function() {
+            var email    = document.getElementById('authEmail').value.trim();
+            var password = document.getElementById('authPassword').value;
+            if (!email || !password) { showAuthMsg('Please enter your email and password.'); return; }
+            if (password.length < 6) { showAuthMsg('Password must be at least 6 characters.'); return; }
+            var btn = document.getElementById('signupBtn');
+            btn.textContent = 'Creating account...'; btn.disabled = true;
+            supaFetch('/auth/v1/signup', 'POST', { email: email, password: password })
+            .then(function(data) {
+                btn.textContent = 'Create Account'; btn.disabled = false;
+                if (data.id || (data.user && data.user.id)) {
+                    showAuthMsg('✅ Account created! Check your email to confirm, then sign in.', true);
+                } else {
+                    showAuthMsg(data.error_description || data.msg || 'Signup failed. Try a different email.');
+                }
+            }).catch(function() {
+                btn.textContent = 'Create Account'; btn.disabled = false;
+                showAuthMsg('Network error. Please try again.');
+            });
+        });
+
+        document.getElementById('forgotLink').addEventListener('click', function() {
+            var email = document.getElementById('authEmail').value.trim();
+            if (!email) { showAuthMsg('Enter your email address first.'); return; }
+            supaFetch('/auth/v1/recover', 'POST', { email: email })
+            .then(function() { showAuthMsg('✅ Password reset email sent! Check your inbox.', true); })
+            .catch(function() { showAuthMsg('Could not send reset email. Try again.'); });
+        });
+    });
+
+    /* ═══════════════════════════════════════════════════════
+       CAMERA & ANALYSIS
+    ═══════════════════════════════════════════════════════ */
+    function handleFile(f) {
+        if (!f) return;
+        curFile = f;
+        var reader = new FileReader();
+        reader.onload = function(ev) {
+            curDataURL = ev.target.result;
+            var img = document.getElementById('vfImg');
+            img.src = curDataURL; img.style.display = 'block';
+            document.getElementById('vfPh').style.display = 'none';
+            document.getElementById('chint').textContent = 'Image ready — tap Analyse ✓';
+            var b = document.getElementById('anaBtn');
+            b.style.opacity = '1'; b.style.pointerEvents = 'auto';
+        };
+        reader.readAsDataURL(f);
+    }
+
+    async function analyse() {
+        if (!curFile) return;
+        g('sl'); animSteps();
+        var fd = new FormData();
+        fd.append('file', curFile);
+        try {
+            var res  = await fetch('/api/predict', { method: 'POST', body: fd });
+            var data = await res.json();
+            if (data.success) { await showResults(data); }
+            else { alert('Prediction failed: ' + (data.error || 'Unknown error')); g('sc'); }
+        } catch(err) { alert('Server error: ' + err.message); g('sc'); }
+    }
+
+    function animSteps() {
+        var ids = ['ls1','ls2','ls3','ls4','ls5'], i = 0;
+        var iv = setInterval(function() {
+            if (i > 0) { document.getElementById(ids[i-1]).classList.remove('on'); document.getElementById(ids[i-1]).classList.add('ok'); }
+            if (i < ids.length) { document.getElementById(ids[i]).classList.add('on'); i++; }
+            else { clearInterval(iv); }
+        }, 600);
+    }
+
+    async function showResults(data) {
+        var en  = data.predictions.ensemble;
+        var pct = parseFloat(en.percentage);
+        document.getElementById('rImg').src  = curDataURL;
+        document.getElementById('rName').textContent = en.plant;
+        document.getElementById('rConf').textContent = en.percentage;
+        document.getElementById('rSci').textContent  = 'Loading...';
+        currentTop3 = en.top_3 || [];
+        selectedPlant = en.plant;
+        lastScanId = addScanToHistory(en.plant, parseFloat(en.percentage));
+        fetch('/api/log-scan', {
+            method: 'POST', headers: {'Content-Type':'application/json'},
+            body: JSON.stringify({plant: en.plant, confidence: parseFloat(en.percentage)})
+        }).catch(function(){});
+        var badge = document.getElementById('rConf');
+        badge.style.background = pct >= 60 ? 'var(--green)' : pct >= 40 ? '#d97706' : '#dc2626';
+        document.getElementById('confWarn').style.display = pct < 55 ? 'block' : 'none';
+        buildPicker(en.top_3, en.plant);
+        document.getElementById('gpsValue').textContent = LANG[curLang].gpsNotYet;
+        var gpsBtn = document.getElementById('gpsBtn');
+        gpsBtn.textContent = LANG[curLang].gpsBtn; gpsBtn.disabled = false; gpsBtn.style.background = 'var(--green)';
+        capturedCoords = null;
+        g('sr');
+        await loadInfo(en.plant);
+    }
+
+    function buildPicker(top3, activePlant) {
+        var rows = document.getElementById('pickerRows');
+        rows.innerHTML = '';
+        top3.forEach(function(p, i) {
+            var pv = Math.min(parseFloat(p.percentage), 100);
+            var row = document.createElement('div');
+            row.className = 'picker-row' + (p.plant === activePlant ? ' sel' : '');
+            row.setAttribute('data-plant', p.plant);
+            row.innerHTML =
+                '<div class="picker-rank">' + (i+1) + '</div>' +
+                '<div class="picker-info">' +
+                    '<div class="picker-name-main">' + p.plant.replace(/_/g,' ') + '</div>' +
+                    '<div class="picker-bar"><div class="picker-bar-fill" style="width:' + pv + '%"></div></div>' +
+                    '<div class="picker-name-pct">' + p.percentage + ' confidence</div>' +
+                '</div><div class="picker-check">✅</div>';
+            row.addEventListener('click', function() {
+                document.querySelectorAll('.picker-row').forEach(function(r){ r.classList.remove('sel'); });
+                row.classList.add('sel');
+                selectedPlant = p.plant;
+                var confirm = document.getElementById('pickerConfirm');
+                confirm.className = (p.plant !== top3[0].plant) ? 'picker-confirm show' : 'picker-confirm';
+                document.getElementById('rName').textContent = p.plant.replace(/_/g,' ');
+            });
+            rows.appendChild(row);
+        });
+    }
+
+    async function confirmPick() {
+        if (!selectedPlant) return;
+        document.getElementById('rName').textContent = selectedPlant.replace(/_/g,' ');
+        document.getElementById('pickerConfirm').className = 'picker-confirm';
+        document.getElementById('infoArea').innerHTML =
+            '<div class="is"><div class="iload"><div class="ms"></div><p>Loading plant profile...</p></div></div>';
+        await loadInfo(selectedPlant);
+    }
+
+    function scrollToPicker() {
+        var pb = document.getElementById('pickerBox');
+        if (pb) pb.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       PLANT INFO — load, translate, render
+    ═══════════════════════════════════════════════════════ */
+    var plantInfoCache  = {};   // { "PlantName_langCode": translatedData }
+    var currentPlantData = null; // master English copy
+    var currentPlantName = null;
+
+    async function loadInfo(name) {
+        currentPlantName = name;
+        currentPlantData = null; // clear while loading
+        document.getElementById('infoArea').innerHTML =
+            '<div class="is"><div class="iload"><div class="ms"></div><p>Loading plant profile...</p></div></div>';
+        try {
+            var res = await fetch('/api/plant-info', {
+                method: 'POST', headers: {'Content-Type':'application/json'},
+                body: JSON.stringify({plant_name: name})
+            });
+            var r = await res.json();
+            if (r.success) {
+                currentPlantData = r.data;
+                plantInfoCache[name + '_en'] = r.data;
+                await displayInLanguage(curLang);
+            } else {
+                document.getElementById('infoArea').innerHTML =
+                    '<div class="is"><p style="color:#999;text-align:center;padding:16px;font-size:.83em">Could not load plant profile.</p></div>';
+            }
+        } catch(e) {
+            document.getElementById('infoArea').innerHTML =
+                '<div class="is"><p style="color:#999;text-align:center;padding:16px;font-size:.83em">Network error loading profile.</p></div>';
+        }
+    }
+
+    async function displayInLanguage(langCode) {
+        if (!currentPlantData) return;
+        var cacheKey = currentPlantName + '_' + langCode;
+
+        // English or already cached — show immediately
+        if (langCode === 'en' || plantInfoCache[cacheKey]) {
+            renderInfo(plantInfoCache[cacheKey] || currentPlantData);
+            return;
+        }
+
+        // Show translating spinner
+        document.getElementById('infoArea').innerHTML =
+            '<div class="is"><div class="iload"><div class="ms"></div><p>Translating...</p></div></div>';
+
+        try {
+            var res = await fetch('/api/translate', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    plant_data: currentPlantData,
+                    target_lang: langCode
+                })
+            });
+            var r = await res.json();
+            if (r.success) {
+                plantInfoCache[cacheKey] = r.data;
+                renderInfo(r.data);
+            } else {
+                // Fallback to English silently
+                renderInfo(currentPlantData);
+            }
+        } catch(err) {
+            renderInfo(currentPlantData);
+        }
+    }
+
+    function renderInfo(d) {
+        var L = LANG[curLang];
+        document.getElementById('rSci').textContent = d.scientific_name;
+        document.getElementById('infoArea').innerHTML =
+            '<div class="is"><div class="ih"><div class="ii bg-g">🌿</div><div class="it">' + L.desc + '</div></div><p>' + d.description + '</p>' + (d.interesting_fact ? '<div class="fb">💡 ' + d.interesting_fact + '</div>' : '') + '</div>' +
+            '<div class="is"><div class="ih"><div class="ii bg-b">🔬</div><div class="it">' + L.sciClass + '</div></div><div class="cg"><div class="ci"><div class="cl">' + L.commonName + '</div><div class="cv">' + d.common_name + '</div></div><div class="ci"><div class="cl">' + L.sciName + '</div><div class="cv" style="font-style:italic">' + d.scientific_name + '</div></div><div class="ci" style="grid-column:1/-1"><div class="cl">' + L.partsUsed + '</div><div class="cv">' + (Array.isArray(d.parts_used) ? d.parts_used.join(', ') : d.parts_used) + '</div></div></div></div>' +
+            '<div class="is"><div class="ih"><div class="ii bg-au">💊</div><div class="it">' + L.tradMed + '</div></div><div class="tr2">' + (Array.isArray(d.medicinal_uses) ? d.medicinal_uses : []).map(function(u){ return '<span class="tg tn">'+u+'</span>'; }).join('') + '</div></div>' +
+            '<div class="is"><div class="ih"><div class="ii bg-g">✅</div><div class="it">' + L.benefits + '</div></div><div class="tr2">' + (Array.isArray(d.pros) ? d.pros : []).map(function(p){ return '<span class="tg tg2">'+p+'</span>'; }).join('') + '</div></div>' +
+            '<div class="is"><div class="ih"><div class="ii bg-r">⚠️</div><div class="it">' + L.cautions + '</div></div><div class="tr2">' + (Array.isArray(d.cons) ? d.cons : []).map(function(c){ return '<span class="tg tr3">'+c+'</span>'; }).join('') + '</div></div>';
+    }
+
+    function scanAgain() {
+        curFile = null; curDataURL = null;
+        currentPlantData = null; currentPlantName = null;
+        document.getElementById('vfImg').style.display = 'none';
+        document.getElementById('vfPh').style.display = 'block';
+        document.getElementById('chint').textContent = 'Hold steady for best results';
+        var b = document.getElementById('anaBtn');
+        b.style.opacity = '.38'; b.style.pointerEvents = 'none';
+        ['ls1','ls2','ls3','ls4','ls5'].forEach(function(id) {
+            var el = document.getElementById(id); el.classList.remove('on','ok');
+        });
+        document.getElementById('ls1').classList.add('on');
+        document.getElementById('infoArea').innerHTML = '<div class="is"><div class="iload"><div class="ms"></div><p>Loading plant profile...</p></div></div>';
+        g('sc');
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       LOCATION HISTORY
+    ═══════════════════════════════════════════════════════ */
+    function saveHistory() { try { localStorage.setItem('plantScanHistory', JSON.stringify(scanHistory)); } catch(e) {} }
+
+    function addScanToHistory(plantName, confidence) {
+        var entry = { id: Date.now(), plant: plantName, confidence: confidence, time: new Date().toISOString(), lat: null, lng: null, acc: null };
+        scanHistory.unshift(entry);
+        if (scanHistory.length > 100) scanHistory.pop();
+        saveHistory();
+        return entry.id;
+    }
+
+    function updateLastScanGPS(lat, lng, acc) {
+        if (!lastScanId) return;
+        var entry = scanHistory.find(function(e) { return e.id === lastScanId; });
+        if (entry) { entry.lat = parseFloat(lat); entry.lng = parseFloat(lng); entry.acc = acc; saveHistory(); }
+    }
+
+    function renderHistory() {
+        var list     = document.getElementById('lhList');
+        var mapDiv   = document.getElementById('lhMap');
+        var mapEmpty = document.getElementById('lhMapEmpty');
+        var withGPS  = scanHistory.filter(function(e){ return e.lat; });
+        var species  = new Set(scanHistory.map(function(e){ return e.plant; })).size;
+        document.getElementById('lhTotal').textContent   = scanHistory.length;
+        document.getElementById('lhGPS').textContent     = withGPS.length;
+        document.getElementById('lhSpecies').textContent = species;
+
+        if (withGPS.length > 0) {
+            var latest = withGPS[0];
+            var mapUrl = 'https://www.openstreetmap.org/export/embed.html?bbox=' +
+                (latest.lng-0.01) + '%2C' + (latest.lat-0.01) + '%2C' +
+                (latest.lng+0.01) + '%2C' + (latest.lat+0.01) +
+                '&layer=mapnik&marker=' + latest.lat + '%2C' + latest.lng;
+            if (mapEmpty) mapEmpty.style.display = 'none';
+            if (!mapDiv.querySelector('iframe')) {
+                var iframe = document.createElement('iframe');
+                iframe.src = mapUrl;
+                iframe.style.cssText = 'width:100%;height:100%;border:none;display:block;';
+                mapDiv.appendChild(iframe);
+            } else { mapDiv.querySelector('iframe').src = mapUrl; }
+            var allMapsUrl = 'https://maps.google.com/?q=' + latest.lat + ',' + latest.lng;
+            if (!document.getElementById('lhMapsLink')) {
+                var link = document.createElement('a');
+                link.id = 'lhMapsLink'; link.href = allMapsUrl; link.target = '_blank';
+                link.className = 'lh-map-btn';
+                link.style.cssText = 'display:block;text-align:center;padding:7px;background:#fff;border-radius:0 0 16px 16px;border-top:1px solid var(--border);';
+                link.textContent = '🗺 Open latest location in Google Maps';
+                mapDiv.after(link);
+            } else { document.getElementById('lhMapsLink').href = allMapsUrl; }
+        } else { if (mapEmpty) mapEmpty.style.display = 'flex'; }
+
+        if (scanHistory.length === 0) {
+            list.innerHTML = '<div class="lh-empty"><span>🌿</span><p>No scans yet.<br>Scan a plant and capture GPS<br>to see history here.</p></div>';
+            return;
+        }
+        list.innerHTML = '';
+        scanHistory.forEach(function(entry) {
+            var conf = parseFloat(entry.confidence) || 0;
+            var confClass = conf >= 60 ? 'lh-conf-hi' : conf >= 40 ? 'lh-conf-mid' : 'lh-conf-lo';
+            var date = new Date(entry.time);
+            var timeStr = date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+            var coordStr = entry.lat
+                ? '<a href="https://maps.google.com/?q=' + entry.lat + ',' + entry.lng + '" target="_blank" class="lh-map-btn">📍 ' + entry.lat.toFixed(4) + ', ' + entry.lng.toFixed(4) + ' (±' + entry.acc + 'm)</a>'
+                : '<span style="color:var(--muted);font-size:0.75em;">No GPS captured</span>';
+            var item = document.createElement('div');
+            item.className = 'lh-item';
+            item.innerHTML =
+                '<div class="lh-item-icon">🌿</div>' +
+                '<div class="lh-item-body">' +
+                    '<div class="lh-item-plant">' + (entry.plant || '--').replace(/_/g,' ') + '</div>' +
+                    '<div class="lh-item-coord">' + coordStr + '</div>' +
+                    '<div class="lh-item-time">🕐 ' + timeStr + '</div>' +
+                '</div>' +
+                '<div class="lh-item-conf ' + confClass + '">' + conf.toFixed(0) + '%</div>';
+            list.appendChild(item);
+        });
+    }
+
+    function clearHistory() {
+        if (!confirm('Clear all scan history?')) return;
+        scanHistory = []; saveHistory();
+        var mapDiv = document.getElementById('lhMap');
+        var iframe = mapDiv.querySelector('iframe'); if (iframe) iframe.remove();
+        var mapLink = document.getElementById('lhMapsLink'); if (mapLink) mapLink.remove();
+        var mapEmpty = document.getElementById('lhMapEmpty'); if (mapEmpty) mapEmpty.style.display = 'flex';
+        renderHistory();
+    }
+
+    function exportCSV() {
+        if (scanHistory.length === 0) { alert('No scan history to export.'); return; }
+        var csv = 'Plant,Confidence,Latitude,Longitude,Accuracy(m),DateTime\n';
+        scanHistory.forEach(function(e) {
+            csv += ['"' + (e.plant||'').replace(/_/g,' ') + '"', (parseFloat(e.confidence)||0).toFixed(2), e.lat||'', e.lng||'', e.acc||'', '"' + new Date(e.time).toLocaleString() + '"'].join(',') + '\n';
+        });
+        var blob = new Blob([csv], {type:'text/csv'});
+        var a = document.createElement('a');
+        a.href = URL.createObjectURL(blob); a.download = 'plant_scan_history.csv'; a.click();
+    }
 
 </script>
 </body>
