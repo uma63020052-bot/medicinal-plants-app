@@ -409,72 +409,6 @@ def api_info():
 
 
 @main_bp.route('/api/predict', methods=['POST'])
-def is_plant_image(filepath):
-    """
-    Uses Claude Vision to verify the image contains a plant/leaf
-    before running the ML model. Returns (True/False, reason).
-    """
-    import base64
-    api_key = os.environ.get('ANTHROPIC_API_KEY', '').strip()
-    if not api_key:
-        return True, "API key not set — skipping validation"
-
-    try:
-        with open(filepath, 'rb') as f:
-            image_data = base64.b64encode(f.read()).decode('utf-8')
-
-        # Detect image format from extension
-        ext = filepath.rsplit('.', 1)[-1].lower()
-        mime_map = {'jpg': 'image/jpeg', 'jpeg': 'image/jpeg', 'png': 'image/png'}
-        mime_type = mime_map.get(ext, 'image/jpeg')
-
-        payload = json.dumps({
-            "model": "claude-haiku-4-5-20251001",
-            "max_tokens": 100,
-            "messages": [{
-                "role": "user",
-                "content": [
-                    {
-                        "type": "image",
-                        "source": {
-                            "type": "base64",
-                            "media_type": mime_type,
-                            "data": image_data
-                        }
-                    },
-                    {
-                        "type": "text",
-                        "text": (
-                            "Does this image show a plant leaf or plant part "
-                            "(leaf, stem, bark, root)? "
-                            "Reply with ONLY one word: YES or NO."
-                        )
-                    }
-                ]
-            }]
-        }).encode('utf-8')
-
-        req = urllib.request.Request(
-            "https://api.anthropic.com/v1/messages",
-            data=payload,
-            headers={
-                "Content-Type": "application/json",
-                "x-api-key": api_key,
-                "anthropic-version": "2023-06-01"
-            },
-            method="POST"
-        )
-
-        with urllib.request.urlopen(req, timeout=15) as resp:
-            result = json.loads(resp.read().decode('utf-8'))
-            answer = result['content'][0]['text'].strip().upper()
-            is_plant = answer.startswith('YES')
-            print(f"✓ Plant validation: {answer} — {filepath}")
-            return is_plant, answer
-
-    except Exception as e:
-        print(f"⚠ Plant validation error: {e} — allowing image through")
-        return True, "validation error — allowed"
 def predict():
     start_time = time.time()
 
@@ -575,7 +509,72 @@ def predict():
             'error': str(e),
             'processing_time': f"{time.time() - start_time:.2f}s"
         }), 500
+def is_plant_image(filepath):
+    """
+    Uses Claude Vision to verify the image contains a plant/leaf
+    before running the ML model. Returns (True/False, reason).
+    """
+    import base64
+    api_key = os.environ.get('ANTHROPIC_API_KEY', '').strip()
+    if not api_key:
+        return True, "API key not set — skipping validation"
 
+    try:
+        with open(filepath, 'rb') as f:
+            image_data = base64.b64encode(f.read()).decode('utf-8')
+
+        # Detect image format from extension
+        ext = filepath.rsplit('.', 1)[-1].lower()
+        mime_map = {'jpg': 'image/jpeg', 'jpeg': 'image/jpeg', 'png': 'image/png'}
+        mime_type = mime_map.get(ext, 'image/jpeg')
+
+        payload = json.dumps({
+            "model": "claude-haiku-4-5-20251001",
+            "max_tokens": 100,
+            "messages": [{
+                "role": "user",
+                "content": [
+                    {
+                        "type": "image",
+                        "source": {
+                            "type": "base64",
+                            "media_type": mime_type,
+                            "data": image_data
+                        }
+                    },
+                    {
+                        "type": "text",
+                        "text": (
+                            "Does this image show a plant leaf or plant part "
+                            "(leaf, stem, bark, root)? "
+                            "Reply with ONLY one word: YES or NO."
+                        )
+                    }
+                ]
+            }]
+        }).encode('utf-8')
+
+        req = urllib.request.Request(
+            "https://api.anthropic.com/v1/messages",
+            data=payload,
+            headers={
+                "Content-Type": "application/json",
+                "x-api-key": api_key,
+                "anthropic-version": "2023-06-01"
+            },
+            method="POST"
+        )
+
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            result = json.loads(resp.read().decode('utf-8'))
+            answer = result['content'][0]['text'].strip().upper()
+            is_plant = answer.startswith('YES')
+            print(f"✓ Plant validation: {answer} — {filepath}")
+            return is_plant, answer
+
+    except Exception as e:
+        print(f"⚠ Plant validation error: {e} — allowing image through")
+        return True, "validation error — allowed"
 
 @main_bp.route('/api/plant-info', methods=['POST'])
 def plant_info():
