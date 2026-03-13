@@ -452,11 +452,17 @@ def predict():
             apply_preprocessing=apply_preprocessing,
             debug=debug_mode
         )
-
+        print(f"Step 3: Running Inception-V3 prediction")
         print(f"✓ Prediction: {predictions['ensemble']['plant']} ({predictions['ensemble']['percentage']})")
         print(f"{'='*70}\n")
 
         processing_time = time.time() - start_time
+
+        # ── Plant confidence check ────────────────────────────────────────
+        top_conf = float(predictions['ensemble']['percentage'].replace('%', ''))
+        is_plant_confident = top_conf >= 30
+        predictions['is_plant_confident'] = is_plant_confident
+        predictions['top_confidence'] = top_conf
 
         if not debug_mode:
             try:
@@ -467,6 +473,7 @@ def predict():
         return jsonify({
             'success': True,
             'predictions': predictions,
+            'is_plant_confident': is_plant_confident,
             'processing_time': f"{processing_time:.2f}s",
             'preprocessing_applied': apply_preprocessing,
             'debug_mode': debug_mode,

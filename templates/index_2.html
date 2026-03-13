@@ -1695,29 +1695,86 @@
     }
 
     async function showResults(data) {
-        var en  = data.predictions.ensemble;
-        var pct = parseFloat(en.percentage);
-        document.getElementById('rImg').src  = curDataURL;
-        document.getElementById('rName').textContent = en.plant;
-        document.getElementById('rConf').textContent = en.percentage;
-        document.getElementById('rSci').textContent  = 'Loading...';
-        currentTop3 = en.top_3 || [];
-        selectedPlant = en.plant;
-        lastScanId = addScanToHistory(en.plant, parseFloat(en.percentage));
-        fetch('/api/log-scan', {
-            method: 'POST', headers: {'Content-Type':'application/json'},
-            body: JSON.stringify({plant: en.plant, confidence: parseFloat(en.percentage)})
-        }).catch(function(){});
-        var badge = document.getElementById('rConf');
-        badge.style.background = pct >= 60 ? 'var(--green)' : pct >= 40 ? '#d97706' : '#dc2626';
-        document.getElementById('confWarn').style.display = pct < 55 ? 'block' : 'none';
-        buildPicker(en.top_3, en.plant);
-        document.getElementById('gpsValue').textContent = LANG[curLang].gpsNotYet;
-        var gpsBtn = document.getElementById('gpsBtn');
-        gpsBtn.textContent = LANG[curLang].gpsBtn; gpsBtn.disabled = false; gpsBtn.style.background = 'var(--green)';
-        capturedCoords = null;
-        g('sr');
-        await loadInfo(en.plant);
+    var en  = data.predictions.ensemble;
+    var pct = parseFloat(en.percentage);
+
+    // ── NOT A PLANT CHECK ─────────────────────────────────
+    // If confidence is too low, reject the image entirely
+    if (pct < 30 || data.is_plant_confident === false) {
+        g('sc');
+        showNotPlantError('Very low confidence (' + en.percentage + '). This does not appear to be a recognisable medicinal plant.');
+        return;
+    }
+
+    document.getElementById('rImg').src  = curDataURL;
+    document.getElementById('rName').textContent = en.plant.replace(/_/g,' ');
+    document.getElementById('rConf').textContent = en.percentage;
+    document.getElementById('rSci').textContent  = 'Loading...';
+    currentTop3 = en.top_3 || [];
+    selectedPlant = en.plant;
+    lastScanId = addScanToHistory(en.plant, pct);
+    fetch('/api/log-scan', {
+        method: 'POST', headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({plant: en.plant, confidence: pct})
+    }).catch(function(){});
+    var badge = document.getElementById('rConf');
+    badge.style.background = pct >= 60 ? 'var(--green)' : pct >= 40 ? '#d97706' : '#dc2626';
+    document.getElementById('confWarn').style.display = pct < 55 ? 'block' : 'none';
+    buildPicker(en.top_3, en.plant);
+    document.getElementById('gpsValue').textContent = LANG[curLang].gpsNotYet;
+    var gpsBtn = document.getElementById('gpsBtn');
+    gpsBtn.textContent = LANG[curLang].gpsBtn; gpsBtn.disabled = false; gpsBtn.style.background = 'var(--green)';
+    capturedCoords = null;
+    g('sr');
+    await loadInfo(en.plant);
+    }
+
+    function showNotPlantError(reason) {
+    // Remove any existing error popup
+    var old = document.getElementById('notPlantPopup');
+    if (old) old.remove();
+
+    var popup = document.createElement('div');
+    popup.id = 'notPlantPopup';
+    popup.style.cssText = [
+        'position:fixed', 'inset:0', 'z-index:9999',
+        'background:rgba(0,0,0,0.72)',
+        'display:flex', 'align-items:center', 'justify-content:center',
+        'padding:24px'
+    ].join(';');
+
+    popup.innerHTML = [
+        '<div style="background:#fff;border-radius:20px;padding:28px 22px;max-width:340px;width:100%;text-align:center;box-shadow:0 8px 40px rgba(0,0,0,0.3)">',
+            '<div style="width:72px;height:72px;background:#fef2f2;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:2em;border:3px solid #fecaca">🚫</div>',
+            '<h3 style="font-family:Noto Serif,serif;color:#1a1a1a;font-size:1.15em;margin-bottom:10px">Not a Recognisable Plant</h3>',
+            '<p style="color:#6b7280;font-size:0.84em;line-height:1.6;margin-bottom:8px">',
+                'The image you uploaded could not be identified as one of the 40 medicinal plants in our database.',
+            '</p>',
+            '<div style="background:#fffbeb;border:1px solid #fde68a;border-radius:12px;padding:12px 14px;margin-bottom:20px;text-align:left">',
+                '<div style="font-size:0.72em;font-weight:700;color:#92400e;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px">📸 For best results:</div>',
+                '<div style="font-size:0.81em;color:#78350f;line-height:1.8">',
+                    '✅ Use a <strong>single leaf</strong> only<br>',
+                    '✅ Place on <strong>white paper</strong> background<br>',
+                    '✅ Ensure <strong>good lighting</strong><br>',
+                    '✅ Take a <strong>close-up</strong> photo<br>',
+                    '❌ Avoid whole plants, fruits, flowers<br>',
+                    '❌ Avoid blurry or dark images',
+                '</div>',
+            '</div>',
+            '<button onclick="document.getElementById(\'notPlantPopup\').remove()" style="',
+                'width:100%;background:linear-gradient(135deg,#1a6b3c,#2a8a50);',
+                'color:#fff;border:none;padding:14px;border-radius:12px;',
+                'font-family:Noto Sans,sans-serif;font-size:0.95em;font-weight:600;cursor:pointer',
+            '">📷 Try Again</button>',
+        '</div>'
+    ].join('');
+
+    // Close on backdrop click
+    popup.addEventListener('click', function(e) {
+        if (e.target === popup) popup.remove();
+    });
+
+    document.body.appendChild(popup);
     }
 
     function buildPicker(top3, activePlant) {
