@@ -408,6 +408,62 @@ def api_info():
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
 
+def is_plant_image(filepath):
+    import base64
+    api_key = os.environ.get('ANTHROPIC_API_KEY', '').strip()
+    if not api_key:
+        return True, "no api key"
+    try:
+        with open(filepath, 'rb') as f:
+            image_data = base64.b64encode(f.read()).decode('utf-8')
+        ext = filepath.rsplit('.', 1)[-1].lower()
+        mime_map = {'jpg': 'image/jpeg', 'jpeg': 'image/jpeg', 'png': 'image/png'}
+        mime_type = mime_map.get(ext, 'image/jpeg')
+        payload = json.dumps({
+            "model": "claude-haiku-4-5-20251001",
+            "max_tokens": 100,
+            "messages": [{
+                "role": "user",
+                "content": [
+                    {
+                        "type": "image",
+                        "source": {
+                            "type": "base64",
+                            "media_type": mime_type,
+                            "data": image_data
+                        }
+                    },
+                    {
+                        "type": "text",
+                        "text": (
+                            "Is this image showing a plant leaf, plant part, or medicinal plant? "
+                            "Answer ONLY with YES or NO. "
+                            "Say NO for: people, food, objects, animals, buildings, text, "
+                            "screenshots, anything that is not a plant."
+                        )
+                    }
+                ]
+            }]
+        }).encode('utf-8')
+        req = urllib.request.Request(
+            "https://api.anthropic.com/v1/messages",
+            data=payload,
+            headers={
+                "Content-Type": "application/json",
+                "x-api-key": api_key,
+                "anthropic-version": "2023-06-01"
+            },
+            method="POST"
+        )
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            result = json.loads(resp.read().decode('utf-8'))
+            answer = result['content'][0]['text'].strip().upper()
+            is_plant = 'YES' in answer
+            print(f"✓ Plant validation: {answer} — {filepath}")
+            return is_plant, answer
+    except Exception as e:
+        print(f"⚠ Plant validation error: {e} — allowing through")
+        return True, str(e)
 
 @main_bp.route('/api/predict', methods=['POST'])
 def predict():
@@ -442,21 +498,24 @@ def predict():
         os.makedirs(upload_folder, exist_ok=True)
         filepath = os.path.join(upload_folder, unique_filename)
         file.save(filepath)
+        print("Step 1: Image uploaded")
 
         # ── Claude Vision plant validation ───────────────────────────────
+        print("Step 2: Validating image is a plant...")
         plant_valid, validation_reason = is_plant_image(filepath)
         if not plant_valid:
             try:
                 os.remove(filepath)
             except Exception:
                 pass
-            print(f"✗ Rejected non-plant image: {validation_reason}")
+            print(f"✗ Rejected — not a plant: {validation_reason}")
             return jsonify({
                 'success': False,
                 'not_a_plant': True,
                 'error': 'No plant detected in image',
                 'reason': validation_reason
             }), 400
+        print(f"✓ Plant confirmed — proceeding to model")
 
         print(f"\n{'='*70}")
         print(f"Processing: {unique_filename}")
