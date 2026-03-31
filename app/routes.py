@@ -388,6 +388,79 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
+# ─── Claude Vision plant validator ──────────────────────────────────────────
+def is_plant_image(filepath):
+    """
+    Uses Claude Vision to verify the image is a plant leaf/part.
+    Returns (True, reason) if plant, (False, reason) if not.
+    Only ONE definition — strict prompt.
+    """
+    import base64
+    api_key = os.environ.get('ANTHROPIC_API_KEY', '').strip()
+    if not api_key:
+        print("⚠ No API key — skipping plant validation")
+        return True, "no api key"
+
+    try:
+        with open(filepath, 'rb') as f:
+            image_data = base64.b64encode(f.read()).decode('utf-8')
+
+        ext = filepath.rsplit('.', 1)[-1].lower()
+        mime_map = {'jpg': 'image/jpeg', 'jpeg': 'image/jpeg', 'png': 'image/png'}
+        mime_type = mime_map.get(ext, 'image/jpeg')
+
+        payload = json.dumps({
+            "model": "claude-haiku-4-5-20251001",
+            "max_tokens": 10,
+            "messages": [{
+                "role": "user",
+                "content": [
+                    {
+                        "type": "image",
+                        "source": {
+                            "type": "base64",
+                            "media_type": mime_type,
+                            "data": image_data
+                        }
+                    },
+                    {
+                        "type": "text",
+                        "text": (
+                            "Look at this image carefully. "
+                            "Does it show ONLY a plant leaf or plant part (leaf, stem, bark, root)? "
+                            "Answer YES only if it is clearly a plant leaf or plant part. "
+                            "Answer NO for: human faces, people, selfies, food, animals, "
+                            "objects, buildings, screenshots, landscapes, or anything that "
+                            "is NOT a plant. Reply with ONE word only: YES or NO."
+                        )
+                    }
+                ]
+            }]
+        }).encode('utf-8')
+
+        req = urllib.request.Request(
+            "https://api.anthropic.com/v1/messages",
+            data=payload,
+            headers={
+                "Content-Type": "application/json",
+                "x-api-key": api_key,
+                "anthropic-version": "2023-06-01"
+            },
+            method="POST"
+        )
+
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            result = json.loads(resp.read().decode('utf-8'))
+            answer = result['content'][0]['text'].strip().upper()
+            is_plant = answer.startswith('YES')
+            print(f"✓ Plant validation: {answer} — {filepath}")
+            return is_plant, answer
+
+    except Exception as e:
+        print(f"⚠ Plant validation error: {e} — allowing through")
+        return True, str(e)
+
+
 @main_bp.route('/')
 def index():
     return render_template('index_2.html')
@@ -408,62 +481,6 @@ def api_info():
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
 
-def is_plant_image(filepath):
-    import base64
-    api_key = os.environ.get('ANTHROPIC_API_KEY', '').strip()
-    if not api_key:
-        return True, "no api key"
-    try:
-        with open(filepath, 'rb') as f:
-            image_data = base64.b64encode(f.read()).decode('utf-8')
-        ext = filepath.rsplit('.', 1)[-1].lower()
-        mime_map = {'jpg': 'image/jpeg', 'jpeg': 'image/jpeg', 'png': 'image/png'}
-        mime_type = mime_map.get(ext, 'image/jpeg')
-        payload = json.dumps({
-            "model": "claude-haiku-4-5-20251001",
-            "max_tokens": 100,
-            "messages": [{
-                "role": "user",
-                "content": [
-                    {
-                        "type": "image",
-                        "source": {
-                            "type": "base64",
-                            "media_type": mime_type,
-                            "data": image_data
-                        }
-                    },
-                    {
-                        "type": "text",
-                        "text": (
-                            "Is this image showing a plant leaf, plant part, or medicinal plant? "
-                            "Answer ONLY with YES or NO. "
-                            "Say NO for: people, food, objects, animals, buildings, text, "
-                            "screenshots, anything that is not a plant."
-                        )
-                    }
-                ]
-            }]
-        }).encode('utf-8')
-        req = urllib.request.Request(
-            "https://api.anthropic.com/v1/messages",
-            data=payload,
-            headers={
-                "Content-Type": "application/json",
-                "x-api-key": api_key,
-                "anthropic-version": "2023-06-01"
-            },
-            method="POST"
-        )
-        with urllib.request.urlopen(req, timeout=15) as resp:
-            result = json.loads(resp.read().decode('utf-8'))
-            answer = result['content'][0]['text'].strip().upper()
-            is_plant = 'YES' in answer
-            print(f"✓ Plant validation: {answer} — {filepath}")
-            return is_plant, answer
-    except Exception as e:
-        print(f"⚠ Plant validation error: {e} — allowing through")
-        return True, str(e)
 
 @main_bp.route('/api/predict', methods=['POST'])
 def predict():
@@ -527,15 +544,16 @@ def predict():
             apply_preprocessing=apply_preprocessing,
             debug=debug_mode
         )
+
         print(f"Step 3: Running Inception-V3 prediction")
         print(f"✓ Prediction: {predictions['ensemble']['plant']} ({predictions['ensemble']['percentage']})")
         print(f"{'='*70}\n")
 
         processing_time = time.time() - start_time
 
-        # ── Plant confidence check ────────────────────────────────────────
+        # ── Confidence check ─────────────────────────────────────────────
         top_conf = float(predictions['ensemble']['percentage'].replace('%', ''))
-        is_plant_confident = top_conf >= 30
+        is_plant_confident = top_conf >= 40
         predictions['is_plant_confident'] = is_plant_confident
         predictions['top_confidence'] = top_conf
 
@@ -569,72 +587,7 @@ def predict():
             'error': str(e),
             'processing_time': f"{time.time() - start_time:.2f}s"
         }), 500
-def is_plant_image(filepath):
-    """
-    Uses Claude Vision to verify the image contains a plant/leaf
-    before running the ML model. Returns (True/False, reason).
-    """
-    import base64
-    api_key = os.environ.get('ANTHROPIC_API_KEY', '').strip()
-    if not api_key:
-        return True, "API key not set — skipping validation"
 
-    try:
-        with open(filepath, 'rb') as f:
-            image_data = base64.b64encode(f.read()).decode('utf-8')
-
-        # Detect image format from extension
-        ext = filepath.rsplit('.', 1)[-1].lower()
-        mime_map = {'jpg': 'image/jpeg', 'jpeg': 'image/jpeg', 'png': 'image/png'}
-        mime_type = mime_map.get(ext, 'image/jpeg')
-
-        payload = json.dumps({
-            "model": "claude-haiku-4-5-20251001",
-            "max_tokens": 100,
-            "messages": [{
-                "role": "user",
-                "content": [
-                    {
-                        "type": "image",
-                        "source": {
-                            "type": "base64",
-                            "media_type": mime_type,
-                            "data": image_data
-                        }
-                    },
-                    {
-                        "type": "text",
-                        "text": (
-                            "Does this image show a plant leaf or plant part "
-                            "(leaf, stem, bark, root)? "
-                            "Reply with ONLY one word: YES or NO."
-                        )
-                    }
-                ]
-            }]
-        }).encode('utf-8')
-
-        req = urllib.request.Request(
-            "https://api.anthropic.com/v1/messages",
-            data=payload,
-            headers={
-                "Content-Type": "application/json",
-                "x-api-key": api_key,
-                "anthropic-version": "2023-06-01"
-            },
-            method="POST"
-        )
-
-        with urllib.request.urlopen(req, timeout=15) as resp:
-            result = json.loads(resp.read().decode('utf-8'))
-            answer = result['content'][0]['text'].strip().upper()
-            is_plant = answer.startswith('YES')
-            print(f"✓ Plant validation: {answer} — {filepath}")
-            return is_plant, answer
-
-    except Exception as e:
-        print(f"⚠ Plant validation error: {e} — allowing image through")
-        return True, "validation error — allowed"
 
 @main_bp.route('/api/plant-info', methods=['POST'])
 def plant_info():
@@ -663,7 +616,7 @@ def plant_info():
         )
 
         payload = json.dumps({
-            "model": "claude-sonnet-4-20250514",
+            "model": "claude-haiku-4-5-20251001",
             "max_tokens": 1000,
             "system": "You are a medicinal plants expert. Return ONLY valid JSON, no markdown, no backticks.",
             "messages": [{"role": "user", "content": prompt}]
@@ -697,24 +650,18 @@ def plant_info():
         except Exception as e:
             print(f"Anthropic API error: {str(e)[:80]} — using fallback for: {plant_name}")
 
-    # Exact match
     fallback = PLANT_FALLBACK.get(plant_name)
-
-    # Case-insensitive match
     if not fallback:
         for key, val in PLANT_FALLBACK.items():
             if key.lower() == plant_name.lower():
                 fallback = val
                 break
-
-    # Normalised match (spaces/dashes → underscores)
     if not fallback:
         normalized = plant_name.lower().replace(' ', '_').replace('-', '_')
         for key, val in PLANT_FALLBACK.items():
             if key.lower().replace(' ', '_') == normalized:
                 fallback = val
                 break
-
     if fallback:
         print(f"✓ Plant info served from fallback for: {plant_name}")
         return jsonify({'success': True, 'data': fallback, 'source': 'fallback'})
@@ -745,10 +692,6 @@ def plant_info():
 # ─── Translation endpoint ─────────────────────────────────────────────────────
 @main_bp.route('/api/translate', methods=['POST'])
 def translate_plant_info():
-    """
-    Translate plant info JSON into a target language using Claude Haiku.
-    Called from the frontend when the user switches language on the results screen.
-    """
     try:
         data = request.get_json()
         if not data:
@@ -757,17 +700,10 @@ def translate_plant_info():
         plant_data  = data.get('plant_data', {})
         target_lang = data.get('target_lang', 'en')
 
-        # English needs no translation
         if target_lang == 'en':
             return jsonify({'success': True, 'data': plant_data})
 
-        lang_names = {
-            'te': 'Telugu',
-            'hi': 'Hindi',
-            'ta': 'Tamil',
-            'kn': 'Kannada',
-            'ur': 'Urdu'
-        }
+        lang_names = {'te': 'Telugu', 'hi': 'Hindi', 'ta': 'Tamil', 'kn': 'Kannada', 'ur': 'Urdu'}
         lang_name = lang_names.get(target_lang)
         if not lang_name:
             return jsonify({'success': False, 'error': f'Unsupported language: {target_lang}'}), 400
@@ -777,8 +713,6 @@ def translate_plant_info():
             return jsonify({'success': False, 'error': 'API key not configured'}), 500
 
         sci_name = plant_data.get('scientific_name', '')
-
-        # Only translate these fields; scientific_name stays in Latin
         to_translate = {
             'common_name':      plant_data.get('common_name', ''),
             'description':      plant_data.get('description', ''),
@@ -822,15 +756,12 @@ def translate_plant_info():
             clean = raw.replace('```json', '').replace('```', '').strip()
             translated = json.loads(clean)
 
-        # Merge: keep scientific_name from original, use translated rest
         merged = {**plant_data, **translated, 'scientific_name': sci_name}
-
         print(f"✓ Translated to {lang_name}: {plant_data.get('common_name', '?')}")
         return jsonify({'success': True, 'data': merged})
 
     except urllib.error.HTTPError as e:
-        err_body = e.read().decode('utf-8', errors='ignore')[:200]
-        print(f"✗ Translation API HTTP Error {e.code}: {err_body}")
+        print(f"✗ Translation API HTTP Error {e.code}")
         return jsonify({'success': False, 'error': f'API error {e.code}'}), 500
     except json.JSONDecodeError as e:
         print(f"✗ Translation JSON parse error: {e}")
@@ -844,11 +775,7 @@ def translate_plant_info():
 def get_classes():
     try:
         loader = get_model_loader()
-        return jsonify({
-            'success': True,
-            'classes': loader.class_names,
-            'count': len(loader.class_names)
-        })
+        return jsonify({'success': True, 'classes': loader.class_names, 'count': len(loader.class_names)})
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
 
@@ -857,12 +784,7 @@ def get_classes():
 def health_check():
     try:
         loader = get_model_loader()
-        return jsonify({
-            'success': True,
-            'status': 'healthy',
-            'models_loaded': len(loader.models),
-            'timestamp': datetime.now().isoformat()
-        })
+        return jsonify({'success': True, 'status': 'healthy', 'models_loaded': len(loader.models), 'timestamp': datetime.now().isoformat()})
     except Exception as e:
         return jsonify({'success': False, 'status': 'unhealthy', 'error': str(e)}), 500
 
@@ -895,7 +817,6 @@ def get_db():
 
 @main_bp.route('/api/log-scan', methods=['POST'])
 def log_scan():
-    """Called from frontend after every prediction + optional GPS."""
     try:
         d          = request.get_json(force=True) or {}
         plant      = d.get('plant', 'Unknown')
@@ -904,7 +825,6 @@ def log_scan():
         lng        = d.get('lng')
         accuracy   = d.get('accuracy')
         ua         = request.headers.get('User-Agent', '')[:200]
-
         conn = get_db()
         conn.execute(
             "INSERT INTO scans (plant,confidence,lat,lng,accuracy,user_agent) VALUES (?,?,?,?,?,?)",
@@ -912,7 +832,7 @@ def log_scan():
         )
         conn.commit()
         conn.close()
-        print(f"✓ Scan logged: {plant} ({confidence:.1f}%) lat={lat} lng={lng}")
+        print(f"✓ Scan logged: {plant} ({confidence:.1f}%)")
         return jsonify({'success': True})
     except Exception as e:
         print(f"✗ log-scan error: {e}")
@@ -921,18 +841,14 @@ def log_scan():
 
 @main_bp.route('/admin')
 def admin_dashboard():
-    """Simple admin map — view all user scans with GPS."""
-    # Add this near the top of admin_dashboard()
     try:
-        supa_req = urllib.request.Request(
-            'https://stsovaoegejtdfawflsf.supabase.co/auth/v1/health',
-            method='GET'
-        )
-        with urllib.request.urlopen(supa_req, timeout=5) as r:
-            supa_status = '🟢 Online'
-    except Exception:
-        supa_status = '🔴 Paused / Offline'
-    try:
+        try:
+            supa_req = urllib.request.Request('https://stsovaoegejtdfawflsf.supabase.co/auth/v1/health', method='GET')
+            with urllib.request.urlopen(supa_req, timeout=5) as r:
+                supa_status = '🟢 Online'
+        except Exception:
+            supa_status = '🔴 Paused / Offline'
+
         conn  = get_db()
         scans = conn.execute("SELECT * FROM scans ORDER BY created_at DESC LIMIT 500").fetchall()
         conn.close()
@@ -951,8 +867,7 @@ def admin_dashboard():
 
         html = f"""<!DOCTYPE html>
 <html><head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Admin — Plant Scan Map</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -961,8 +876,8 @@ def admin_dashboard():
 body{{background:#f0f4f0}}
 .top{{background:#0d3d22;color:#fff;padding:14px 20px;display:flex;align-items:center;gap:16px}}
 .top h1{{font-size:1em;font-weight:700}}
-.stats{{display:flex;gap:8px;padding:12px 16px;background:#fff;border-bottom:1px solid #dde5d8}}
-.stat{{background:#f0f9f4;border-radius:10px;padding:10px 16px;text-align:center;flex:1}}
+.stats{{display:flex;gap:8px;padding:12px 16px;background:#fff;border-bottom:1px solid #dde5d8;flex-wrap:wrap}}
+.stat{{background:#f0f9f4;border-radius:10px;padding:10px 16px;text-align:center;flex:1;min-width:80px}}
 .stat-v{{font-size:1.5em;font-weight:700;color:#1a6b3c}}
 .stat-l{{font-size:0.65em;color:#6b7280;text-transform:uppercase;letter-spacing:0.5px}}
 #map{{height:340px;border-bottom:1px solid #dde5d8}}
@@ -986,6 +901,7 @@ td{{padding:7px 10px;border-bottom:1px solid #eee;color:#374151}}
   <div class="stat"><div class="stat-v">{total}</div><div class="stat-l">Total Scans</div></div>
   <div class="stat"><div class="stat-v">{with_gps}</div><div class="stat-l">GPS Tagged</div></div>
   <div class="stat"><div class="stat-v">{species_set}</div><div class="stat-l">Species</div></div>
+  <div class="stat"><div class="stat-v" style="font-size:0.9em">{supa_status}</div><div class="stat-l">Supabase</div></div>
 </div>
 <div id="map"></div>
 <div class="table-wrap">
@@ -1026,7 +942,6 @@ if(markers.length>0){{
 
 @main_bp.route('/admin/export-csv')
 def export_csv():
-    """Download all scan data as CSV."""
     try:
         import io
         conn  = get_db()
@@ -1042,11 +957,8 @@ def export_csv():
                 f'"{ua}",{r["created_at"]}\n'
             )
         from flask import Response
-        return Response(
-            output.getvalue(),
-            mimetype='text/csv',
-            headers={"Content-Disposition": "attachment;filename=plant_scans.csv"}
-        )
+        return Response(output.getvalue(), mimetype='text/csv',
+                        headers={"Content-Disposition": "attachment;filename=plant_scans.csv"})
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
@@ -1060,22 +972,20 @@ def not_found(error):
 def internal_error(error):
     return jsonify({'success': False, 'error': 'Internal server error'}), 500
 
-# Add this at the bottom of routes.py
 
-
+# ─── Supabase keep-alive ping ────────────────────────────────────────────────
 def keep_supabase_alive():
-    """Ping Supabase every 24 hours to prevent free tier pause."""
-    import time
-    SUPA_URL = 'https://stsovaoegejtdfawflsf.supabase.co/auth/v1/health'
+    import time as _time
+    SUPA_HEALTH = 'https://stsovaoegejtdfawflsf.supabase.co/auth/v1/health'
     while True:
         try:
-            req = urllib.request.Request(SUPA_URL, method='GET')
+            req = urllib.request.Request(SUPA_HEALTH, method='GET')
             with urllib.request.urlopen(req, timeout=10) as resp:
                 print(f"✓ Supabase ping: {resp.status}")
         except Exception as e:
             print(f"⚠ Supabase ping failed: {e}")
-        time.sleep(86400)  # ping every 24 hours
+        _time.sleep(86400)
 
-# Start background ping thread
+
 ping_thread = threading.Thread(target=keep_supabase_alive, daemon=True)
 ping_thread.start()
