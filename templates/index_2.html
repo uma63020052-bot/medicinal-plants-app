@@ -863,7 +863,7 @@
         fGal.addEventListener('change', function(e) { handleFile(e.target.files[0]); fGal.value = ''; });
 
         document.getElementById('googleBtn').addEventListener('click', function() {
-            var redirectTo = encodeURIComponent(window.location.href.split('#')[0]);
+            var redirectTo = encodeURIComponent('https://medicinal-plants-app.onrender.com');
             window.location.href = SUPA_URL + '/auth/v1/authorize?provider=google&redirect_to=' + redirectTo;
         });
 

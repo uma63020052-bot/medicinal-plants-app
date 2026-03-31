@@ -7,6 +7,7 @@ from flask import Blueprint, request, jsonify, render_template
 from werkzeug.utils import secure_filename
 import os
 import time
+import threading
 import json
 import urllib.request
 import urllib.error
@@ -862,6 +863,16 @@ def log_scan():
 @main_bp.route('/admin')
 def admin_dashboard():
     """Simple admin map — view all user scans with GPS."""
+    # Add this near the top of admin_dashboard()
+    try:
+        supa_req = urllib.request.Request(
+            'https://stsovaoegejtdfawflsf.supabase.co/auth/v1/health',
+            method='GET'
+        )
+        with urllib.request.urlopen(supa_req, timeout=5) as r:
+            supa_status = '🟢 Online'
+    except Exception:
+        supa_status = '🔴 Paused / Offline'
     try:
         conn  = get_db()
         scans = conn.execute("SELECT * FROM scans ORDER BY created_at DESC LIMIT 500").fetchall()
@@ -989,3 +1000,23 @@ def not_found(error):
 @main_bp.errorhandler(500)
 def internal_error(error):
     return jsonify({'success': False, 'error': 'Internal server error'}), 500
+
+# Add this at the bottom of routes.py
+
+
+def keep_supabase_alive():
+    """Ping Supabase every 24 hours to prevent free tier pause."""
+    import time
+    SUPA_URL = 'https://stsovaoegejtdfawflsf.supabase.co/auth/v1/health'
+    while True:
+        try:
+            req = urllib.request.Request(SUPA_URL, method='GET')
+            with urllib.request.urlopen(req, timeout=10) as resp:
+                print(f"✓ Supabase ping: {resp.status}")
+        except Exception as e:
+            print(f"⚠ Supabase ping failed: {e}")
+        time.sleep(86400)  # ping every 24 hours
+
+# Start background ping thread
+ping_thread = threading.Thread(target=keep_supabase_alive, daemon=True)
+ping_thread.start()
