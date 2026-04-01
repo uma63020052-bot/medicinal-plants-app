@@ -393,7 +393,6 @@ def is_plant_image(filepath):
     """
     Uses Claude Vision to verify the image is a plant leaf/part.
     Returns (True, reason) if plant, (False, reason) if not.
-    Only ONE definition — strict prompt.
     """
     import base64
     api_key = os.environ.get('ANTHROPIC_API_KEY', '').strip()
@@ -411,7 +410,7 @@ def is_plant_image(filepath):
 
         payload = json.dumps({
             "model": "claude-haiku-4-5-20251001",
-            "max_tokens": 10,
+            "max_tokens": 50,
             "messages": [{
                 "role": "user",
                 "content": [
@@ -426,12 +425,15 @@ def is_plant_image(filepath):
                     {
                         "type": "text",
                         "text": (
-                            "Look at this image carefully. "
-                            "Does it show ONLY a plant leaf or plant part (leaf, stem, bark, root)? "
-                            "Answer YES only if it is clearly a plant leaf or plant part. "
-                            "Answer NO for: human faces, people, selfies, food, animals, "
-                            "objects, buildings, screenshots, landscapes, or anything that "
-                            "is NOT a plant. Reply with ONE word only: YES or NO."
+                            "You are a strict image classifier. "
+                            "Look at this image and answer ONE word only.\n\n"
+                            "If the image shows a PLANT LEAF or PLANT PART "
+                            "(leaf, stem, bark, root) → reply: PLANT\n\n"
+                            "If the image shows ANYTHING ELSE "
+                            "(human face, person, selfie, food, animal, "
+                            "object, building, sky, landscape, screenshot) "
+                            "→ reply: NOTPLANT\n\n"
+                            "Reply with ONE word only: PLANT or NOTPLANT"
                         )
                     }
                 ]
@@ -449,15 +451,20 @@ def is_plant_image(filepath):
             method="POST"
         )
 
-        with urllib.request.urlopen(req, timeout=15) as resp:
+        with urllib.request.urlopen(req, timeout=20) as resp:
             result = json.loads(resp.read().decode('utf-8'))
             answer = result['content'][0]['text'].strip().upper()
-            is_plant = answer.startswith('YES')
-            print(f"✓ Plant validation: {answer} — {filepath}")
+            # Check for PLANT keyword — if NOTPLANT comes first it won't match PLANT alone
+            is_plant = ('PLANT' in answer) and ('NOTPLANT' not in answer)
+            print(f"✓ Vision validation answer: '{answer}' → is_plant={is_plant}")
             return is_plant, answer
 
+    except urllib.error.HTTPError as e:
+        body = e.read().decode('utf-8', errors='ignore')[:200]
+        print(f"⚠ Vision API HTTP {e.code}: {body} — allowing through")
+        return True, f"http_error_{e.code}"
     except Exception as e:
-        print(f"⚠ Plant validation error: {e} — allowing through")
+        print(f"⚠ Vision validation error: {e} — allowing through")
         return True, str(e)
 
 
@@ -961,6 +968,7 @@ def export_csv():
                         headers={"Content-Disposition": "attachment;filename=plant_scans.csv"})
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
 
 
 @main_bp.errorhandler(404)
