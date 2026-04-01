@@ -456,17 +456,15 @@ def is_plant_image(filepath):
             is_plant = (answer == 'PLANT')
             print(f"✓ Vision raw='{raw_answer}' cleaned='{answer}' is_plant={is_plant}")
             return is_plant, answer
-
     except urllib.error.HTTPError as e:
         body = e.read().decode('utf-8', errors='ignore')[:300]
-        print(f"✗ Vision API HTTP {e.code}: {body}")
-        # FAIL CLOSED — if API errors, block the image
-        return False, f"vision_api_error_{e.code}"
+        print(f"✗ Vision API HTTP {e.code}: {body} — allowing through")
+        return True, f"http_error_{e.code}"   # allow on API error
 
     except Exception as e:
-        print(f"✗ Vision error: {e}")
-        # FAIL CLOSED — if anything goes wrong, block the image
-        return False, str(e)
+        print(f"✗ Vision error: {e} — allowing through")
+        return True, str(e)   # allow on unknown error
+    
 
 
 @main_bp.route('/')
