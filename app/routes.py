@@ -390,15 +390,10 @@ def allowed_file(filename):
 
 # ─── Claude Vision plant validator ──────────────────────────────────────────
 def is_plant_image(filepath):
-    """
-    Layer 1: Claude Vision check
-    Layer 2: If vision fails/errors, block by default (fail-closed)
-    """
     import base64
     api_key = os.environ.get('ANTHROPIC_API_KEY', '').strip()
     if not api_key:
-        print("⚠ No API key — blocking by default for safety")
-        return False, "no api key — blocked for safety"
+        return True, "no api key"
 
     try:
         with open(filepath, 'rb') as f:
@@ -411,6 +406,14 @@ def is_plant_image(filepath):
         payload = json.dumps({
             "model": "claude-haiku-4-5-20251001",
             "max_tokens": 50,
+            "system": (
+                "You are an image classifier that detects ONLY plant leaves. "
+                "You must be extremely strict. "
+                "Reply PLANT only if the image shows a clear plant leaf or plant part. "
+                "Reply NOTPLANT for everything else including humans, faces, food, "
+                "animals, objects, landscapes, screenshots, blurry images, or anything "
+                "that is not clearly a plant leaf."
+            ),
             "messages": [{
                 "role": "user",
                 "content": [
@@ -424,14 +427,7 @@ def is_plant_image(filepath):
                     },
                     {
                         "type": "text",
-                        "text": (
-                            "You are a strict plant detector.\n"
-                            "Does this image show a PLANT LEAF or PLANT PART only?\n"
-                            "Reply PLANT if yes.\n"
-                            "Reply NOTPLANT if it shows a human, face, person, "
-                            "food, animal, object, or anything non-plant.\n"
-                            "One word answer only."
-                        )
+                        "text": "Is this a plant leaf? Reply PLANT or NOTPLANT only."
                     }
                 ]
             }]
@@ -450,21 +446,20 @@ def is_plant_image(filepath):
 
         with urllib.request.urlopen(req, timeout=20) as resp:
             result = json.loads(resp.read().decode('utf-8'))
-            raw_answer = result['content'][0]['text'].strip().upper()
-            # Strip punctuation
-            answer = ''.join(c for c in raw_answer if c.isalpha())
-            is_plant = (answer == 'PLANT')
-            print(f"✓ Vision raw='{raw_answer}' cleaned='{answer}' is_plant={is_plant}")
-            return is_plant, answer
+            raw = result['content'][0]['text'].strip().upper()
+            # Remove all non-alpha characters
+            clean = ''.join(c for c in raw if c.isalpha())
+            is_plant = (clean == 'PLANT')
+            print(f"✓ Vision: raw='{raw}' clean='{clean}' is_plant={is_plant}")
+            return is_plant, clean
+
     except urllib.error.HTTPError as e:
         body = e.read().decode('utf-8', errors='ignore')[:300]
-        print(f"✗ Vision API HTTP {e.code}: {body} — allowing through")
-        return True, f"http_error_{e.code}"   # allow on API error
-
+        print(f"✗ Vision HTTP {e.code}: {body} — allowing through")
+        return True, "api_error"
     except Exception as e:
         print(f"✗ Vision error: {e} — allowing through")
-        return True, str(e)   # allow on unknown error
-    
+        return True, str(e)    
 
 
 @main_bp.route('/')
