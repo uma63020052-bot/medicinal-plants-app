@@ -391,14 +391,14 @@ def allowed_file(filename):
 # ─── Claude Vision plant validator ──────────────────────────────────────────
 def is_plant_image(filepath):
     """
-    Uses Claude Vision to verify the image is a plant leaf/part.
-    Returns (True, reason) if plant, (False, reason) if not.
+    Layer 1: Claude Vision check
+    Layer 2: If vision fails/errors, block by default (fail-closed)
     """
     import base64
     api_key = os.environ.get('ANTHROPIC_API_KEY', '').strip()
     if not api_key:
-        print("⚠ No API key — skipping plant validation")
-        return True, "no api key"
+        print("⚠ No API key — blocking by default for safety")
+        return False, "no api key — blocked for safety"
 
     try:
         with open(filepath, 'rb') as f:
@@ -425,15 +425,12 @@ def is_plant_image(filepath):
                     {
                         "type": "text",
                         "text": (
-                            "You are a strict image classifier. "
-                            "Look at this image and answer ONE word only.\n\n"
-                            "If the image shows a PLANT LEAF or PLANT PART "
-                            "(leaf, stem, bark, root) → reply: PLANT\n\n"
-                            "If the image shows ANYTHING ELSE "
-                            "(human face, person, selfie, food, animal, "
-                            "object, building, sky, landscape, screenshot) "
-                            "→ reply: NOTPLANT\n\n"
-                            "Reply with ONE word only: PLANT or NOTPLANT"
+                            "You are a strict plant detector.\n"
+                            "Does this image show a PLANT LEAF or PLANT PART only?\n"
+                            "Reply PLANT if yes.\n"
+                            "Reply NOTPLANT if it shows a human, face, person, "
+                            "food, animal, object, or anything non-plant.\n"
+                            "One word answer only."
                         )
                     }
                 ]
@@ -453,19 +450,23 @@ def is_plant_image(filepath):
 
         with urllib.request.urlopen(req, timeout=20) as resp:
             result = json.loads(resp.read().decode('utf-8'))
-            answer = result['content'][0]['text'].strip().upper()
-            # Check for PLANT keyword — if NOTPLANT comes first it won't match PLANT alone
-            is_plant = ('PLANT' in answer) and ('NOTPLANT' not in answer)
-            print(f"✓ Vision validation answer: '{answer}' → is_plant={is_plant}")
+            raw_answer = result['content'][0]['text'].strip().upper()
+            # Strip punctuation
+            answer = ''.join(c for c in raw_answer if c.isalpha())
+            is_plant = (answer == 'PLANT')
+            print(f"✓ Vision raw='{raw_answer}' cleaned='{answer}' is_plant={is_plant}")
             return is_plant, answer
 
     except urllib.error.HTTPError as e:
-        body = e.read().decode('utf-8', errors='ignore')[:200]
-        print(f"⚠ Vision API HTTP {e.code}: {body} — allowing through")
-        return True, f"http_error_{e.code}"
+        body = e.read().decode('utf-8', errors='ignore')[:300]
+        print(f"✗ Vision API HTTP {e.code}: {body}")
+        # FAIL CLOSED — if API errors, block the image
+        return False, f"vision_api_error_{e.code}"
+
     except Exception as e:
-        print(f"⚠ Vision validation error: {e} — allowing through")
-        return True, str(e)
+        print(f"✗ Vision error: {e}")
+        # FAIL CLOSED — if anything goes wrong, block the image
+        return False, str(e)
 
 
 @main_bp.route('/')
