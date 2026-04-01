@@ -971,7 +971,7 @@
 
     // ── NOT A PLANT CHECK ─────────────────────────────────
     // If confidence is too low, reject the image entirely
-    if (pct < 30 || data.is_plant_confident === false) {
+    if (pct < 60 || data.is_plant_confident === false) {
         g('sc');
         showNotPlantError('Very low confidence (' + en.percentage + '). This does not appear to be a recognisable medicinal plant.');
         return;

@@ -390,77 +390,12 @@ def allowed_file(filename):
 
 # ─── Claude Vision plant validator ──────────────────────────────────────────
 def is_plant_image(filepath):
-    import base64
-    api_key = os.environ.get('ANTHROPIC_API_KEY', '').strip()
-    if not api_key:
-        return True, "no api key"
-
-    try:
-        with open(filepath, 'rb') as f:
-            image_data = base64.b64encode(f.read()).decode('utf-8')
-
-        ext = filepath.rsplit('.', 1)[-1].lower()
-        mime_map = {'jpg': 'image/jpeg', 'jpeg': 'image/jpeg', 'png': 'image/png'}
-        mime_type = mime_map.get(ext, 'image/jpeg')
-
-        payload = json.dumps({
-            "model": "claude-haiku-4-5-20251001",
-            "max_tokens": 50,
-            "system": (
-                "You are an image classifier that detects ONLY plant leaves. "
-                "You must be extremely strict. "
-                "Reply PLANT only if the image shows a clear plant leaf or plant part. "
-                "Reply NOTPLANT for everything else including humans, faces, food, "
-                "animals, objects, landscapes, screenshots, blurry images, or anything "
-                "that is not clearly a plant leaf."
-            ),
-            "messages": [{
-                "role": "user",
-                "content": [
-                    {
-                        "type": "image",
-                        "source": {
-                            "type": "base64",
-                            "media_type": mime_type,
-                            "data": image_data
-                        }
-                    },
-                    {
-                        "type": "text",
-                        "text": "Is this a plant leaf? Reply PLANT or NOTPLANT only."
-                    }
-                ]
-            }]
-        }).encode('utf-8')
-
-        req = urllib.request.Request(
-            "https://api.anthropic.com/v1/messages",
-            data=payload,
-            headers={
-                "Content-Type": "application/json",
-                "x-api-key": api_key,
-                "anthropic-version": "2023-06-01"
-            },
-            method="POST"
-        )
-
-        with urllib.request.urlopen(req, timeout=20) as resp:
-            result = json.loads(resp.read().decode('utf-8'))
-            raw = result['content'][0]['text'].strip().upper()
-            # Remove all non-alpha characters
-            clean = ''.join(c for c in raw if c.isalpha())
-            is_plant = (clean == 'PLANT')
-            print(f"✓ Vision: raw='{raw}' clean='{clean}' is_plant={is_plant}")
-            return is_plant, clean
-
-    except urllib.error.HTTPError as e:
-        body = e.read().decode('utf-8', errors='ignore')[:300]
-        print(f"✗ Vision HTTP {e.code}: {body} — allowing through")
-        return True, "api_error"
-    except Exception as e:
-        print(f"✗ Vision error: {e} — allowing through")
-        return True, str(e)    
-
+    """
+    Simplified validation — Claude Vision was unreliable.
+    Always returns True here; confidence threshold in predict() handles rejection.
+    """
+    print(f"Step 2: Skipping Vision check — using confidence threshold only")
+    return True, "confidence_check_only"
 
 @main_bp.route('/')
 def index():
@@ -554,9 +489,14 @@ def predict():
 
         # ── Confidence check ─────────────────────────────────────────────
         top_conf = float(predictions['ensemble']['percentage'].replace('%', ''))
-        is_plant_confident = top_conf >= 40
+        # Faces/objects spread confidence thin — real plants score higher
+        # Threshold 60% = only accept high-confidence plant predictions
+        is_plant_confident = top_conf >= 60
         predictions['is_plant_confident'] = is_plant_confident
         predictions['top_confidence'] = top_conf
+        if not is_plant_confident:
+            print(f"✗ Low confidence {top_conf}% — rejecting as non-plant")
+
 
         if not debug_mode:
             try:
