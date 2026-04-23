@@ -491,7 +491,7 @@ def predict():
         top_conf = float(predictions['ensemble']['percentage'].replace('%', ''))
         # Faces/objects spread confidence thin — real plants score higher
         # Threshold 60% = only accept high-confidence plant predictions
-        is_plant_confident = top_conf >= 60
+        is_plant_confident = top_conf >= 40
         predictions['is_plant_confident'] = is_plant_confident
         predictions['top_confidence'] = top_conf
         if not is_plant_confident:
